@@ -1,0 +1,7 @@
+Dividing User interaction to functions basic example:
+
+1. User loads web page. // Front end GET request any necessary information from the Back end
+2. User logs in. // Front will process given information through a form and POST log in details to the Back, receive response and proceed
+3. User scrolls through latest news. // GET request will bring latest news (For example 20 at a time)
+4. User Clicks on interesting article. // GET request will find the specific article by ID with any extra details that are not necessarily needed in the list
+5. User comments and likes article. // POST request information provided by user will be stored in Back end
