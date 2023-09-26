@@ -1,4 +1,4 @@
-const n: number = 5;
+const n: number = 10;
 
 const factorialFunction = (n: number): number => {
 	if (n < 2) {

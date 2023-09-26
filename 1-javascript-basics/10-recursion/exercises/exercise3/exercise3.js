@@ -1,4 +1,4 @@
-var n = 5;
+var n = 10;
 var factorialFunction = function (n) {
     if (n < 2) {
         return n;
