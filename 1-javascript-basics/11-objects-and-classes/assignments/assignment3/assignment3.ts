@@ -1,4 +1,3 @@
-let count: number = 0;
 const sentenceObject: { [letter: string]: number } = {};
 
 const getCountOfLetters = (sentence: string) => {
