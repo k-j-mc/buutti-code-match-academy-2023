@@ -1,0 +1,12 @@
+{
+	"scripts": {
+		"ts-node": "ts-node"
+	},
+	"devDependencies": {
+		"@types/node": "^20.6.5",
+		"@types/readline-sync": "^1.4.4"
+	},
+	"dependencies": {
+		"readline-sync": "^1.4.10"
+	}
+}
