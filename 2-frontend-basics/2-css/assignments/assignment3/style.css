@@ -1,0 +1,16 @@
+.main {
+    font-family: "Lucida Console", "Courier New", monospace;
+    background-color: rgb(143, 245, 245);
+}
+
+.car1 {
+    background-color: rgb(171, 99, 239);
+}
+
+.car2 {
+    background-color: rgb(141, 239, 99);
+}
+
+.car3 {
+    background-color: rgb(239, 99, 99);
+}
