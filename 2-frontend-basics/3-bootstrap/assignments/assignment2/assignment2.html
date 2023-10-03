@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html> 
+    <head> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Assignment 2</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+      </head>
+    <body> 
+
+        <div class="p-5">
+            <h2 class="text-center mb-5">Used cars database</h2>
+            
+            <div class="row">
+                <div class="col-3">
+                    <div id="carList">
+                    </div>
+                </div>    
+                
+                <div class="col-6">
+                    <div id="carInfo">
+                    </div>
+                </div>    
+
+                <div class="col-3">
+                    <button type="submit" class="btn btn-success btn-sm btn-block">Add car</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-block mt-4">Update car info</button>
+                    <button type="submit" class="btn btn-danger btn-sm btn-block mt-4">Delete car</button>
+                </div>   
+
+            </div>    
+        </div>
+        <script>
+            let data = 
+            [
+                { 
+                    name: "Ford LTD Crown Victoria", 
+                    make: "Ford",
+                    model: "LTD Crown Victoria",
+                    year: "1989",
+                    price: 71990.31,
+                    owner: {
+                        firstName: "Marylene",
+                        lastName: "Deekes",
+                        email: "ldeekes0@newyorker.com",
+                        address: "56 Roth Circle",
+                        state: "Texas",
+                    },
+                    active: true,
+                }, 
+                { 
+                    name: "Fiat Panda V6 Turbo", 
+                    make: "Fiat",
+                    model: "Panda V6 Turbo",
+                    year: "2004",
+                    price: 171990.31,
+                    owner: {
+                        firstName: "Dudley",
+                        lastName: "Doodleson",
+                        email: "d00dles@carfan.com",
+                        address: "526A Brush End",
+                        state: "Illinois",
+                    },
+                    active: false,
+                }, 
+                { 
+                    name: "Ford Excursion", 
+                    make: "Ford",
+                    model: "Excursion",
+                    year: "2014",
+                    price: 11990.36,
+                    owner: {
+                        firstName: "Liam",
+                        lastName: "Beans",
+                        email: "liam@gmail.com",
+                        address: "1 Farm house Road",
+                        state: "New York",
+                    },
+                    active: false,
+                }, 
+                { 
+                    name: "Volvo V70", 
+                    make: "Volvo",
+                    model: "V70",
+                    year: "2019",
+                    price: 1190.36,
+                    owner: {
+                        firstName: "Minna",
+                        lastName: "Tuusula",
+                        email: "minaaaaaaaa@gmail.com",
+                        address: "48A 32 Bertha Road",
+                        state: "Dallas",
+                    },
+                    active: false,
+                }, 
+                { 
+                    name: "Dodge Colt", 
+                    make: "Dodge",
+                    model: "Colt",
+                    year: "1999",
+                    price: 134190.36,
+                    owner: {
+                        firstName: "Sanna",
+                        lastName: "Jotain",
+                        email: "sjota@gmail.com",
+                        address: "47A 2 Bertha Road",
+                        state: "Dallas",
+                    },
+                    active: false,
+                }, 
+            ];
+
+            let carList = document.getElementById("carList");
+
+            let carUl = `<ul class="list-group list-group-flush p-1 rounded">
+                            ${data.map(data => 
+                                `<li class="list-group-item ${data.active && "active"}">
+                                    ${data.name}
+                                </li>`).join("")}
+                        </ul>`
+
+            carList.innerHTML = carUl
+
+            let carInfoList = document.getElementById("carInfo");
+
+            let carInfoUl = `<form>
+                        <div class="form-group">
+                            <div class="mb-1">
+                                <label for="owner-firstname" class="form-label">Owner first name</label>
+                                <input type="owner-firstname" class="form-control input" id="owner-firstname" aria-describedby="inputGroup-sizing-sm" value="${data[0].owner.firstName}">
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label for="owner-lastname" class="form-label">Owner surname</label>
+                                <input type="page-count" class="form-control input" id="page-count" aria-describedby="inputGroup-sizing-sm" value="${data[0].owner.lastName}">
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label for="owner-email" class="form-label">Owner e-mail</label>
+                                <input type="owner-email" class="form-control input" id="owner-email" aria-describedby="inputGroup-sizing-sm" value="${data[0].owner.email}">
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label for="owner-address" class="form-label">Owner address</label>
+                                <input type="owner-address" class="form-control input" id="owner-address" aria-describedby="inputGroup-sizing-sm" value="${data[0].owner.address}">
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label for="owner-state" class="form-label">Owner state</label>
+                                <input type="owner-state" class="form-control input" id="owner-state" aria-describedby="inputGroup-sizing-sm" value="${data[0].owner.state}">
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label for="car-make" class="form-label">Car make</label>
+                                <input type="car-make" class="form-control input" id="car-make" aria-describedby="inputGroup-sizing-sm" value="${data[0].make}">
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label for="car-model" class="form-label">Car model</label>
+                                <input type="car-model" class="form-control input" id="car-model" aria-describedby="inputGroup-sizing-sm" value="${data[0].model}">
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label for="car-model-year" class="form-label">Car model year</label>
+                                <input type="car-model-year" class="form-control custom-select" id="car-model-year" aria-describedby="inputGroup-sizing-sm" value="${data[0].year}" type="number">
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label for="car-price" class="form-label">Price</label>
+                                <input type="car-price" class="form-control custom-select" id="car-price" aria-describedby="inputGroup-sizing-sm" value="${data[0].price}" type="number">
+                            </div>
+                        
+        
+                        </div>
+                    </form>`
+
+            carInfoList.innerHTML = carInfoUl
+
+        </script>
+    </body>
+  </html>

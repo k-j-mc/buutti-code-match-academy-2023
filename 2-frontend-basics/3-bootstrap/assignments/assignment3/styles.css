@@ -1,0 +1,28 @@
+.main {
+    background-color: #262626;
+}
+
+.container {
+    outline: 8px dashed #a428b2;
+    border-radius: 30px;
+    background-color: #7f2550;
+}
+
+img.img-thumbnail {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    height: 8vw;
+    width: 8vw;
+}
+
+.figure-caption {
+    font-weight: bold;
+}
+
+.page-title {
+    color: #e331f3;
+    text-shadow: 2.5px 2.5px #ffffff;
+    font-weight: normal;
+}
