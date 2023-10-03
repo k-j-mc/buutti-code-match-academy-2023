@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html> 
+    <head> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Exercise 3</title>
+      </head>
+    <body> 
+
+        <div>
+            <h2 id="colorChange">Colour changes on button click...</h2>
+            <div id="clickButton">
+             </div>
+        </div>
+
+         <script>
+            let clickCount = 0;
+
+            const colorArray = ["#3399ff", "#ff6666", "#ccff33", "#993333", "#33cccc", "#9900ff", "#000000"]
+
+            const element = document.getElementById("clickButton");
+
+            element.addEventListener("click", colorChanger);
+
+            function colorChanger() {
+                if (clickCount < colorArray.length - 1) {
+                    clickCount++;
+                } else {
+                    clickCount = 0;
+                }
+                document.getElementById("colorChange").style.color = colorArray[clickCount];
+            }
+
+            let button = "<button>Click me...</button>";
+
+            clickButton.innerHTML = button;
+
+         </script>
+    </body>
+  </html>
