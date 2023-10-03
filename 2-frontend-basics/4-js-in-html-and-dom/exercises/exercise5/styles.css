@@ -1,0 +1,22 @@
+.wrapper-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.big-red {
+    flex-basis: 100%;
+    background-color: rgb(248, 66, 66);
+    height: 300px;
+}
+
+.half-green {
+    flex-basis: 50%;
+    background-color: rgb(66, 248, 84);
+    height: 300px;
+}
+
+.half-blue {
+    flex-basis: 50%;
+    background-color: rgb(66, 148, 248);
+    height: 300px;
+}
