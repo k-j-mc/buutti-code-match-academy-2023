@@ -1,0 +1,14 @@
+.form {
+    visibility: hidden;
+    height: 0;
+}
+
+#headerRow {
+    background-color: green;
+}
+
+.icon {
+    height: 0.8em;
+    fill: rgb(97, 97, 239);
+    margin-top: -5px
+}
