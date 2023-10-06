@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  node:
+    restart: always
+    build: .
+    depends_on:
+      - db
+    image: nodejs
+    command: npm run dev
+    environment:
+      POSTGRES_PASSWORD: pgpass
+      PORT: 3000
+      PG_HOST: localhost
+      PG_PORT: 5432
+      PG_USERNAME: pguser
+      PG_PASSWORD: pgpass
+      PG_DATABASE: postgres
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+  db:
+    container_name: postgres
+    image: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - data:/data/db
+    environment:
+      POSTGRES_PASSWORD: pgpass
+      PORT: 3000
+      PG_HOST: localhost
+      PG_PORT: 5432
+      PG_USERNAME: pguser
+      PG_PASSWORD: pgpass
+      PG_DATABASE: postgres
+volumes: 
+ data: {}
+
+ 
