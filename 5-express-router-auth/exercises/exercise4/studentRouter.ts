@@ -1,0 +1,112 @@
+import { Router } from "express";
+import { logger } from "./middleware";
+
+const router = Router();
+
+const studentData = [
+	{
+		name: "Test User",
+		id: "0",
+		email: "test@test.test",
+	},
+	{
+		name: "Test User 2",
+		id: "2",
+		email: "test222222222@test.test",
+	},
+	{
+		name: "Test User 180",
+		id: "180",
+		email: "test180@test180.test",
+	},
+];
+router.get("/students", (request, response) => {
+	logger(request);
+
+	const idMap = studentData.map((student) => {
+		return student.id;
+	});
+
+	response.status(200).json(idMap);
+});
+
+router.get("/student/:id", (request, response) => {
+	logger(request);
+
+	const id = request.params.id;
+
+	const exist = studentData.filter((student) => student.id.toString() === id);
+
+	if (exist.length > 0) {
+		response.status(200).json(exist[0]);
+	} else {
+		response.status(400).json({ error: "No student found with this ID" });
+	}
+});
+
+router.post("/student/:id", (request, response) => {
+	logger(request);
+
+	const body = request.body;
+	const id = request.params.id;
+	const userName = request.body.name;
+	const email = request.body.email;
+
+	if (userName && email) {
+		const exist = studentData.filter((student) => student.id === id);
+
+		if (exist.length === 0) {
+			studentData.push({ ...body, id });
+			response.status(201).json([]);
+		} else {
+			response
+				.status(400)
+				.json({ error: "Student already exists with this ID" });
+		}
+	} else {
+		response.status(400).json({ error: "Missing name, id or email" });
+	}
+});
+
+router.put("/student/:id", (request, response) => {
+	logger(request);
+
+	const id = request.params.id;
+	const userName = request.body.name;
+	const email = request.body.email;
+
+	const findByIndex = studentData.findIndex((student) => student.id === id);
+
+	if (findByIndex >= 0) {
+		if (!email && !userName) {
+			response.status(400).json({ error: "Missing email and name" });
+		} else {
+			if (email) {
+				studentData[findByIndex].email = email;
+			}
+			if (userName) {
+				studentData[findByIndex].name = userName;
+			}
+			response.status(204).json([]);
+		}
+	} else {
+		response.status(404).json({ error: "Student not found" });
+	}
+});
+
+router.delete("/student/:id", (request, response) => {
+	logger(request);
+
+	const id = request.params.id;
+
+	const findByIndex = studentData.findIndex((student) => student.id === id);
+
+	if (findByIndex >= 0) {
+		studentData.splice(findByIndex, 1);
+		response.status(204).json([]);
+	} else {
+		response.status(404).json({ error: "Student not found" });
+	}
+});
+
+export default router;

@@ -1,0 +1,25 @@
+{
+	"name": "exercise3",
+	"version": "1.0.0",
+	"description": "",
+	"main": "exercise3.js",
+	"scripts": {
+		"start": "cross-env NODE_ENV=production node index.js",
+		"dev": "nodemon exercise3.ts",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"argon2": "^0.31.1",
+		"express": "^4.18.2",
+		"moment": "^2.29.4"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.18",
+		"cross-env": "^7.0.3",
+		"nodemon": "^3.0.1",
+		"ts-node": "^10.9.1",
+		"typescript": "^4.9.5"
+	}
+}
