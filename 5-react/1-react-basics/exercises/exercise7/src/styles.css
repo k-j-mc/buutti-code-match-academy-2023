@@ -1,0 +1,7 @@
+.listItem:nth-child(odd) {
+    font-weight: bold;
+}
+
+.listItem:nth-child(even) {
+    font-style: oblique;
+}

@@ -1,0 +1,1 @@
+Page does not seem to reload, just certain components do, as our search data is posted through the request queries and relevant components update with response data.
