@@ -1,0 +1,27 @@
+h1 {
+    padding-top: 30px;
+}
+
+.avatarBackground {
+    background-color: #333399;
+    height: 400px;
+    width: 400px;
+}
+
+.imageAvatar {
+    width: 90%;
+    display: block;
+    margin: 0 auto 0 auto;
+    padding: 5% 0 5% 0;
+}
+
+.avatarTitle {
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.avatarText {
+    color: #FFFFFF;
+    font-style: italic;
+    text-align: center;
+}
