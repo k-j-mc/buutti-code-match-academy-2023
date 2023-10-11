@@ -1,0 +1,21 @@
+.wrapper {
+    width: 100%;
+    display: grid;
+    grid-gap: 1%;
+    grid-template-columns: repeat(5, 19%);
+    grid-template-rows: repeat(5, 100px);
+    grid-auto-flow: column;
+}
+
+.box {
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.boxText {
+    color: #FFFFFF;
+    margin: 0 auto 0 auto;
+    display: grid;
+}
