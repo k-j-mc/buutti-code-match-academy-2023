@@ -1,0 +1,38 @@
+.toDo {
+    margin: 1% 0 1% 0;
+    padding: 15px 0 15px 0;
+    border-radius: 15px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 15% 60% 10% 7%;
+}
+
+.toDoCheck {
+    height: 75%;
+    color: green;
+}
+
+.toDoText {
+    margin: 0 0 0 5%;
+}
+
+.toDoEdit {
+    border: none;
+    border-radius: 40px;
+    color: rgb(0, 162, 255);
+}
+
+.toDoDelete {
+    border: none;
+    border-radius: 40px;
+    margin-left: 15px;
+    color: red;
+}
+
+.toDoEditText {
+    border: none;
+    border-radius: 40px;
+    width: 80%;
+    margin: -5px 0 -5px 5%;
+    padding: 5px 0 5px 5px;
+}

@@ -1,0 +1,43 @@
+.searchBarContainer {
+    text-align: center;
+}
+
+.searchBar {
+    padding: 5px 30px 5px 30px;
+    margin-bottom: 20px;
+    border-radius: 40px;
+    width: 40%;
+}
+
+.todoForm {
+    margin-bottom: 40px;
+}
+
+.newTodoButton {
+    border: none;
+    border-radius: 40px;
+    color: rgb(0, 162, 255);
+    padding: 10px 15px 10px 15px;
+    margin: 0 0 20px 0;
+}
+
+.newTodoInput {
+    border-radius: 40px;
+    width: 40%;
+    margin: 0 0 15px 0;
+    padding: 5px 0 5px 5px;
+}
+
+.toDoSaveButton {
+    border: none;
+    border-radius: 40px;
+    color: rgb(0, 162, 255);
+    padding: 5px;
+}
+
+.toDoCancelButton {
+    border: none;
+    border-radius: 40px;
+    color: red;
+    padding: 5px;
+}

@@ -1,0 +1,67 @@
+.title {
+    text-align: center;
+}
+
+.sumContainer {
+    height: 100px;
+    border: none;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    background-color: rgb(100, 233, 238);
+    margin-bottom: 50px;
+}
+
+
+.buttonCountContainer {
+    width: 100%;
+    display: grid;
+    grid-gap: 1%;
+    grid-template-columns: repeat(0, 25%);
+    grid-auto-flow: column;
+}
+
+.buttonCount {
+    height: 100%;
+    border: none;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    background-color: rgb(100, 100, 238);
+}
+
+.buttonCountText {
+    color: #FFFFFF;
+    margin: 0 auto 0 auto;
+    display: grid;
+    font-size: 50px;
+}
+
+.buttonActionContainer {
+    margin-top: 50px;
+    width: 100%;
+    display: grid;
+    grid-gap: 25%;
+    grid-auto-flow: column;
+}
+
+.newButton {
+    height: 50px;
+    border: none;
+    border-radius: 25px;
+    margin-left: 50px;
+    background-color: rgb(125, 238, 100);
+}
+
+.deleteButton {
+    height: 50px;
+    border: none;
+    border-radius: 25px;
+    margin-right: 50px;
+    background-color: rgb(238, 100, 100);
+}
+
+.filterActions {
+    margin-top: 20px;
+    text-align: center;
+}
