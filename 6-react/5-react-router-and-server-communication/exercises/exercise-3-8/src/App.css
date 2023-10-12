@@ -1,0 +1,73 @@
+.main {
+    margin: 5%
+}
+
+.title {
+    text-align: center;
+    padding: 10px 0 15px 0;
+}
+
+.note {
+    margin: 1% 0 1% 0;
+    padding: 15px 0 15px 0;
+    border-radius: 15px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 80% 10% 10%;
+}
+
+.noteCheck {
+    height: 15px;
+    color: green;
+}
+
+.noteText {
+    margin: 0 0 0 5%;
+}
+
+.toDoEdit {
+    border: none;
+    border-radius: 40px;
+    color: rgb(0, 162, 255);
+}
+
+.toDoDelete {
+    border: none;
+    border-radius: 40px;
+    margin-left: 15px;
+    color: red;
+}
+
+.toDoEditText {
+    border: none;
+    border-radius: 40px;
+    width: 80%;
+    margin: -5px 0 -5px 5%;
+    padding: 5px 0 5px 5px;
+}
+
+.noteForm {
+    margin-bottom: 40px;
+}
+
+.newNoteButton {
+    border: none;
+    border-radius: 40px;
+    color: rgb(0, 162, 255);
+    padding: 10px 15px 10px 15px;
+    margin: 0 0 20px 0;
+}
+
+.newNoteInput {
+    border-radius: 40px;
+    width: 40%;
+    margin: 0 0 15px 0;
+    padding: 5px 0 5px 5px;
+}
+
+.noteSaveButton {
+    border: none;
+    border-radius: 40px;
+    color: rgb(0, 162, 255);
+    padding: 5px;
+}
