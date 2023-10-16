@@ -6,4 +6,7 @@ export interface MovieModel {
 export interface MovieArrayModel {
 	allMovies: MovieModel[];
 	movie: MovieModel;
+	// loading: boolean;
+	loadingAllMovies: boolean;
+	loadingMovie: boolean;
 }
