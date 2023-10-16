@@ -18,6 +18,7 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Search from "@mui/icons-material/Search";
 import ShareIcon from "@mui/icons-material/Share";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 interface IconProps {
 	title?: string;
@@ -90,6 +91,12 @@ const Icons = {
 	)),
 	User: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<PersonOutlineIcon {...props} ref={ref} />
+	)),
+	Visibility: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<VisibilityIcon {...props} ref={ref} />
+	)),
+	VisibilityOff: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<VisibilityOffIcon {...props} ref={ref} />
 	)),
 };
 

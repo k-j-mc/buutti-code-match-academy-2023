@@ -8,7 +8,6 @@ const initialMovieState: MovieArrayModel = {
 		title: "",
 		length: "",
 	},
-	// loading: true,
 	loadingAllMovies: true,
 	loadingMovie: true,
 };

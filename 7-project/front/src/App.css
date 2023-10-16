@@ -36,3 +36,14 @@ html, body {
     color: inherit;
     margin: 0;
 }
+
+.userSignUpAvatarContainer {
+    margin: 20px 0 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.userSignUpAvatar {
+    border: 0.1px solid rgba(192, 222, 224, 0.257);
+}

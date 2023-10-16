@@ -15,8 +15,6 @@ const SignInPage = () => {
 			password: password,
 		};
 
-		console.log(payload);
-
 		setEmail("");
 		setPassword("");
 	};
@@ -53,6 +51,7 @@ const SignInPage = () => {
 							type="submit"
 							fullWidth
 							variant="contained"
+							color="secondary"
 							sx={{ mt: 6 }}
 						>
 							Sign In
@@ -66,11 +65,13 @@ const SignInPage = () => {
 							sx={{ mt: 6 }}
 						>
 							<Link className="rrLink" to="../password-reset">
-								<Button>Forgot password?</Button>
+								<Button color="info">Forgot password?</Button>
 							</Link>
 
 							<Link className="rrLink" to="../sign-up">
-								<Button>Don't have an account?</Button>
+								<Button color="info">
+									Sign up for account
+								</Button>
 							</Link>
 						</ButtonGroup>
 					</div>
