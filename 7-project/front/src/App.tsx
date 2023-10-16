@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { useAppDispatch } from "./hooks/redux-hooks";
+import { fetchMovies, fetchParticularMovie } from "./store/movieActions";
 
 import NavigationBar from "./components/NavigationBar/NavigationBar";
 
@@ -12,6 +15,13 @@ import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
 import ErrorPage from "./pages/ErrorPage";
 
 const App = () => {
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		dispatch(fetchMovies());
+		dispatch(fetchParticularMovie("svlkndvlskdnvsjndvlksndlvioiiid"));
+	}, []);
+
 	return (
 		<div className="main">
 			<NavigationBar />

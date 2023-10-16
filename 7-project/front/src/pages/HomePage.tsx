@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 import { fetchMovies, fetchParticularMovie } from "../store/movieActions";
 
 import { MovieInterface } from "../models/movie-models";
+
 import { Grid } from "@mui/material";
 
 import LargeMovieCard from "../components/MediaContainers/LargeMovieCard";
