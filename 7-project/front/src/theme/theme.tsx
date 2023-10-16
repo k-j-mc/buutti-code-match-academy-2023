@@ -6,22 +6,22 @@ const theme = createTheme({
 	palette: {
 		mode: "dark" as PaletteMode,
 		primary: {
-			main: "#42a5f5",
+			main: "#00d4ff",
 		},
 		secondary: {
-			main: "#ba68c8",
+			main: "#5e00ff",
 		},
 		error: {
-			main: "#ef5350",
+			main: "#ff2b00",
 		},
 		warning: {
-			main: "#ff9800",
+			main: "#ffc400",
 		},
 		info: {
-			main: "#03a9f4",
+			main: "#00d4ff",
 		},
 		success: {
-			main: "#4caf50",
+			main: "#00ff0b",
 		},
 	},
 	typography: {

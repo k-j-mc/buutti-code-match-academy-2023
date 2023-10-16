@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import NavigationMenu from "./NavigationMenu";
 import SearchBar from "./SearchBar";
 import UserAvatar from "./UserAvatar";
@@ -33,18 +35,19 @@ export default function SearchAppBar() {
 					{loggedIn ? (
 						<UserAvatar />
 					) : (
-						<Button
-							color="inherit"
-							sx={{
-								ml: 2,
-								fontSize: "12px",
-								whiteSpace: "nowrap",
-								padding: "10px 15px 10px 15px",
-							}}
-							startIcon={<Icons.User />}
-						>
-							Sign in
-						</Button>
+						<Link className="rrLink" to="../sign-in">
+							<Button
+								color="inherit"
+								sx={{
+									ml: 2,
+									whiteSpace: "nowrap",
+									padding: "10px",
+								}}
+								startIcon={<Icons.User />}
+							>
+								Sign in
+							</Button>
+						</Link>
 					)}
 				</Toolbar>
 			</AppBar>

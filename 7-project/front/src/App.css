@@ -2,6 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
     background-color: #000000;
+    font-size: 80%;
 }
 
 .main {
@@ -19,4 +20,10 @@ html, body {
 .headerPageInfo {
     font-family: Gill Sans;
     color: #a3f0ff;
+}
+
+.rrLink {
+    text-decoration: none;
+    color: inherit;
+    margin: 0;
 }
