@@ -1,8 +1,7 @@
-import { ChangeEvent, FormEvent, MouseEvent } from "react";
+import { useEffect, useState, ChangeEvent, FormEvent, MouseEvent } from "react";
 import { useAppDispatch } from "../../hooks/redux-hooks";
 import { Link } from "react-router-dom";
 
-import { useState } from "react";
 import {
 	Avatar,
 	Button,
@@ -10,14 +9,17 @@ import {
 	Grid,
 	IconButton,
 	InputAdornment,
-	InputLabel,
-	OutlinedInput,
 	TextField,
 } from "@mui/material";
 
 import { signUpUser } from "../../reducers/userReducer";
 
 import Icons from "../../components/Icons";
+
+type TPassCheck = {
+	error: boolean;
+	message: string;
+};
 
 const SignUpPage = () => {
 	const dispatch = useAppDispatch();
@@ -35,7 +37,10 @@ const SignUpPage = () => {
 	const [showPasswordConfirm, setShowPasswordConfirm] =
 		useState<boolean>(false);
 
-	const [passwordError, setPasswordError] = useState<string>("");
+	const [passwordError, setPasswordError] = useState<TPassCheck>({
+		error: false,
+		message: "",
+	});
 
 	const onChangePicture = (event: ChangeEvent<HTMLInputElement>) => {
 		const { files } = event.target;
@@ -60,30 +65,44 @@ const SignUpPage = () => {
 		event.preventDefault();
 	};
 
+	useEffect(() => {
+		if (
+			password.length === passwordConfirm.length &&
+			password !== passwordConfirm
+		) {
+			setPasswordError({
+				error: true,
+				message: "Passwords do not match",
+			});
+		} else {
+			setPasswordError({ error: false, message: "" });
+		}
+	}, [password, passwordConfirm]);
+
 	const submitForm = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		if (password !== passwordConfirm) {
-			window.alert("Passwords do not match");
-		} else {
-			const payload = {
-				userPicture: userPicture,
-				userName:
-					userFirstName[0].toUpperCase() +
-					userLastName[0].toUpperCase(),
-				userFistName: userFirstName,
-				userLastName: userLastName,
-				email: email,
-				password: password,
-			};
-			dispatch(signUpUser(payload));
+		if (password && passwordConfirm) {
+			if (!passwordError) {
+				const payload = {
+					userPicture: userPicture,
+					userName:
+						userFirstName[0].toUpperCase() +
+						userLastName[0].toUpperCase(),
+					userFistName: userFirstName,
+					userLastName: userLastName,
+					email: email,
+					password: password,
+				};
+				dispatch(signUpUser(payload));
 
-			setUserPicture(null);
-			setUserFirstName("");
-			setUserLastName("");
-			setEmail("");
-			setPassword("");
-			setPasswordConfirm("");
+				setUserPicture(null);
+				setUserFirstName("");
+				setUserLastName("");
+				setEmail("");
+				setPassword("");
+				setPasswordConfirm("");
+			}
 		}
 	};
 
@@ -174,32 +193,35 @@ const SignUpPage = () => {
 							fullWidth
 							sx={{ mt: 4 }}
 						>
-							<InputLabel htmlFor="outlined-adornment-password">
-								Password
-							</InputLabel>
-							<OutlinedInput
+							<TextField
 								autoComplete="off"
 								id="outlined-adornment-password"
 								type={showPassword ? "text" : "password"}
 								value={password}
-								endAdornment={
-									<InputAdornment position="end">
-										<IconButton
-											aria-label="toggle password visibility"
-											onClick={handleClickShowPassword}
-											onMouseDown={
-												handleMouseDownPassword
-											}
-											edge="end"
-										>
-											{showPassword ? (
-												<Icons.VisibilityOff />
-											) : (
-												<Icons.Visibility />
-											)}
-										</IconButton>
-									</InputAdornment>
-								}
+								error={passwordError.error}
+								helperText={passwordError.message}
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position="end">
+											<IconButton
+												aria-label="toggle password visibility"
+												onClick={
+													handleClickShowPassword
+												}
+												onMouseDown={
+													handleMouseDownPassword
+												}
+												edge="end"
+											>
+												{showPassword ? (
+													<Icons.VisibilityOff />
+												) : (
+													<Icons.Visibility />
+												)}
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
 								label="Password"
 								onChange={({ target }) =>
 									setPassword(target.value)
@@ -213,34 +235,34 @@ const SignUpPage = () => {
 							fullWidth
 							sx={{ mt: 4 }}
 						>
-							<InputLabel htmlFor="outlined-adornment-password">
-								Confirm Password
-							</InputLabel>
-							<OutlinedInput
+							<TextField
 								autoComplete="off"
 								id="outlined-adornment-passwordConfirm"
 								type={showPasswordConfirm ? "text" : "password"}
 								value={passwordConfirm}
-								endAdornment={
-									<InputAdornment position="end">
-										<IconButton
-											aria-label="toggle password visibility"
-											onClick={
-												handleClickShowPasswordConfirm
-											}
-											onMouseDown={
-												handleMouseDownPassword
-											}
-											edge="end"
-										>
-											{showPasswordConfirm ? (
-												<Icons.VisibilityOff />
-											) : (
-												<Icons.Visibility />
-											)}
-										</IconButton>
-									</InputAdornment>
-								}
+								error={passwordError.error}
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position="end">
+											<IconButton
+												aria-label="toggle password visibility"
+												onClick={
+													handleClickShowPasswordConfirm
+												}
+												onMouseDown={
+													handleMouseDownPassword
+												}
+												edge="end"
+											>
+												{showPasswordConfirm ? (
+													<Icons.VisibilityOff />
+												) : (
+													<Icons.Visibility />
+												)}
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
 								label="Confirm Password"
 								onChange={({ target }) =>
 									setPasswordConfirm(target.value)
