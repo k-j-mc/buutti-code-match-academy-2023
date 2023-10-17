@@ -28,12 +28,7 @@ router.post("/sign-in", (request: Request, response: Response) => {
 router.post("/sign-up", (request: Request, response: Response) => {
 	const { email, password, userName, userPicture } = request.body;
 
-	response.status(200).json({
-		email: email,
-		password: "password",
-		userName: userName,
-		userPicture: userPicture,
-	});
+	response.status(200).json({ ...request.body, message: "hello!" });
 });
 
 export default router;

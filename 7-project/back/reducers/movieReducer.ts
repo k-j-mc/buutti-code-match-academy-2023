@@ -9,15 +9,15 @@ router.get("/", (request: Request, response: Response) => {
 
 router.get("/movies", (request: Request, response: Response) => {
 	response.status(200).json({
-		id: "svlkndvlskdnvsjndvlksndlvioiiid",
+		id: "dkndln",
 		title: "movie name 1",
 		length: "2 days",
 	});
 });
 
-router.get("/movie", (request: Request, response: Response) => {
+router.get("/movie/:id", (request: Request, response: Response) => {
 	response.status(200).json({
-		id: "svlkndvlskdnvsjndvlksndlvioiiid",
+		id: request.params.id,
 		title: "movie name 1",
 		length: "2 days",
 	});

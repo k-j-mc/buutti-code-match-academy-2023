@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
-import { fetchMovies, fetchParticularMovie } from "../store/movieActions";
 
 import { MovieInterface } from "../models/movie-models";
 
@@ -9,24 +7,16 @@ import { Grid } from "@mui/material";
 import LargeMovieCard from "../components/MediaContainers/LargeMovieCard";
 
 import data from "../data";
+
 import VerticalMovieCards from "../components/MediaContainers/VerticalMovieCards";
 import HorizontalMovieCards from "../components/MediaContainers/HorizontalMovieCards";
 import LargeHorizontalMovieCards from "../components/MediaContainers/LargeHorizontalMovieCards";
 
 const HomePage = () => {
-	const dispatch = useAppDispatch();
-	const movie = useAppSelector((state) => state.movie);
-	// const allMovies = useAppSelector((state) => state.movie.allMovies);
-	// const particularMovie = useAppSelector((state) => state.movie.movie);
-
-	// console.log(movie);
-
 	const [isTopPick, setIsTopPick] = useState<MovieInterface>(data[0]);
 	const [topPicks, setTopPicks] = useState<MovieInterface[]>(data);
 
 	useEffect(() => {
-		dispatch(fetchMovies());
-		dispatch(fetchParticularMovie("svlkndvlskdnvsjndvlksndlvioiiid"));
 		setTopPicks(data.filter((movie) => movie.id !== isTopPick.id));
 	}, []);
 

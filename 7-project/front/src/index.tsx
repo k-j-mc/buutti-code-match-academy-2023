@@ -7,7 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 
 import App from "./App";
 
-import store from "./store";
+import store from "./reducers/store";
 
 import theme from "./theme/theme";
 import "./App.css";

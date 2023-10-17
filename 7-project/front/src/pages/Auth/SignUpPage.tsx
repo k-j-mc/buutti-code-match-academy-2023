@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, MouseEvent } from "react";
+import { useAppDispatch } from "../../hooks/redux-hooks";
 import { Link } from "react-router-dom";
 
 import { useState } from "react";
@@ -14,9 +15,13 @@ import {
 	TextField,
 } from "@mui/material";
 
+import { signUpUser } from "../../reducers/userReducer";
+
 import Icons from "../../components/Icons";
 
 const SignUpPage = () => {
+	const dispatch = useAppDispatch();
+
 	const [userPicture, setUserPicture] = useState<string | ArrayBuffer | null>(
 		null
 	);
@@ -71,6 +76,7 @@ const SignUpPage = () => {
 				email: email,
 				password: password,
 			};
+			dispatch(signUpUser(payload));
 
 			setUserPicture(null);
 			setUserFirstName("");
