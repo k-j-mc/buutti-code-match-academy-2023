@@ -19,6 +19,14 @@ import Icons from "../../components/Icons";
 type TPassCheck = {
 	error: boolean;
 	message: string;
+	color:
+		| "error"
+		| "primary"
+		| "secondary"
+		| "info"
+		| "success"
+		| "warning"
+		| undefined;
 };
 
 const SignUpPage = () => {
@@ -37,9 +45,10 @@ const SignUpPage = () => {
 	const [showPasswordConfirm, setShowPasswordConfirm] =
 		useState<boolean>(false);
 
-	const [passwordError, setPasswordError] = useState<TPassCheck>({
+	const [passwordVerify, setPasswordVerify] = useState<TPassCheck>({
 		error: false,
 		message: "",
+		color: "primary",
 	});
 
 	const onChangePicture = (event: ChangeEvent<HTMLInputElement>) => {
@@ -70,12 +79,23 @@ const SignUpPage = () => {
 			password.length === passwordConfirm.length &&
 			password !== passwordConfirm
 		) {
-			setPasswordError({
+			setPasswordVerify({
 				error: true,
 				message: "Passwords do not match",
+				color: "error",
+			});
+		} else if (
+			password &&
+			passwordConfirm.length > 3 &&
+			passwordConfirm.length !== password.length
+		) {
+			setPasswordVerify({
+				error: false,
+				message: "Passwords are not the same length",
+				color: "warning",
 			});
 		} else {
-			setPasswordError({ error: false, message: "" });
+			setPasswordVerify({ error: false, message: "", color: "primary" });
 		}
 	}, [password, passwordConfirm]);
 
@@ -83,17 +103,18 @@ const SignUpPage = () => {
 		event.preventDefault();
 
 		if (password && passwordConfirm) {
-			if (!passwordError) {
+			if (!passwordVerify.error && passwordVerify.color === "primary") {
 				const payload = {
 					userPicture: userPicture,
 					userName:
 						userFirstName[0].toUpperCase() +
 						userLastName[0].toUpperCase(),
-					userFistName: userFirstName,
+					userFirstName: userFirstName,
 					userLastName: userLastName,
 					email: email,
 					password: password,
 				};
+
 				dispatch(signUpUser(payload));
 
 				setUserPicture(null);
@@ -189,17 +210,26 @@ const SignUpPage = () => {
 
 						<FormControl
 							variant="outlined"
-							required
 							fullWidth
 							sx={{ mt: 4 }}
 						>
 							<TextField
+								required
 								autoComplete="off"
 								id="outlined-adornment-password"
 								type={showPassword ? "text" : "password"}
 								value={password}
-								error={passwordError.error}
-								helperText={passwordError.message}
+								color={passwordVerify.color}
+								focused={passwordVerify.color !== "primary"}
+								helperText={passwordVerify.message}
+								FormHelperTextProps={{
+									style: {
+										color:
+											passwordVerify.color === "error"
+												? "#ff2b00"
+												: "#ffc400",
+									},
+								}}
 								InputProps={{
 									endAdornment: (
 										<InputAdornment position="end">
@@ -236,11 +266,22 @@ const SignUpPage = () => {
 							sx={{ mt: 4 }}
 						>
 							<TextField
+								required
 								autoComplete="off"
 								id="outlined-adornment-passwordConfirm"
 								type={showPasswordConfirm ? "text" : "password"}
 								value={passwordConfirm}
-								error={passwordError.error}
+								color={passwordVerify.color}
+								focused={passwordVerify.color !== "primary"}
+								helperText={passwordVerify.message}
+								FormHelperTextProps={{
+									style: {
+										color:
+											passwordVerify.color === "error"
+												? "#ff2b00"
+												: "#ffc400",
+									},
+								}}
 								InputProps={{
 									endAdornment: (
 										<InputAdornment position="end">

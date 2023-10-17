@@ -1,11 +1,38 @@
+import { useState, MouseEvent } from "react";
 import { Link } from "react-router-dom";
 
-import { useState } from "react";
-import { Button, ButtonGroup, Grid, TextField } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+
+import {
+	Alert,
+	Button,
+	ButtonGroup,
+	FormControl,
+	Grid,
+	IconButton,
+	InputAdornment,
+	TextField,
+} from "@mui/material";
+
+import { signInUser } from "../../reducers/userReducer";
+
+import Icons from "../../components/Icons";
 
 const SignInPage = () => {
+	const dispatch = useAppDispatch();
+
+	const notification = useAppSelector((state) => state.notification);
+
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
+
+	const [showPassword, setShowPassword] = useState<boolean>(false);
+
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+	const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+	};
 
 	const submitForm = (event: any) => {
 		event.preventDefault();
@@ -14,6 +41,8 @@ const SignInPage = () => {
 			email: email,
 			password: password,
 		};
+
+		dispatch(signInUser(payload));
 
 		setEmail("");
 		setPassword("");
@@ -26,6 +55,9 @@ const SignInPage = () => {
 				<Grid item xs={8}>
 					<h2 className="headerPageInfo">Sign In:</h2>
 
+					{notification.message && (
+						<Alert severity="error">{notification.message}</Alert>
+					)}
 					<form onSubmit={submitForm}>
 						<TextField
 							required
@@ -37,16 +69,46 @@ const SignInPage = () => {
 							sx={{ mt: 4 }}
 						/>
 
-						<TextField
-							required
+						<FormControl
+							variant="outlined"
 							fullWidth
-							id="outlined-required-password"
-							label="Password"
-							value={password}
-							onChange={({ target }) => setPassword(target.value)}
 							sx={{ mt: 4 }}
-						/>
-
+						>
+							<TextField
+								required
+								autoComplete="off"
+								id="outlined-adornment-password"
+								type={showPassword ? "text" : "password"}
+								value={password}
+								helperText=""
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position="end">
+											<IconButton
+												aria-label="toggle password visibility"
+												onClick={
+													handleClickShowPassword
+												}
+												onMouseDown={
+													handleMouseDownPassword
+												}
+												edge="end"
+											>
+												{showPassword ? (
+													<Icons.VisibilityOff />
+												) : (
+													<Icons.Visibility />
+												)}
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
+								label="Password"
+								onChange={({ target }) =>
+									setPassword(target.value)
+								}
+							/>
+						</FormControl>
 						<Button
 							type="submit"
 							fullWidth

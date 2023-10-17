@@ -20,8 +20,8 @@ const App = () => {
 	const movies = useAppSelector((state) => state.movies);
 	const user = useAppSelector((state) => state.user);
 
-	console.log(movies);
-	console.log(user);
+	// console.log(movies);
+	// console.log(user);
 
 	useEffect(() => {
 		dispatch(getMovies());

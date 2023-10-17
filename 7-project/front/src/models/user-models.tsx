@@ -1,7 +1,7 @@
 export interface IUserSignUp {
 	userPicture: string | ArrayBuffer | null;
 	userName: string;
-	userFistName: string;
+	userFirstName: string;
 	userLastName: string;
 	email: string;
 	password: string;
@@ -9,4 +9,9 @@ export interface IUserSignUp {
 
 export interface UserArrayModel {
 	user: IUserSignUp[];
+}
+
+export interface IUserSignIn {
+	email: string;
+	password: string;
 }
