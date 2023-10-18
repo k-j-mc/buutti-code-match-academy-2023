@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAppSelector } from "../../hooks/redux-hooks";
 
 import {
 	Avatar,
@@ -10,6 +11,10 @@ import {
 } from "@mui/material";
 
 const UserAvatar = () => {
+	const { userPicture, userName } = useAppSelector(
+		(state) => state.user.user
+	);
+
 	const pages = ["Products", "Pricing", "Blog"];
 	const settings = ["Profile", "Account", "Dashboard", "Logout"];
 	const [anchorElNav, setAnchorElNav] = useState(null);
@@ -49,10 +54,23 @@ const UserAvatar = () => {
 						mb: "5px",
 					}}
 				>
-					<Avatar
-						alt="Remy Sharp"
-						src="/static/images/avatar/2.jpg"
-					/>
+					{userPicture !== null ? (
+						<Avatar
+							className="userUpAvatar"
+							sx={{ backgroundColor: "#00d4ff" }}
+							alt={userName}
+							src={userPicture}
+						></Avatar>
+					) : (
+						<Avatar
+							className="userUpAvatar"
+							sx={{ backgroundColor: "#00d4ff" }}
+							alt={userName}
+							// src={userPicture
+						>
+							{userName}
+						</Avatar>
+					)}
 				</IconButton>
 			</Tooltip>
 

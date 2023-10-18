@@ -7,6 +7,20 @@ import movieReducer from "./reducers/movieReducer";
 import adminReducer from "./reducers/adminReducer";
 import userReducer from "./reducers/userReducer";
 
+import { createUsersTable } from "./actions/user";
+import {
+	createMoviesTable,
+	createMoviesDetailsTable,
+	createMoviesVideosTable,
+	createActorsTable,
+} from "./actions/movies";
+
+createUsersTable();
+createMoviesTable();
+createMoviesDetailsTable();
+createMoviesVideosTable();
+createActorsTable();
+
 dotenv.config();
 
 const app: Application = express();

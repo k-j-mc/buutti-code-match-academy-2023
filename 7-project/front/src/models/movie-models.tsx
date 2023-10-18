@@ -12,19 +12,21 @@ export interface IVideos {
 }
 
 export interface MovieInterface {
+	TMDB_id: number;
 	adult: boolean;
+	backdrop: string;
 	backdrop_path: string;
 	genre_ids: number[];
-	id: number;
+	id: string;
 	original_language: string;
 	original_title: string;
 	overview: string;
 	popularity: number;
+	poster: string;
 	poster_path: string;
 	release_date: string;
 	title: string;
-	videos: IVideos[];
-	vote_average: number;
+	vote_average: string;
 	vote_count: number;
 }
 

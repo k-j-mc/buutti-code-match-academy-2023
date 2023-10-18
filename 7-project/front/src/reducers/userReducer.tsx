@@ -8,7 +8,16 @@ import { setNotification } from "./notificationReducer";
 import userService from "../services/user";
 
 const initialUserState: IUser = {
-	user: [],
+	user: {
+		id: "",
+		userName: "",
+		email: "",
+		password: "",
+		userFirstName: "",
+		userLastName: "",
+		userPicture: "",
+		token: "",
+	},
 	loadingUser: true,
 	error: "",
 };
@@ -39,7 +48,7 @@ export const signInUser = (userPayload: IUserSignIn) => {
 		await userService
 			.signUserIn(userPayload)
 			.then((response) => {
-				dispatch(setUser(response));
+				dispatch(setUser(response.data));
 				dispatch(
 					setNotification({
 						message: `Welcome!`,

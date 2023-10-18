@@ -1,8 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks";
 
 import { getMovies, getMovieById } from "./reducers/movieReducer";
+
+import { MovieInterface } from "./models/movie-models";
 
 import NavigationBar from "./components/NavigationBar/NavigationBar";
 
@@ -17,7 +19,7 @@ import ErrorPage from "./pages/ErrorPage";
 
 const App = () => {
 	const dispatch = useAppDispatch();
-	const movies = useAppSelector((state) => state.movies);
+	// const movies = useAppSelector((state) => state.movies);
 	const user = useAppSelector((state) => state.user);
 
 	// console.log(movies);
@@ -25,8 +27,8 @@ const App = () => {
 
 	useEffect(() => {
 		dispatch(getMovies());
-		dispatch(getMovieById("HELLO!"));
-	}, []);
+		// dispatch(getMovieById("HELLO!"));
+	}, [dispatch]);
 
 	return (
 		<div className="main">

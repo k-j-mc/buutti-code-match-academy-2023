@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../hooks/redux-hooks";
 
 import NavigationMenu from "./NavigationMenu";
 import SearchBar from "./SearchBar";
@@ -8,8 +9,8 @@ import { AppBar, Box, Button, Toolbar } from "@mui/material";
 
 import Icons from "../Icons";
 
-export default function SearchAppBar() {
-	const loggedIn = false;
+const NavigationBar = () => {
+	const { user } = useAppSelector((state) => state.user);
 
 	return (
 		<Box
@@ -32,7 +33,7 @@ export default function SearchAppBar() {
 
 					<SearchBar />
 
-					{loggedIn ? (
+					{user.id ? (
 						<UserAvatar />
 					) : (
 						<Link className="rrLink" to="../sign-in">
@@ -53,4 +54,6 @@ export default function SearchAppBar() {
 			</AppBar>
 		</Box>
 	);
-}
+};
+
+export default NavigationBar;

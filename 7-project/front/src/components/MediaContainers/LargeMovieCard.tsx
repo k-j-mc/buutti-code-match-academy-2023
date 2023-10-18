@@ -35,7 +35,7 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 							objectFit: "cover",
 							position: "relative",
 						}}
-						src={` http://image.tmdb.org/t/p/w1280/${data.backdrop_path}`}
+						src={`data:image/jpeg;base64,${data.backdrop}`}
 						alt={data.title}
 					/>
 					<div
@@ -78,7 +78,7 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 					size="small"
 					max={10}
 					precision={0.1}
-					value={data.vote_average}
+					value={parseFloat(data.vote_average)}
 					readOnly
 				/>
 				<Typography component="legend" variant="body2">

@@ -56,7 +56,7 @@ const VerticalMovieCards = ({ data, handleClick }: MoviesType) => {
 								size="small"
 								max={5}
 								precision={0.1}
-								value={movie.vote_average / 2}
+								value={parseFloat(movie.vote_average) / 2}
 								readOnly
 							/>
 							<Typography component="legend" variant="body2">

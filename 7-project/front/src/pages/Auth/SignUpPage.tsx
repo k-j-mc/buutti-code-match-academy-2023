@@ -144,7 +144,7 @@ const SignUpPage = () => {
 								/>
 							) : (
 								<Avatar
-									className="userSignUpAvatar"
+									className="userUpAvatar"
 									alt="newUserAvatar"
 									sx={{ backgroundColor: "#00d4ff" }}
 								>

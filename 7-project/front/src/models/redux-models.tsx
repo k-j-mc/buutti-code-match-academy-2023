@@ -1,11 +1,25 @@
-export interface MovieModel {
+export interface MovieInterface {
+	TMDB_id: number;
+	adult: boolean;
+	backdrop: string;
+	backdrop_path: string;
+	genre_ids: number[];
 	id: string;
+	original_language: string;
+	original_title: string;
+	overview: string;
+	popularity: number;
+	poster: string;
+	poster_path: string;
+	release_date: string;
 	title: string;
-	length: string;
+	vote_average: string;
+	vote_count: number;
 }
+
 export interface MovieArrayModel {
-	allMovies: MovieModel[];
-	movie: MovieModel[];
+	allMovies: MovieInterface[];
+	movie: MovieInterface[];
 	loadingAllMovies: boolean;
 	loadingMovie: boolean;
 }
@@ -19,15 +33,26 @@ export interface IUserSignUp {
 	password: string;
 }
 
-export interface IUser {
-	user: IUserSignUp[];
-	loadingUser: boolean;
-	error: string;
-}
-
 export interface IUserSignIn {
 	email: string;
 	password: string;
+}
+
+export interface IUserSignedIn {
+	id: string;
+	userName: string;
+	email: string;
+	password: string;
+	userFirstName: string;
+	userLastName: string;
+	userPicture: string | null;
+	token: string;
+}
+
+export interface IUser {
+	user: IUserSignedIn;
+	loadingUser: boolean;
+	error: string;
 }
 
 export interface INotification {

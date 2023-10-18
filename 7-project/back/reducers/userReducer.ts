@@ -3,6 +3,8 @@ import { v4 as uuid } from "uuid";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 
+import { insertUser, findUser } from "../actions/user";
+
 const router = Router();
 
 interface IUser {
@@ -15,21 +17,6 @@ interface IUser {
 	userPicture: string | ArrayBuffer | null;
 	token: string;
 }
-
-const userData: IUser[] = [
-	{
-		id: "e24f5f76-29f6-46f8-9eaf-480b0cf18c46",
-		userName: "HT",
-		email: "test@test.fi",
-		password:
-			"$argon2id$v=19$m=65536,t=3,p=4$XwhYrUdH+3x/09+2I9Jt3w$SL0NNOwKJUt5XjN5wi+RGVn4aIHwFf+WD8rnTsQnNvw",
-		// qwerty
-		userFirstName: "hello",
-		userLastName: "test",
-		userPicture: null,
-		token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5maSIsImlhdCI6MTY5NzUzMzcyOCwiZXhwIjoxNjk3NTM0NjI4fQ.iWgI8PQxZM-ph3B-MVoB-a1jEKP7SsjZBZWnB6dkNVU",
-	},
-];
 
 export const getToken = async (email: string) => {
 	const payload = { email: email };
@@ -65,18 +52,17 @@ router.post("/sign-in", async (request: Request, response: Response) => {
 
 	let hash = await argon2.hash(password).then((result) => result);
 
-	const result = userData.filter((obj) => {
-		return obj.email.toLowerCase() === email.toLowerCase();
-	});
+	const result = await findUser(email);
+
+	const payload = { ...result[0] };
+	delete payload["password"];
 
 	if (result.length > 0) {
 		const passwordMatch = await argon2
 			.verify(result[0].password, request.body.password)
 			.then((result) => result);
 		if (passwordMatch && token) {
-			response
-				.status(200)
-				.json({ success: `${email} is now logged in!`, token });
+			response.status(200).json({ ...payload, token: token });
 		} else {
 			response.status(401).json({ error: `Incorrect password!` });
 		}
@@ -112,7 +98,7 @@ router.post("/sign-up", async (request: Request, response: Response) => {
 	};
 
 	if (token) {
-		userData.push(newUser);
+		insertUser(newUser);
 
 		response.status(201).json({
 			...newUser,
