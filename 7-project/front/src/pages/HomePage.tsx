@@ -9,8 +9,6 @@ import LoaderLargeCircle from "../components/Loaders/LoaderLargeCircle";
 
 import LargeMovieCard from "../components/MediaContainers/LargeMovieCard";
 
-// import data from "../data";
-
 import VerticalMovieCards from "../components/MediaContainers/VerticalMovieCards";
 import HorizontalMovieCards from "../components/MediaContainers/HorizontalMovieCards";
 import LargeHorizontalMovieCards from "../components/MediaContainers/LargeHorizontalMovieCards";
@@ -56,8 +54,6 @@ const HomePage = () => {
 			);
 		}
 	};
-
-	// console.log(data);
 
 	return (
 		<>

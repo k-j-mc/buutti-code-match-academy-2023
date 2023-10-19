@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useAppSelector } from "../../hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+
+import { signOutUser } from "../../reducers/userReducer";
 
 import {
 	Avatar,
@@ -11,6 +13,8 @@ import {
 } from "@mui/material";
 
 const UserAvatar = () => {
+	const dispatch = useAppDispatch();
+
 	const { userPicture, userName } = useAppSelector(
 		(state) => state.user.user
 	);
@@ -34,6 +38,11 @@ const UserAvatar = () => {
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
 	};
+
+	const handleSignOut = () => {
+		dispatch(signOutUser());
+	};
+
 	return (
 		<div style={{ marginLeft: "auto" }}>
 			<Tooltip
@@ -94,11 +103,9 @@ const UserAvatar = () => {
 				open={Boolean(anchorElUser)}
 				onClose={handleCloseUserMenu}
 			>
-				{settings.map((setting) => (
-					<MenuItem key={setting} onClick={handleCloseUserMenu}>
-						<Typography textAlign="center">{setting}</Typography>
-					</MenuItem>
-				))}
+				<MenuItem onClick={handleSignOut}>
+					<Typography textAlign="center">Log out</Typography>
+				</MenuItem>
 			</Menu>
 		</div>
 	);

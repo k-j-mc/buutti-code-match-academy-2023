@@ -33,7 +33,7 @@ const NavigationBar = () => {
 
 					<SearchBar />
 
-					{user.id ? (
+					{user ? (
 						<UserAvatar />
 					) : (
 						<Link className="rrLink" to="../sign-in">
