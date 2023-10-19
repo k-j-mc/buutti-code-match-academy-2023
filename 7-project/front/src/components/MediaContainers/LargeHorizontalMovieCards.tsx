@@ -37,7 +37,8 @@ const LargeHorizontalMovieCards = ({ data }: MovieType) => {
 						<CardActionArea>
 							<CardMedia
 								component="img"
-								src={` http://image.tmdb.org/t/p/w342/${movie.poster_path}`}
+								loading="lazy"
+								src={`http://localhost:5000/images/posters${movie.poster}`}
 								alt={movie.title}
 							/>
 						</CardActionArea>

@@ -35,7 +35,8 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 							objectFit: "cover",
 							position: "relative",
 						}}
-						src={`data:image/jpeg;base64,${data.backdrop}`}
+						loading="lazy"
+						src={`http://localhost:5000/images/backdrops${data.backdrop}`}
 						alt={data.title}
 					/>
 					<div

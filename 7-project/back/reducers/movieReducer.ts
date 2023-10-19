@@ -7,13 +7,13 @@ import { movieQueries } from "../queries/movies";
 
 import {
 	insertNewMovie,
-	insertMovieDetails,
 	insertMovieVideos,
 	insertMovieCast,
 	findOneMovieById,
+	findActorById,
 } from "../actions/movies";
 
-import { makeRequest, getDetails, getImageB64 } from "../tools/movies";
+import { makeRequest, getDetails, saveImage } from "../tools/movies";
 
 const router = Router();
 
@@ -34,136 +34,149 @@ router.get("/movie/:id", async (request: Request, response: Response) => {
 });
 
 router.get("/get-popular", async (request: Request, response: Response) => {
-	const results = await makeRequest(1);
+	const popularMovies = await makeRequest(1);
 
-	if (results) {
-		const resultsArray = [];
-		const detailsArray = [];
-		const videosArray = [];
-		const castArray = [];
+	let count = 0;
 
-		for (let i = 0; i < results.length; i++) {
-			let search = await findOneMovieById(results[i].id);
+	for (let i = 0; i < popularMovies.length; i++) {
+		let exists = await findOneMovieById(popularMovies[i].id);
 
-			if (search.length <= 0) {
-				let backDrop = await getImageB64(
-					results[i].backdrop_path,
-					"original"
-				);
-				let poster = await getImageB64(results[i].poster_path, "w780");
+		if (exists.length <= 0) {
+			count++;
+			let movieObject = await getDetails(popularMovies[i].id);
 
-				resultsArray.push({
-					...results[i],
-					backdrop: backDrop,
-					poster: poster,
-					TMDB_id: results[i].id,
+			const id = uuid();
+
+			let backdrop = await saveImage(
+				"w1280",
+				popularMovies[i].backdrop_path,
+				id,
+				"backdrops"
+			);
+			let poster = await saveImage(
+				"w500",
+				popularMovies[i].poster_path,
+				id,
+				"posters"
+			);
+
+			let cast = movieObject.credits.cast.slice(0, 4).map((obj: any) => {
+				return {
 					id: uuid(),
-				});
+					tmdb_id: obj.id,
+					name: obj.name,
+					character: obj.character,
+					profile: obj.profile_path,
+				};
+			});
+
+			let castLength = 4;
+
+			if (cast.length < castLength) {
+				castLength = cast.length;
 			}
-		}
 
-		for (let i = 0; i < resultsArray.length; i++) {
-			let details = await getDetails(resultsArray[i].TMDB_id);
+			for (let x = 0; x < castLength; x++) {
+				let profile;
+				let exists = await findActorById(cast[x].tmdb_id);
+				if (exists.length <= 0) {
+					if (cast[x].profile !== null) {
+						profile = await saveImage(
+							"w185",
+							cast[x].profile,
+							cast[x].tmdb_id,
+							"profiles"
+						);
+						console.log("creating image for" + cast[x].name);
+					} else {
+						profile = "";
+					}
+					cast[x].profile = profile;
+				} else {
+					console.log(cast[x].name + " already has a photo");
+				}
+			}
 
-			let productionCompanies = details.production_companies.map(
+			let genres = movieObject.genres.map((obj: any) => {
+				return obj.id;
+			});
+
+			let productionCompanies = movieObject.production_companies.map(
 				(obj: any) => {
 					return obj.name;
 				}
 			);
-			let spokenLanguages = details.spoken_languages.map((obj: any) => {
-				return obj.name;
-			});
-
-			let castId = details.credits.cast.map((obj: any) => {
-				return obj.id;
-			});
-
-			detailsArray.push({
-				id: resultsArray[i].id,
-				budget: details.budget,
-				homepage: details.homepage,
-				imdb_id: details.imdb_id,
-				TMDB_id: details.id,
-				production_companies: productionCompanies,
-				revenue: details.revenue,
-				runtime: details.runtime,
-				spoken_languages: spokenLanguages,
-				tagline: details.tagline,
-				cast: castId,
-			});
-
-			let videoLength = 8;
-
-			if (details.videos.results.length < 8) {
-				videoLength = details.videos.results.length;
-			}
-
-			for (let y = 0; y < videoLength; y++) {
-				videosArray.push({
-					id: resultsArray[i].id,
-					name: details.videos.results[y].name,
-					key: details.videos.results[y].key,
-					site: details.videos.results[y].site,
-					size: details.videos.results[y].size,
-					type: details.videos.results[y].type,
-					official: details.videos.results[y].official,
-					published_at: details.videos.results[y].published_at,
-				});
-			}
-
-			let castLength = 20;
-
-			if (details.credits.cast.length < 20) {
-				castLength = details.credits.cast.length;
-			}
-
-			for (let x = 0; x < castLength; x++) {
-				let profile = "";
-
-				let profile_path = details.credits.cast[x].profile_path;
-
-				if (details.credits.cast[x].profile_path === null) {
-					profile_path = "";
-				} else {
-					profile = await getImageB64(
-						details.credits.cast[x].profile_path,
-						"w185"
-					);
+			let spokenLanguages = movieObject.spoken_languages.map(
+				(obj: any) => {
+					return obj.name;
 				}
+			);
 
-				castArray.push({
-					id: resultsArray[i].id,
-					TMDB_id: details.credits.cast[x].id,
-					name: details.credits.cast[x].name,
-					popularity: details.credits.cast[x].popularity,
-					character: details.credits.cast[x].character,
-					credit_id: details.credits.cast[x].credit_id,
-					order: details.credits.cast[x].order,
+			let videos = movieObject.videos.results
+				.slice(0, 9)
+				.map((obj: any) => {
+					return {
+						id: id,
+						name: obj.name,
+						key: obj.key,
+						site: obj.site,
+						size: obj.size,
+						type: obj.type,
+						official: obj.official,
+						published_at: obj.published_at,
+					};
 				});
+
+			if (movieObject.revenue !== typeof "number") {
+				movieObject.revenue = 0;
 			}
+
+			movieObject = {
+				id: id,
+				adult: movieObject.adult,
+				backdrop: backdrop,
+				budget: movieObject.budget,
+				genres: genres,
+				homepage: movieObject.homepage,
+				tmdb_id: movieObject.id,
+				imdb_id: movieObject.imdb_id,
+				original_language: movieObject.original_language,
+				original_title: movieObject.original_title,
+				overview: movieObject.overview,
+				popularity: movieObject.popularity,
+				poster: poster,
+				production_companies: productionCompanies,
+				release_date: movieObject.release_date,
+				revenue: movieObject.revenue,
+				runtime: movieObject.runtime,
+				spoken_languages: spokenLanguages,
+				tagline: movieObject.tagline,
+				title: movieObject.title,
+				vote_average: movieObject.vote_average,
+				vote_count: movieObject.vote_count,
+			};
+
+			insertNewMovie(movieObject);
+			videos.forEach((obj: IVideos) => {
+				insertMovieVideos(obj);
+			});
+
+			cast.forEach((obj: ICast) => {
+				insertMovieCast(obj);
+			});
+		} else {
+			console.log("movie already in database");
 		}
+	}
 
-		resultsArray.forEach((obj: IMovie) => {
-			insertNewMovie(obj);
-		});
-		response.status(201).json("movies filled");
-
-		detailsArray.forEach((obj: IMovieDetails) => {
-			insertMovieDetails(obj);
-		});
-		response.status(201).json("details filled");
-
-		videosArray.forEach((obj: IVideos) => {
-			insertMovieVideos(obj);
-		});
-		response.status(201).json("videos filled");
-
-		castArray.forEach((obj: ICast) => {
-			insertMovieCast(obj);
-		});
-		response.status(201).json("cast filled");
+	if (count > 0) {
+		response
+			.status(201)
+			.json({ message: `${count} movies added to database` });
 	} else {
-		response.status(400).json({ error: "No Token" });
+		response
+			.status(304)
+			.json({ message: `${count} movies added to database` });
 	}
 });
 

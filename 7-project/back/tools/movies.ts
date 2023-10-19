@@ -1,9 +1,11 @@
 import axios from "axios";
+import { appendFile, existsSync } from "fs";
 
 const TMDBKey = process.env.TMDB_KEY;
-const TMDBMoviePath = process.env.TMDB_MOVIE_PATH;
+const TMDBPopularMoviePath = process.env.TMDB_POPULAR_MOVIE_PATH;
 const TMDBPath = process.env.TMDB_PATH;
 const TMDBDetails = process.env.TMDB_DETAILS_PATH;
+const TMDBImagePath = process.env.TMDB_IMAGE_PATH;
 
 const payload = {
 	headers: {
@@ -13,22 +15,22 @@ const payload = {
 };
 
 export const makeRequest = async (page: number) => {
-	const baseUrl = `${TMDBMoviePath}${page}`;
+	const baseUrl = `${TMDBPopularMoviePath}${page}`;
 
 	const response = await axios
 		.get(baseUrl, payload)
 		.then((response) => response)
-		.then((response) => response.data)
+		.then((response) => response.data.results)
 		.catch((error) => console.log(error));
 
 	console.log("MOVIE request");
 
-	return response.results;
+	return response;
 };
 
 export const getDetails = async (id: number) => {
 	const response = await axios
-		.get(`${TMDBDetails}/${id}`, payload)
+		.get(`${TMDBDetails}/${id}?append_to_response=videos,credits`, payload)
 		.then((response) => response)
 		.then((response) => response.data)
 		.catch((error) => console.log(error));
@@ -38,40 +40,32 @@ export const getDetails = async (id: number) => {
 	return response;
 };
 
-export const getVideos = async (id: number) => {
-	const response = await axios
-		.get(`${TMDBPath}/${id}/videos`, payload)
-		.then((response) => response)
-		.then((response) => response.data)
-		.catch((error) => console.log(error));
+export const saveImage = async (
+	size: string,
+	path: string,
+	id: string,
+	destination: string
+) => {
+	const result = await axios
+		.get(`${TMDBImagePath}${size}${path}`, {
+			responseType: "arraybuffer",
+		})
+		.then((response) => response);
 
-	console.log("VIDEO processed");
+	const fileName = `/${id}.jpg`;
 
-	return response;
-};
+	const filePath = `./public/images/${destination}${fileName}`;
 
-export const getCast = async (id: number) => {
-	const response = await axios
-		.get(`${TMDBPath}/${id}/credits`, payload)
-		.then((response) => response)
-		.then((response) => response.data)
-		.catch((error) => console.log(error));
+	if (existsSync(filePath)) {
+		console.log("file already exists");
+	} else {
+		appendFile(filePath, result.data, (error) => {
+			if (error) {
+				console.log(error);
+			}
+			console.log("IMAGE saved");
+		});
+	}
 
-	console.log("CAST processed");
-
-	return response;
-};
-
-export const getImageB64 = async (path: string, size: string) => {
-	const TMDBImagePath = process.env.TMDB_IMAGE_PATH;
-
-	const response = await axios
-		.get(`${TMDBImagePath}${size}${path}`, { responseType: "arraybuffer" })
-		.then((response) =>
-			Buffer.from(response.data, "binary").toString("base64")
-		);
-
-	console.log("IMAGE processed");
-
-	return response;
+	return fileName;
 };

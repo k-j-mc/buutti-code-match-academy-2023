@@ -18,20 +18,26 @@ export interface IMovieTMDB {
 export interface IMovie {
 	id: string;
 	adult: boolean;
-	backdrop_path: string;
-	genre_ids: number[];
-	TMDB_id: number;
+	backdrop: string;
+	budget: number;
+	genres: any[];
+	homepage: string;
+	tmdb_id: number;
+	imdb_id: string;
 	original_language: string;
 	original_title: string;
 	overview: string;
 	popularity: number;
-	poster_path: string;
+	poster: string;
+	production_companies: any[];
 	release_date: string;
+	revenue: number;
+	runtime: number;
+	spoken_languages: any[];
+	tagline: string;
 	title: string;
 	vote_average: number;
 	vote_count: number;
-	backdrop: string;
-	poster: string;
 }
 
 export interface IMovieDetails {
@@ -63,8 +69,5 @@ export interface ICast {
 	id: string;
 	TMDB_id: string;
 	name: string;
-	popularity: number;
 	character: string;
-	credit_id: number;
-	order: number;
 }

@@ -39,7 +39,8 @@ const VerticalMovieCards = ({ data, handleClick }: MoviesType) => {
 								borderTopLeftRadius: "15px",
 								borderBottomLeftRadius: "15px",
 							}}
-							src={` http://image.tmdb.org/t/p/w342/${movie.poster_path}`}
+							loading="lazy"
+							src={`http://localhost:5000/images/posters${movie.poster}`}
 							alt={movie.title}
 						/>
 						<CardContent

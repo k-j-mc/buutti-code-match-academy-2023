@@ -10,14 +10,12 @@ import userReducer from "./reducers/userReducer";
 import { createUsersTable } from "./actions/user";
 import {
 	createMoviesTable,
-	createMoviesDetailsTable,
 	createMoviesVideosTable,
 	createActorsTable,
 } from "./actions/movies";
 
 createUsersTable();
 createMoviesTable();
-createMoviesDetailsTable();
 createMoviesVideosTable();
 createActorsTable();
 
@@ -26,6 +24,7 @@ dotenv.config();
 const app: Application = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.static("public"));
 
 const port = process.env.PORT || 5000;
 

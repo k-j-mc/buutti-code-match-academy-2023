@@ -95,10 +95,10 @@ const HomePage = () => {
 							lg={3}
 							display={{ xs: "none", sm: "none", lg: "block" }}
 						>
-							{/* <VerticalMovieCards
-                            data={topPicks}
-                            handleClick={handleClick}
-                        /> */}
+							<VerticalMovieCards
+								data={topPicks}
+								handleClick={handleClick}
+							/>
 						</Grid>
 						<Grid item xs={0.5}></Grid>
 						<Grid
@@ -106,10 +106,10 @@ const HomePage = () => {
 							xs={11}
 							display={{ xs: "block", sm: "block", lg: "none" }}
 						>
-							{/* <HorizontalMovieCards
-                            data={topPicks}
-                            handleClick={handleClick}
-                        /> */}
+							<HorizontalMovieCards
+								data={topPicks}
+								handleClick={handleClick}
+							/>
 						</Grid>
 						<Grid item xl={2} xs={0.5}></Grid>
 					</Grid>
@@ -123,7 +123,7 @@ const HomePage = () => {
 
 						<Grid item xl={2} xs={0.5} />
 						<Grid item xl={8} xs={11}>
-							{/* <LargeHorizontalMovieCards data={topPicks} /> */}
+							<LargeHorizontalMovieCards data={topPicks} />
 						</Grid>
 						<Grid item xl={2} xs={0.5} />
 					</Grid>
