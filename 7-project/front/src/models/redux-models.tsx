@@ -1,3 +1,5 @@
+import { IMovieMinimal } from "./movie-models";
+
 export interface MovieInterface {
 	TMDB_id: number;
 	adult: boolean;
@@ -18,8 +20,12 @@ export interface MovieInterface {
 }
 
 export interface MovieArrayModel {
-	allMovies: MovieInterface[];
-	movie: MovieInterface[];
+	featuredMovies: IMovieMinimal[];
+	actionMovies: IMovieMinimal[];
+	allMovies: IMovieMinimal[];
+	movie: IMovieMinimal[];
+	loadingFeaturedMovies: boolean;
+	loadingActionMovies: boolean;
 	loadingAllMovies: boolean;
 	loadingMovie: boolean;
 }

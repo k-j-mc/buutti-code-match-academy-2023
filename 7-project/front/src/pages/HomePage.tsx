@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 
 import { Grid } from "@mui/material";
 
-import { MovieInterface } from "../models/movie-models";
+import { MovieInterface, IMovieMinimal } from "../models/movie-models";
 
 import LoaderLargeCircle from "../components/Loaders/LoaderLargeCircle";
 
@@ -14,25 +14,34 @@ import HorizontalMovieCards from "../components/MediaContainers/HorizontalMovieC
 import LargeHorizontalMovieCards from "../components/MediaContainers/LargeHorizontalMovieCards";
 
 const HomePage = () => {
-	const { allMovies, loadingAllMovies } = useAppSelector(
-		(state) => state.movies
+	const {
+		featuredMovies,
+		allMovies,
+		loadingFeaturedMovies,
+		loadingAllMovies,
+	} = useAppSelector((state) => state.movies);
+
+	const movies = useAppSelector((state) => state.movies);
+
+	console.log(movies);
+
+	const [isTopPick, setIsTopPick] = useState<IMovieMinimal>(
+		featuredMovies[0]
 	);
-
-	const [isTopPick, setIsTopPick] = useState<MovieInterface>(allMovies[0]);
-	const [topPicks, setTopPicks] = useState<MovieInterface[]>(allMovies);
-
-	console.log(allMovies);
+	const [topPicks, setTopPicks] = useState<IMovieMinimal[]>(featuredMovies);
 
 	useEffect(() => {
-		if (!loadingAllMovies) {
-			setIsTopPick(allMovies[0]);
+		if (!loadingFeaturedMovies) {
+			setIsTopPick(featuredMovies[0]);
 			setTopPicks(
-				allMovies.filter((movie) => movie.id !== allMovies[0].id)
+				featuredMovies.filter(
+					(movie) => movie.id !== featuredMovies[0].id
+				)
 			);
 		}
-	}, [allMovies]);
+	}, [featuredMovies]);
 
-	const handleClick = (movie: MovieInterface, index: number) => {
+	const handleClick = (movie: IMovieMinimal, index: number) => {
 		const tempArray = [...topPicks, isTopPick];
 		const tempArray2 = [isTopPick, ...topPicks];
 		let movieObj = movie;
@@ -57,9 +66,9 @@ const HomePage = () => {
 
 	return (
 		<>
-			{!loadingAllMovies && topPicks.length > 0 ? (
+			{!loadingFeaturedMovies && topPicks.length > 0 ? (
 				<>
-					<Grid
+					{/* <Grid
 						container
 						spacing={1}
 						style={{
@@ -69,10 +78,10 @@ const HomePage = () => {
 						<Grid item xl={2} xs={0.5} />
 
 						<Grid item xl={8} xs={11}>
-							<h2 className="headerPageInfo">Editor's picks:</h2>
+							<h2 className="headerPageInfo">Featured:</h2>
 						</Grid>
 						<Grid item xl={2} xs={0.5} />
-					</Grid>
+					</Grid> */}
 
 					<Grid container spacing={1}>
 						<Grid item xl={2} xs={0.5} />
@@ -91,6 +100,8 @@ const HomePage = () => {
 							lg={3}
 							display={{ xs: "none", sm: "none", lg: "block" }}
 						>
+							<h2 className="headerPageInfo">Featured:</h2>
+
 							<VerticalMovieCards
 								data={topPicks}
 								handleClick={handleClick}
@@ -102,6 +113,8 @@ const HomePage = () => {
 							xs={11}
 							display={{ xs: "block", sm: "block", lg: "none" }}
 						>
+							<h2 className="headerPageInfo">Featured:</h2>
+
 							<HorizontalMovieCards
 								data={topPicks}
 								handleClick={handleClick}
@@ -113,7 +126,7 @@ const HomePage = () => {
 					<Grid container spacing={1}>
 						<Grid item xl={2} xs={0.5} />
 						<Grid item xl={8} xs={11}>
-							<h2 className="headerPageInfo">Featured:</h2>
+							<h2 className="headerPageInfo">Top watches:</h2>
 						</Grid>
 						<Grid item xl={2} xs={0.5} />
 

@@ -105,6 +105,4 @@ export const signOutUser = () => {
 	};
 };
 
-console.log(initialUserState.user);
-
 export default userSlice.reducer;

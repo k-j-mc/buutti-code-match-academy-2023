@@ -8,6 +8,22 @@ const setToken = (newToken: string | null) => {
 	token = `Bearer ${newToken}`;
 };
 
+const getFeatured = async () => {
+	const response = await axios
+		.get(`${baseUrl}/movies/featured`)
+		.then((response) => response);
+
+	return response.data;
+};
+
+const getAction = async () => {
+	const response = await axios
+		.get(`${baseUrl}/movies/action`)
+		.then((response) => response);
+
+	return response.data;
+};
+
 const getAll = async () => {
 	const response = await axios.get(`${baseUrl}/movies/`);
 
@@ -21,6 +37,8 @@ const getById = async (movieId: string) => {
 };
 
 const movieService = {
+	getFeatured,
+	getAction,
 	getAll,
 	getById,
 	setToken,

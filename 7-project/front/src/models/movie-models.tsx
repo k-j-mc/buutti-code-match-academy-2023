@@ -30,6 +30,16 @@ export interface MovieInterface {
 	vote_count: number;
 }
 
+export interface IMovieMinimal {
+	id: string;
+	backdrop: string;
+	poster: string;
+	tagline: string;
+	title: string;
+	vote_average: number;
+	vote_count: number;
+}
+
 export interface MovieArrayModel {
 	allMovies: MovieInterface[];
 }

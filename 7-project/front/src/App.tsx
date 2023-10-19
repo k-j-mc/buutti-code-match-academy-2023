@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks";
+import { useAppDispatch } from "./hooks/redux-hooks";
 
 import movieService from "./services/movies";
 
 import { userInfo } from "./reducers/userReducer";
-import { getMovies, getMovieById } from "./reducers/movieReducer";
-
-import { MovieInterface } from "./models/movie-models";
+import {
+	getFeaturedMovies,
+	getActionMovies,
+	getMovies,
+} from "./reducers/movieReducer";
 
 import NavigationBar from "./components/NavigationBar/NavigationBar";
 
@@ -22,9 +24,10 @@ import ErrorPage from "./pages/ErrorPage";
 
 const App = () => {
 	const dispatch = useAppDispatch();
-	const user = useAppSelector((state) => state.user);
 
 	useEffect(() => {
+		dispatch(getFeaturedMovies());
+		dispatch(getActionMovies());
 		dispatch(getMovies());
 		dispatch(userInfo());
 	}, [dispatch]);

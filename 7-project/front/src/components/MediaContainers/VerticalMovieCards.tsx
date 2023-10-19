@@ -8,17 +8,17 @@ import {
 	Typography,
 } from "@mui/material";
 
-import { MovieInterface } from "../../models/movie-models";
+import { IMovieMinimal } from "../../models/movie-models";
 
 type MoviesType = {
-	data: MovieInterface[];
+	data: IMovieMinimal[];
 	handleClick: Function;
 };
 
 const VerticalMovieCards = ({ data, handleClick }: MoviesType) => {
 	return (
-		<ImageList sx={{ height: "60vh" }} cols={1}>
-			{data.map((movie: MovieInterface) => (
+		<ImageList sx={{ height: "53vh" }} cols={1}>
+			{data.map((movie: IMovieMinimal) => (
 				<ImageListItem key={movie.id}>
 					<CardActionArea
 						key={movie.id}
@@ -57,7 +57,7 @@ const VerticalMovieCards = ({ data, handleClick }: MoviesType) => {
 								size="small"
 								max={5}
 								precision={0.1}
-								value={parseFloat(movie.vote_average) / 2}
+								value={movie.vote_average / 2}
 								readOnly
 							/>
 							<Typography component="legend" variant="body2">

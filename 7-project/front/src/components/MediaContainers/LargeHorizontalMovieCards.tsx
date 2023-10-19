@@ -6,10 +6,10 @@ import {
 	ImageListItem,
 } from "@mui/material";
 
-import { MovieInterface } from "../../models/movie-models";
+import { IMovieMinimal } from "../../models/movie-models";
 
 type MovieType = {
-	data: MovieInterface[];
+	data: IMovieMinimal[];
 };
 
 const LargeHorizontalMovieCards = ({ data }: MovieType) => {
@@ -23,7 +23,7 @@ const LargeHorizontalMovieCards = ({ data }: MovieType) => {
 			}}
 			cols={1}
 		>
-			{data.map((movie: MovieInterface) => (
+			{data.map((movie: IMovieMinimal) => (
 				<ImageListItem key={movie.id}>
 					<Card
 						key={movie.id}

@@ -7,12 +7,12 @@ import {
 	Rating,
 } from "@mui/material";
 
-import { MovieInterface } from "../../models/movie-models";
+import { IMovieMinimal } from "../../models/movie-models";
 
 import Icons from "../Icons";
 
 interface MovieType {
-	data: MovieInterface;
+	data: IMovieMinimal;
 	handleClick: Function;
 }
 
@@ -79,15 +79,13 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 					size="small"
 					max={10}
 					precision={0.1}
-					value={parseFloat(data.vote_average)}
+					value={data.vote_average}
 					readOnly
 				/>
 				<Typography component="legend" variant="body2">
 					{data.vote_count.toLocaleString()} votes
 				</Typography>
-				<Typography variant="subtitle2">
-					{data.overview.substring(0, 250)}...
-				</Typography>
+				<Typography variant="subtitle2">{data.tagline}</Typography>
 			</CardContent>
 		</Card>
 	);

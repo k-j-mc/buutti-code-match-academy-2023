@@ -6,8 +6,12 @@ import { AppDispatch } from "./store";
 import movieService from "../services/movies";
 
 const initialMovieState: MovieArrayModel = {
+	featuredMovies: [],
+	actionMovies: [],
 	allMovies: [],
 	movie: [],
+	loadingFeaturedMovies: true,
+	loadingActionMovies: true,
 	loadingAllMovies: true,
 	loadingMovie: true,
 };
@@ -16,7 +20,15 @@ const movieSlice = createSlice({
 	name: "movies",
 	initialState: initialMovieState,
 	reducers: {
-		setMovies(state, action) {
+		setFeaturedMovies(state, action) {
+			state.loadingFeaturedMovies = false;
+			state.featuredMovies = action.payload;
+		},
+		setActionMovies(state, action) {
+			state.loadingActionMovies = false;
+			state.actionMovies = action.payload;
+		},
+		setAllMovies(state, action) {
 			state.loadingAllMovies = false;
 			state.allMovies = action.payload;
 		},
@@ -27,12 +39,27 @@ const movieSlice = createSlice({
 	},
 });
 
-export const { setMovies, setMovie } = movieSlice.actions;
+export const { setFeaturedMovies, setActionMovies, setAllMovies, setMovie } =
+	movieSlice.actions;
+
+export const getFeaturedMovies = () => {
+	return async (dispatch: AppDispatch) => {
+		const movies = await movieService.getFeatured();
+		dispatch(setFeaturedMovies(movies));
+	};
+};
+
+export const getActionMovies = () => {
+	return async (dispatch: AppDispatch) => {
+		const movies = await movieService.getAction();
+		dispatch(setActionMovies(movies));
+	};
+};
 
 export const getMovies = () => {
 	return async (dispatch: AppDispatch) => {
 		const movies = await movieService.getAll();
-		dispatch(setMovies(movies));
+		dispatch(setAllMovies(movies));
 	};
 };
 

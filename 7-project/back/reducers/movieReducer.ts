@@ -27,6 +27,22 @@ router.get("/movies", async (request: Request, response: Response) => {
 	}
 });
 
+router.get("/movies/featured", async (request: Request, response: Response) => {
+	const results = await executeQuery(movieQueries.findFirst10);
+
+	if (results) {
+		response.status(200).json(results.rows);
+	}
+});
+
+router.get("/movies/action", async (request: Request, response: Response) => {
+	const results = await executeQuery(movieQueries.findAction);
+
+	if (results) {
+		response.status(200).json(results.rows);
+	}
+});
+
 router.get("/movie/:id", async (request: Request, response: Response) => {
 	const result = await findOneMovieById(request.params.id);
 
