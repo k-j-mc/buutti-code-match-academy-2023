@@ -7,7 +7,9 @@ import movieService from "./services/movies";
 import { userInfo } from "./reducers/userReducer";
 import {
 	getFeaturedMovies,
+	getTopRatedMovies,
 	getActionMovies,
+	getHorrorMovies,
 	getMovies,
 } from "./reducers/movieReducer";
 
@@ -15,6 +17,7 @@ import NavigationBar from "./components/NavigationBar/NavigationBar";
 
 import HomePage from "./pages/HomePage";
 import MovieDetailPage from "./pages/MovieDetailPage";
+import MovieVideoPage from "./pages/MovieVideoPage";
 
 import SignInPage from "./pages/Auth/SignInPage";
 import SignUpPage from "./pages/Auth/SignUpPage";
@@ -27,7 +30,9 @@ const App = () => {
 
 	useEffect(() => {
 		dispatch(getFeaturedMovies());
+		dispatch(getTopRatedMovies());
 		dispatch(getActionMovies());
+		dispatch(getHorrorMovies());
 		dispatch(getMovies());
 		dispatch(userInfo());
 	}, [dispatch]);
@@ -55,6 +60,7 @@ const App = () => {
 					element={<ForgotPasswordPage />}
 				/>
 				<Route path="/movie/:id" element={<MovieDetailPage />} />
+				<Route path="/video/:id" element={<MovieVideoPage />} />
 				<Route path="*" element={<ErrorPage />} />
 			</Routes>
 		</div>

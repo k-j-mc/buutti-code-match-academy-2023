@@ -16,9 +16,25 @@ const getFeatured = async () => {
 	return response.data;
 };
 
+const getTopRated = async () => {
+	const response = await axios
+		.get(`${baseUrl}/movies/top-rated`)
+		.then((response) => response);
+
+	return response.data;
+};
+
 const getAction = async () => {
 	const response = await axios
 		.get(`${baseUrl}/movies/action`)
+		.then((response) => response);
+
+	return response.data;
+};
+
+const getHorror = async () => {
+	const response = await axios
+		.get(`${baseUrl}/movies/horror`)
 		.then((response) => response);
 
 	return response.data;
@@ -36,11 +52,20 @@ const getById = async (movieId: string) => {
 	return response.data;
 };
 
+const getVideosById = async (movieId: string) => {
+	const response = await axios.get(`${baseUrl}/movie/videos/${movieId}/`);
+
+	return response.data;
+};
+
 const movieService = {
 	getFeatured,
+	getTopRated,
 	getAction,
+	getHorror,
 	getAll,
 	getById,
+	getVideosById,
 	setToken,
 };
 

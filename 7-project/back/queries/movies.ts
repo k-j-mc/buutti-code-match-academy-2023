@@ -52,8 +52,34 @@ export const movieQueries = {
 	findFirst10: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" OFFSET random() * (SELECT COUNT(*) FROM "movies") LIMIT 10`,
 	findAll: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" LIMIT 100`,
 
-	findAction: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" WHERE 28=ANY("genres") LIMIT 20`,
+	findTop20: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" ORDER BY "vote_average" DESC LIMIT 20`,
+	findTopAction: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" WHERE 28=ANY("genres") ORDER BY "vote_count" DESC LIMIT 20`,
 
-	findMovieById: `SELECT * FROM "movies" WHERE "tmdb_id" = $1`,
+	findTopHorror: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" WHERE 27=ANY("genres") ORDER BY "vote_count" DESC LIMIT 20`,
+
+	findMovieByTMDBId: `SELECT * FROM "movies" WHERE "tmdb_id" = $1`,
+	findMovieById: `SELECT * FROM "movies" WHERE "id" = $1`,
+	findVideosById: `SELECT * FROM "videos" WHERE "id" = $1`,
 	findCastById: `SELECT * FROM "cast" WHERE "tmdb_id" = $1`,
 };
+
+// GENRE LIST
+// Action          28
+// Adventure       12
+// Animation       16
+// Comedy          35
+// Crime           80
+// Documentary     99
+// Drama           18
+// Family          10751
+// Fantasy         14
+// History         36
+// Horror          27
+// Music           10402
+// Mystery         9648
+// Romance         10749
+// Science Fiction 878
+// TV Movie        10770
+// Thriller        53
+// War             10752
+// Western         37

@@ -1,3 +1,8 @@
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+
+import { getMovieById, getMovieVideos } from "../../reducers/movieReducer";
+
 import {
 	Card,
 	CardMedia,
@@ -17,6 +22,19 @@ interface MovieType {
 }
 
 const LargeMovieCard = ({ data, handleClick }: MovieType) => {
+	const navigate = useNavigate();
+
+	const { video } = useAppSelector((state) => state.movies);
+
+	const dispatch = useAppDispatch();
+
+	const handleVideoNavigation = (data: IMovieMinimal) => {
+		dispatch(getMovieById(data.id));
+		dispatch(getMovieVideos(data.id));
+
+		navigate(`/video/${data.id}`);
+	};
+
 	return (
 		<Card
 			key={data.id}
@@ -46,7 +64,7 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 							position: "absolute",
 						}}
 					>
-						<IconButton>
+						<IconButton onClick={() => handleVideoNavigation(data)}>
 							<Icons.PlayLarge />
 						</IconButton>
 					</div>

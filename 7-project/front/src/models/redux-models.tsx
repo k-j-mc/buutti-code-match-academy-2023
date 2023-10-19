@@ -19,15 +19,32 @@ export interface MovieInterface {
 	vote_count: number;
 }
 
+export interface IVideo {
+	id: string;
+	name: string;
+	key: string;
+	site: string;
+	size: number;
+	type: string;
+	official: boolean;
+	published_at: string;
+}
+
 export interface MovieArrayModel {
 	featuredMovies: IMovieMinimal[];
+	topRatedMovies: IMovieMinimal[];
 	actionMovies: IMovieMinimal[];
+	horrorMovies: IMovieMinimal[];
 	allMovies: IMovieMinimal[];
 	movie: IMovieMinimal[];
+	video: IVideo[];
 	loadingFeaturedMovies: boolean;
+	loadingTopRatedMovies: boolean;
 	loadingActionMovies: boolean;
+	loadingHorrorMovies: boolean;
 	loadingAllMovies: boolean;
 	loadingMovie: boolean;
+	loadingVideo: boolean;
 }
 
 export interface IUserSignUp {

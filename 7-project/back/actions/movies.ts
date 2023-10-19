@@ -54,6 +54,18 @@ export const findOneMovieById = async (id: string) => {
 	return result.rows;
 };
 
+export const findOneMovieByTMDBId = async (id: string) => {
+	const result = await executeQuery(movieQueries.findMovieByTMDBId, [id]);
+
+	return result.rows;
+};
+
+export const findOneMovieVideosById = async (id: string) => {
+	const result = await executeQuery(movieQueries.findVideosById, [id]);
+
+	return result.rows;
+};
+
 export const findActorById = async (id: string) => {
 	const result = await executeQuery(movieQueries.findCastById, [id]);
 

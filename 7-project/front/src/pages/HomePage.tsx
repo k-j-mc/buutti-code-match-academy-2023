@@ -16,6 +16,9 @@ import LargeHorizontalMovieCards from "../components/MediaContainers/LargeHorizo
 const HomePage = () => {
 	const {
 		featuredMovies,
+		topRatedMovies,
+		actionMovies,
+		horrorMovies,
 		allMovies,
 		loadingFeaturedMovies,
 		loadingAllMovies,
@@ -68,21 +71,6 @@ const HomePage = () => {
 		<>
 			{!loadingFeaturedMovies && topPicks.length > 0 ? (
 				<>
-					{/* <Grid
-						container
-						spacing={1}
-						style={{
-							display: "flex",
-						}}
-					>
-						<Grid item xl={2} xs={0.5} />
-
-						<Grid item xl={8} xs={11}>
-							<h2 className="headerPageInfo">Featured:</h2>
-						</Grid>
-						<Grid item xl={2} xs={0.5} />
-					</Grid> */}
-
 					<Grid container spacing={1}>
 						<Grid item xl={2} xs={0.5} />
 
@@ -132,7 +120,31 @@ const HomePage = () => {
 
 						<Grid item xl={2} xs={0.5} />
 						<Grid item xl={8} xs={11}>
-							<LargeHorizontalMovieCards data={topPicks} />
+							<LargeHorizontalMovieCards data={topRatedMovies} />
+						</Grid>
+						<Grid item xl={2} xs={0.5} />
+
+						<Grid item xl={2} xs={0.5} />
+						<Grid item xl={8} xs={11}>
+							<h2 className="headerPageInfo">Top Action:</h2>
+						</Grid>
+						<Grid item xl={2} xs={0.5} />
+
+						<Grid item xl={2} xs={0.5} />
+						<Grid item xl={8} xs={11}>
+							<LargeHorizontalMovieCards data={actionMovies} />
+						</Grid>
+						<Grid item xl={2} xs={0.5} />
+
+						<Grid item xl={2} xs={0.5} />
+						<Grid item xl={8} xs={11}>
+							<h2 className="headerPageInfo">Top Horror:</h2>
+						</Grid>
+						<Grid item xl={2} xs={0.5} />
+
+						<Grid item xl={2} xs={0.5} />
+						<Grid item xl={8} xs={11}>
+							<LargeHorizontalMovieCards data={horrorMovies} />
 						</Grid>
 						<Grid item xl={2} xs={0.5} />
 					</Grid>

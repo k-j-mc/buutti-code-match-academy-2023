@@ -16,7 +16,7 @@ const LargeHorizontalMovieCards = ({ data }: MovieType) => {
 	return (
 		<ImageList
 			sx={{
-				height: "40vh",
+				height: "25vh",
 				display: "flex",
 				flexDirection: "row",
 				marginTop: "-30px",

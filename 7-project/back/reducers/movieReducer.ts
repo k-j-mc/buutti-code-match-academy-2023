@@ -10,6 +10,8 @@ import {
 	insertMovieVideos,
 	insertMovieCast,
 	findOneMovieById,
+	findOneMovieByTMDBId,
+	findOneMovieVideosById,
 	findActorById,
 } from "../actions/movies";
 
@@ -35,8 +37,27 @@ router.get("/movies/featured", async (request: Request, response: Response) => {
 	}
 });
 
+router.get(
+	"/movies/top-rated",
+	async (request: Request, response: Response) => {
+		const results = await executeQuery(movieQueries.findTop20);
+
+		if (results) {
+			response.status(200).json(results.rows);
+		}
+	}
+);
+
 router.get("/movies/action", async (request: Request, response: Response) => {
-	const results = await executeQuery(movieQueries.findAction);
+	const results = await executeQuery(movieQueries.findTopAction);
+
+	if (results) {
+		response.status(200).json(results.rows);
+	}
+});
+
+router.get("/movies/horror", async (request: Request, response: Response) => {
+	const results = await executeQuery(movieQueries.findTopHorror);
 
 	if (results) {
 		response.status(200).json(results.rows);
@@ -49,13 +70,22 @@ router.get("/movie/:id", async (request: Request, response: Response) => {
 	response.status(200).json(result);
 });
 
+router.get(
+	"/movie/videos/:id",
+	async (request: Request, response: Response) => {
+		const result = await findOneMovieVideosById(request.params.id);
+
+		response.status(200).json(result);
+	}
+);
+
 router.get("/get-popular", async (request: Request, response: Response) => {
 	const popularMovies = await makeRequest(1);
 
 	let count = 0;
 
 	for (let i = 0; i < popularMovies.length; i++) {
-		let exists = await findOneMovieById(popularMovies[i].id);
+		let exists = await findOneMovieByTMDBId(popularMovies[i].id);
 
 		if (exists.length <= 0) {
 			count++;
