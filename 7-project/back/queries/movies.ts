@@ -50,7 +50,7 @@ export const movieQueries = {
     )`,
 	insertCast: `INSERT INTO "cast" ("id", "tmdb_id", "name", "character", "profile") VALUES ($1, $2, $3, $4, $5)`,
 
-	findFirst10: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" OFFSET random() * (SELECT COUNT(*) FROM "movies") LIMIT 10`,
+	findFirst10: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" WHERE "video_count" > 0 OFFSET random() * (SELECT COUNT(*) FROM "movies") LIMIT 10`,
 	findAll: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" LIMIT 100`,
 
 	findTop20: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" ORDER BY "vote_average" DESC LIMIT 20`,

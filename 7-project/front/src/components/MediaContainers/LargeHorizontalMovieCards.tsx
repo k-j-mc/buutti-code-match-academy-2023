@@ -1,3 +1,8 @@
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+
+import { getMovieById, getMovieVideos } from "../../reducers/movieReducer";
+
 import {
 	Card,
 	CardActionArea,
@@ -13,6 +18,16 @@ type MovieType = {
 };
 
 const LargeHorizontalMovieCards = ({ data }: MovieType) => {
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	const handleNavigationClick = (movie: IMovieMinimal) => {
+		dispatch(getMovieById(movie.id));
+		dispatch(getMovieVideos(movie.id));
+
+		navigate(`/movie/${movie.id}`);
+	};
+
 	return (
 		<ImageList
 			sx={{
@@ -26,7 +41,6 @@ const LargeHorizontalMovieCards = ({ data }: MovieType) => {
 			{data.map((movie: IMovieMinimal) => (
 				<ImageListItem key={movie.id}>
 					<Card
-						key={movie.id}
 						sx={{
 							width: "150px",
 							marginRight: "auto",
@@ -34,7 +48,9 @@ const LargeHorizontalMovieCards = ({ data }: MovieType) => {
 							mr: 4,
 						}}
 					>
-						<CardActionArea>
+						<CardActionArea
+							onClick={() => handleNavigationClick(movie)}
+						>
 							<CardMedia
 								component="img"
 								loading="lazy"

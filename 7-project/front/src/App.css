@@ -20,6 +20,15 @@ html, body {
     justify-content: center;
 }
 
+.loaderCenterSmall {
+    position: absolute;
+    height: 30vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .headerMenuLogo {
     font-family: Impact;
     color: #00d4ff;
@@ -42,6 +51,13 @@ html, body {
 .videoPage {
     height: 90vh;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0, 1) 2%, rgb(0, 0, 0) 100%);
+}
+
+.videoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40px
 }
 
 .rrLink {

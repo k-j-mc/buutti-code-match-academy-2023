@@ -59,7 +59,7 @@ export const signInUser = (userPayload: IUserSignIn) => {
 				dispatch(setUserInfo(response.data));
 				dispatch(
 					setNotification({
-						message: `Welcome ${response.data.name}!`,
+						message: `Welcome ${response.data.userFirstName}!`,
 						variant: "success",
 						timeOut: 5000,
 					})
@@ -81,17 +81,20 @@ export const signOutUser = () => {
 	return async (dispatch: AppDispatch) => {
 		const user = await userService.userDetails();
 
+		let name = user.userFirstName;
+
 		await userService
 			.signUserOut()
 			.then((response) =>
 				dispatch(
 					setNotification({
-						message: `${user.userFirstName} successfully signed out!`,
+						message: `${name} successfully signed out!`,
 						variant: "success",
 						timeOut: 5000,
 					})
 				)
 			)
+			.then((response) => userService.userDetails())
 			.catch((error) =>
 				dispatch(
 					setNotification({

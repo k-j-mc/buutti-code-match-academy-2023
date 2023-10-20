@@ -52,7 +52,6 @@ const UserAvatar = () => {
 					flexDirection: "row",
 					justifyContent: "flex-end",
 					ml: 6,
-					mt: "45px",
 				}}
 			>
 				<IconButton
@@ -63,7 +62,7 @@ const UserAvatar = () => {
 						mb: "5px",
 					}}
 				>
-					{userPicture !== null ? (
+					{userPicture ? (
 						<Avatar
 							className="userUpAvatar"
 							sx={{ backgroundColor: "#00d4ff" }}
@@ -73,9 +72,10 @@ const UserAvatar = () => {
 					) : (
 						<Avatar
 							className="userUpAvatar"
-							sx={{ backgroundColor: "#00d4ff" }}
+							sx={{
+								backgroundColor: "#00d4ff",
+							}}
 							alt={userName}
-							// src={userPicture
 						>
 							{userName}
 						</Avatar>
@@ -87,7 +87,7 @@ const UserAvatar = () => {
 				sx={{
 					justifyContent: "flex-end",
 					mr: 2,
-					// mt: "45px",
+					mt: "50px",
 				}}
 				id="menu-appbar"
 				anchorEl={anchorElUser}

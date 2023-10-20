@@ -1,14 +1,16 @@
-export interface IVideos {
-	iso_639_1: string;
-	iso_3166_1: string;
-	name: string;
+export interface IVideo {
+	id: string;
 	key: string;
+	name: string;
+	official: boolean;
+	published_at: string;
 	site: string;
 	size: number;
 	type: string;
-	official: boolean;
-	published_at: string;
-	id: string;
+}
+
+export interface IVideos {
+	videos: IVideo[];
 }
 
 export interface MovieInterface {

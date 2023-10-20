@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 
 import {
-	Alert,
 	Button,
 	ButtonGroup,
 	FormControl,
@@ -16,12 +15,12 @@ import {
 
 import { signInUser } from "../../reducers/userReducer";
 
+import NotificationBox from "../../components/Notifications/NotificationBox";
+
 import Icons from "../../components/Icons";
 
 const SignInPage = () => {
 	const dispatch = useAppDispatch();
-
-	const notification = useAppSelector((state) => state.notification);
 
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -54,10 +53,7 @@ const SignInPage = () => {
 				<Grid item xs={2} />
 				<Grid item xs={8}>
 					<h2 className="headerPageInfo">Sign In:</h2>
-
-					{notification.message && (
-						<Alert severity="error">{notification.message}</Alert>
-					)}
+					<NotificationBox />
 					<form onSubmit={submitForm}>
 						<TextField
 							required

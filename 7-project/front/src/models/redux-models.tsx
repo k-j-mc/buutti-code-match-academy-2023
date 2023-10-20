@@ -81,5 +81,5 @@ export interface IUser {
 export interface INotification {
 	timeOut: number;
 	message: string;
-	variant: string;
+	variant: "success" | "info" | "warning" | "error" | undefined;
 }

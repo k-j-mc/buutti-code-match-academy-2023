@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { AppDispatch } from "./store";
 
-const initialState = {
-	variant: "",
+const initialState: INotification = {
+	variant: undefined,
 	message: "",
 	timeOut: 0,
 };
