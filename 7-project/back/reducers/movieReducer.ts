@@ -15,7 +15,12 @@ import {
 	findActorById,
 } from "../actions/movies";
 
-import { makeRequest, getDetails, saveImage } from "../tools/movies";
+import {
+	makeRequest,
+	getDetails,
+	saveImage,
+	processCast,
+} from "../tools/movies";
 
 const router = Router();
 
@@ -80,7 +85,7 @@ router.get(
 );
 
 router.get("/get-popular", async (request: Request, response: Response) => {
-	const popularMovies = await makeRequest(1);
+	const popularMovies = await makeRequest(10);
 
 	let count = 0;
 
@@ -93,55 +98,27 @@ router.get("/get-popular", async (request: Request, response: Response) => {
 
 			const id = uuid();
 
-			let backdrop = await saveImage(
-				"w1280",
-				popularMovies[i].backdrop_path,
-				id,
-				"backdrops"
-			);
+			processCast(movieObject);
+
+			let backdrop;
+
+			if (popularMovies[i].backdrop_path !== null) {
+				backdrop = await saveImage(
+					"w1280",
+					popularMovies[i].backdrop_path,
+					id,
+					"backdrops"
+				);
+			} else {
+				backdrop = "";
+			}
+
 			let poster = await saveImage(
 				"w500",
 				popularMovies[i].poster_path,
 				id,
 				"posters"
 			);
-
-			let cast = movieObject.credits.cast.slice(0, 4).map((obj: any) => {
-				return {
-					id: uuid(),
-					tmdb_id: obj.id,
-					name: obj.name,
-					character: obj.character,
-					profile: obj.profile_path,
-				};
-			});
-
-			let castLength = 4;
-
-			if (cast.length < castLength) {
-				castLength = cast.length;
-			}
-
-			for (let x = 0; x < castLength; x++) {
-				let profile;
-				let exists = await findActorById(cast[x].tmdb_id);
-				if (exists.length <= 0) {
-					if (cast[x].profile !== null) {
-						profile = await saveImage(
-							"w185",
-							cast[x].profile,
-							cast[x].tmdb_id,
-							"profiles"
-						);
-						console.log("creating image for" + cast[x].name);
-					} else {
-						profile = "";
-					}
-					cast[x].profile = profile;
-				} else {
-					console.log(cast[x].name + " already has a photo");
-				}
-			}
 
 			let genres = movieObject.genres.map((obj: any) => {
 				return obj.id;
@@ -177,6 +154,10 @@ router.get("/get-popular", async (request: Request, response: Response) => {
 				movieObject.revenue = 0;
 			}
 
+			if (movieObject.idmb_id === undefined) {
+				movieObject.imdb_id = "";
+			}
+
 			movieObject = {
 				id: id,
 				adult: movieObject.adult,
@@ -198,6 +179,7 @@ router.get("/get-popular", async (request: Request, response: Response) => {
 				spoken_languages: spokenLanguages,
 				tagline: movieObject.tagline,
 				title: movieObject.title,
+				video_count: videos.length,
 				vote_average: movieObject.vote_average,
 				vote_count: movieObject.vote_count,
 			};
@@ -205,10 +187,6 @@ router.get("/get-popular", async (request: Request, response: Response) => {
 			insertNewMovie(movieObject);
 			videos.forEach((obj: IVideos) => {
 				insertMovieVideos(obj);
-			});
-
-			cast.forEach((obj: ICast) => {
-				insertMovieCast(obj);
 			});
 		} else {
 			console.log("movie already in database");

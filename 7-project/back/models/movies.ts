@@ -36,6 +36,7 @@ export interface IMovie {
 	spoken_languages: any[];
 	tagline: string;
 	title: string;
+	video_count: number;
 	vote_average: number;
 	vote_count: number;
 }

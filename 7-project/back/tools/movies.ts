@@ -1,5 +1,10 @@
 import axios from "axios";
+import { v4 as uuid } from "uuid";
 import { appendFile, existsSync } from "fs";
+
+import { insertMovieCast, findActorById } from "../actions/movies";
+
+import { ICast } from "../models/movies";
 
 const TMDBKey = process.env.TMDB_KEY;
 const TMDBPopularMoviePath = process.env.TMDB_POPULAR_MOVIE_PATH;
@@ -68,4 +73,47 @@ export const saveImage = async (
 	}
 
 	return fileName;
+};
+
+export const processCast = async (movieObject: any) => {
+	let cast = movieObject.credits.cast.slice(0, 4).map((obj: any) => {
+		return {
+			id: uuid(),
+			tmdb_id: obj.id,
+			name: obj.name,
+			character: obj.character,
+			profile: obj.profile_path,
+		};
+	});
+
+	let castLength = 4;
+
+	if (cast.length < castLength) {
+		castLength = cast.length;
+	}
+
+	for (let x = 0; x < castLength; x++) {
+		let profile;
+		let exists = await findActorById(cast[x].tmdb_id);
+		if (exists.length <= 0) {
+			if (cast[x].profile !== null) {
+				profile = await saveImage(
+					"w185",
+					cast[x].profile,
+					cast[x].tmdb_id,
+					"profiles"
+				);
+				console.log("creating image for" + cast[x].name);
+			} else {
+				profile = "";
+			}
+			cast[x].profile = profile;
+		} else {
+			console.log(cast[x].name + " already has a photo");
+		}
+	}
+
+	cast.forEach((obj: ICast) => {
+		insertMovieCast(obj);
+	});
 };

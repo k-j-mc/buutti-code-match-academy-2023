@@ -1,8 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 import { getMovieById, getMovieVideos } from "../reducers/movieReducer";
 
-import ReactPlayer from "react-player";
+import Video from "../components/Video/Video";
+
+import LoaderLargeCircle from "../components/Loaders/LoaderLargeCircle";
 
 const MovieVideoPage = () => {
 	const dispatch = useAppDispatch();
@@ -13,14 +15,13 @@ const MovieVideoPage = () => {
 
 	const locationName = window.location.pathname.substring(7);
 
-	useEffect(() => {
-		if (video.length <= 0) {
-			dispatch(getMovieById(locationName));
-			dispatch(getMovieVideos(locationName));
-		}
-	}, []);
+	// useEffect(() => {
+	// 	dispatch(getMovieById(locationName));
+	// 	dispatch(getMovieVideos(locationName));
+	// }, []);
 
 	console.log(video);
+	console.log(movie);
 
 	return (
 		<div className="videoPage">
@@ -28,12 +29,16 @@ const MovieVideoPage = () => {
 				<>
 					<h2 className="headerPageInfoCenter">{movie[0].title}</h2>
 					<h3 className="headerPageInfoCenter">{video[0].name}</h3>
-					<ReactPlayer
-						url={`https://www.youtube.com/watch?v=${video[0].key}`}
+					<Video
+						video={`https://www.youtube.com/embed/${video[0].key}`}
 					/>
 				</>
 			) : (
-				<p>Error...</p>
+				<LoaderLargeCircle
+					loading={loadingVideo}
+					styleName="loaderMain"
+					size={200}
+				/>
 			)}
 		</div>
 	);

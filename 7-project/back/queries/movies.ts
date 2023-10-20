@@ -19,12 +19,13 @@ export const movieQueries = {
         "revenue" INTEGER NOT NULL,
         "runtime" INTEGER NOT NULL,
         "spoken_languages" TEXT[],
-        "tagline" VARCHAR(100) NOT NULL,
+        "tagline" TEXT NOT NULL,
         "title" VARCHAR(100) NOT NULL,
+        "video_count" INTEGER NOT NULL,
         "vote_average" DOUBLE PRECISION NOT NULL,
         "vote_count" INTEGER NOT NULL
     )`,
-	insertMovie: `INSERT INTO "movies" ("id", "adult", "backdrop", "budget", "genres", "homepage", "tmdb_id", "imdb_id", "original_language", "original_title", "overview", "popularity", "poster", "production_companies", "release_date", "revenue", "runtime", "spoken_languages", "tagline", "title", "vote_average", "vote_count") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)`,
+	insertMovie: `INSERT INTO "movies" ("id", "adult", "backdrop", "budget", "genres", "homepage", "tmdb_id", "imdb_id", "original_language", "original_title", "overview", "popularity", "poster", "production_companies", "release_date", "revenue", "runtime", "spoken_languages", "tagline", "title", "video_count", "vote_average", "vote_count") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23)`,
 
 	createMovieVideosTable: `
         CREATE TABLE IF NOT EXISTS "videos" (
@@ -50,12 +51,12 @@ export const movieQueries = {
 	insertCast: `INSERT INTO "cast" ("id", "tmdb_id", "name", "character", "profile") VALUES ($1, $2, $3, $4, $5)`,
 
 	findFirst10: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" OFFSET random() * (SELECT COUNT(*) FROM "movies") LIMIT 10`,
-	findAll: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" LIMIT 100`,
+	findAll: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" LIMIT 100`,
 
-	findTop20: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" ORDER BY "vote_average" DESC LIMIT 20`,
-	findTopAction: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" WHERE 28=ANY("genres") ORDER BY "vote_count" DESC LIMIT 20`,
+	findTop20: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" ORDER BY "vote_average" DESC LIMIT 20`,
+	findTopAction: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" WHERE 28=ANY("genres") ORDER BY "vote_count" DESC LIMIT 20`,
 
-	findTopHorror: `SELECT "id", "backdrop", "poster", "tagline", "title", "vote_average", "vote_count" FROM "movies" WHERE 27=ANY("genres") ORDER BY "vote_count" DESC LIMIT 20`,
+	findTopHorror: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" WHERE 27=ANY("genres") ORDER BY "vote_count" DESC LIMIT 20`,
 
 	findMovieByTMDBId: `SELECT * FROM "movies" WHERE "tmdb_id" = $1`,
 	findMovieById: `SELECT * FROM "movies" WHERE "id" = $1`,

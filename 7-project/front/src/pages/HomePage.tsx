@@ -26,8 +26,6 @@ const HomePage = () => {
 
 	const movies = useAppSelector((state) => state.movies);
 
-	console.log(movies);
-
 	const [isTopPick, setIsTopPick] = useState<IMovieMinimal>(
 		featuredMovies[0]
 	);
