@@ -45,9 +45,7 @@ const MovieVideoPage = () => {
 							<h2 className="headerPageInfo">
 								{movie[0].title}: {video[0].name}
 							</h2>
-							<Video
-								video={`https://www.youtube.com/watch?v=${video[0].key}`}
-							/>
+							<Video video={video[0].key} />
 							{video.length > 1 && (
 								<>
 									<h3 className="headerPageInfo">

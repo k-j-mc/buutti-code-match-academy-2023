@@ -29,11 +29,15 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 
 	const { video } = useAppSelector((state) => state.movies);
 
-	const handleVideoNavigation = (data: IMovieMinimal) => {
+	const handleNavigation = (data: IMovieMinimal, destination: string) => {
 		dispatch(getMovieById(data.id));
 		dispatch(getMovieVideos(data.id));
 
-		navigate(`/video/${data.id}`);
+		if (destination === "details") {
+			navigate(`/movie/${data.id}`);
+		} else {
+			navigate(`/video/${data.id}`);
+		}
 	};
 
 	return (
@@ -64,7 +68,7 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 						position: "absolute",
 					}}
 				>
-					<IconButton onClick={() => handleVideoNavigation(data)}>
+					<IconButton onClick={() => handleNavigation(data, "video")}>
 						<Icons.PlayLarge />
 					</IconButton>
 				</div>
@@ -108,7 +112,12 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 					{data.tagline}
 				</Typography>
 				<CardActions style={{ margin: "0 0 -10px -15px" }}>
-					<Button size="small">Information</Button>
+					<Button
+						size="small"
+						onClick={() => handleNavigation(data, "details")}
+					>
+						Information
+					</Button>
 				</CardActions>
 			</CardContent>
 		</Card>
