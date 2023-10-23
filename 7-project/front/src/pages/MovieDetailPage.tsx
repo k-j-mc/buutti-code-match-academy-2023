@@ -1,14 +1,11 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 import { getMovieById, getMovieVideos } from "../reducers/movieReducer";
-import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
+import { Card, CardMedia, Chip, Grid, Paper, Rating } from "@mui/material";
 
-import { IVideo } from "../models/movie-models";
-
-import Video from "../components/Video/Video";
-
-import HorizontalVideoCards from "../components/MediaContainers/HorizontalVideoCards";
 import LoaderLargeCircle from "../components/Loaders/LoaderLargeCircle";
+
+import Icons from "../components/Icons";
 
 const MovieDetailPage = () => {
 	const dispatch = useAppDispatch();
@@ -28,38 +25,88 @@ const MovieDetailPage = () => {
 		}
 	}, []);
 
-	console.log(movie);
-	console.log(video);
+	console.log(movie[0]);
 
 	return (
-		<>
+		<div className="detailsPage">
 			{!loadingVideo && movie.length > 0 && movie.length > 0 ? (
-				<Grid container spacing={3} style={{ height: "100vh" }}>
-					<Grid item xs={0.5} md={1} lg={3} />
-					<Grid item xs={11} md={6} lg={6}>
-						<h2 className="headerPageInfo">{movie[0].title}</h2>
+				<div>
+					<div
+						className="backdropDetailsPage"
+						style={{
+							backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)), url("http://localhost:5000/images/backdrops${movie[0].backdrop}")`,
+						}}
+					/>
+					<Grid
+						container
+						spacing={1}
+						style={{ position: "absolute", marginTop: "30px" }}
+					>
+						<Grid item lg={2} md={1} sm={0.5} xs={0.5} />
 
-						<Card
-							sx={{
-								width: "200px",
-								marginRight: "auto",
-								mt: 4,
-								mr: 4,
-							}}
-						>
-							<CardActionArea>
+						<Grid item lg={1} md={2} sm={3} xs={11}>
+							<Card
+								sx={{
+									width: "250px",
+									marginRight: "auto",
+									marginLeft: "auto",
+									mt: 1,
+								}}
+							>
 								<CardMedia
 									component="img"
 									loading="lazy"
 									src={`http://localhost:5000/images/posters${movie[0].poster}`}
 									alt={movie[0].title}
 								/>
-							</CardActionArea>
-						</Card>
-					</Grid>
+							</Card>
+							<Paper className="paperGenres">
+								{movie[0].genres.map((genre) => (
+									<Chip
+										key={genre.id}
+										color="info"
+										style={{ margin: "0 5px 0 5px" }}
+										label={genre.name}
+										variant="outlined"
+									/>
+								))}
+							</Paper>
+						</Grid>
 
-					<Grid item xs={0.5} md={1} lg={3} />
-				</Grid>
+						<Grid item md={1} sm={2} xs={0.5} />
+						<Grid item sm={0} xs={0.5} />
+
+						<Grid item lg={6} md={7} sm={5.5} xs={11}>
+							<h1 className="headerPageInfo">{movie[0].title}</h1>
+							<h3 className="headerPageInfo">
+								{movie[0].tagline}
+							</h3>
+							<h3 className="headerPageInfo">MLiB rating: </h3>
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+								}}
+							>
+								<Rating
+									name="size-large"
+									value={parseFloat(
+										(movie[0].vote_average / 10).toFixed(1)
+									)}
+									max={1}
+									precision={0.1}
+									size="large"
+									readOnly
+								/>
+								<h4 style={{ margin: "0 0 0 10px" }}>
+									{movie[0].vote_average} / 10
+								</h4>
+							</div>
+							<p>{movie[0].overview}</p>
+						</Grid>
+						<Grid item lg={2} md={1} sm={0.5} xs={0.5} />
+					</Grid>
+				</div>
 			) : (
 				<LoaderLargeCircle
 					loading={loadingVideo}
@@ -67,7 +114,7 @@ const MovieDetailPage = () => {
 					size={200}
 				/>
 			)}
-		</>
+		</div>
 	);
 };
 

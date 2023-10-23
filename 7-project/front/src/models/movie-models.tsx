@@ -13,28 +13,41 @@ export interface IVideos {
 	videos: IVideo[];
 }
 
+export interface IGenre {
+	name: string;
+	id: number;
+}
+
 export interface MovieInterface {
-	TMDB_id: number;
+	id: string;
 	adult: boolean;
 	backdrop: string;
-	backdrop_path: string;
-	genre_ids: number[];
-	id: string;
+	budget: number;
+	genres: IGenre[];
+	homepage: string;
+	imdb_id: string;
 	original_language: string;
 	original_title: string;
 	overview: string;
 	popularity: number;
 	poster: string;
-	poster_path: string;
+	production_companies: string[];
 	release_date: string;
+	revenue: number;
+	runtime: number;
+	spoken_languages: string[];
+	tagline: string;
 	title: string;
-	vote_average: string;
+	tmdb_id: number;
+	video_count: number;
+	vote_average: number;
 	vote_count: number;
 }
 
 export interface IMovieMinimal {
 	id: string;
 	backdrop: string;
+	genreNames: string[];
 	poster: string;
 	tagline: string;
 	title: string;

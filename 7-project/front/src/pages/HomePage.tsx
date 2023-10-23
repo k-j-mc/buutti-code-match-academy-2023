@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 
 import { Grid } from "@mui/material";
 
-import { MovieInterface, IMovieMinimal } from "../models/movie-models";
+import { IMovieMinimal } from "../models/movie-models";
 
 import LoaderLargeCircle from "../components/Loaders/LoaderLargeCircle";
 

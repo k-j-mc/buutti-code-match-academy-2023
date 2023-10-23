@@ -17,6 +17,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Search from "@mui/icons-material/Search";
 import ShareIcon from "@mui/icons-material/Share";
+import StarIcon from "@mui/icons-material/Star";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
@@ -85,6 +86,9 @@ const Icons = {
 	)),
 	Seen: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<VisibilityIcon {...props} ref={ref} />
+	)),
+	Star: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<StarIcon {...props} ref={ref} />
 	)),
 	Up: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<KeyboardArrowUpIcon {...props} ref={ref} />
