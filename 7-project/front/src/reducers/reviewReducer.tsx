@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { AppDispatch } from "./store";
 
 import reviewService from "../services/reviews";
+import userService from "../services/user";
 
 const initialReviewState: ReviewArrayModel = {
 	movieReviews: [],
@@ -25,7 +26,16 @@ export const { setReviews } = reviewSlice.actions;
 
 export const getMovieReviews = (movieId: string) => {
 	return async (dispatch: AppDispatch) => {
-		const reviews = await reviewService.getReviews(movieId);
+		let reviews = await reviewService.getReviews(movieId);
+
+		console.log("getting reviewss");
+		for (let i = 0; i < reviews.length; i++) {
+			let info = await userService.findUserBasicInfo(reviews[i].user_id);
+			reviews[i].userName = info[0].userName;
+			reviews[i].userFirstName = info[0].userFirstName;
+			reviews[i].userLastName = info[0].userLastName;
+		}
+
 		dispatch(setReviews(reviews));
 	};
 };

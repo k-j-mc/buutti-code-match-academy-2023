@@ -9,6 +9,9 @@ export interface IReview {
 	rating: number;
 	likes: number;
 	dislikes: number;
+	userName: string | null;
+	userFirstName: string | null;
+	userLastName: string | null;
 }
 
 export interface INewReview {

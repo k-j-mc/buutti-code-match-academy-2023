@@ -15,9 +15,7 @@ import {
 const UserAvatar = () => {
 	const dispatch = useAppDispatch();
 
-	const { userPicture, userName } = useAppSelector(
-		(state) => state.user.user
-	);
+	const { user } = useAppSelector((state) => state.user);
 
 	const pages = ["Products", "Pricing", "Blog"];
 	const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -62,23 +60,27 @@ const UserAvatar = () => {
 						mb: "5px",
 					}}
 				>
-					{userPicture ? (
-						<Avatar
-							className="userUpAvatar"
-							sx={{ backgroundColor: "#00d4ff" }}
-							alt={userName}
-							src={userPicture}
-						></Avatar>
-					) : (
-						<Avatar
-							className="userUpAvatar"
-							sx={{
-								backgroundColor: "#00d4ff",
-							}}
-							alt={userName}
-						>
-							{userName}
-						</Avatar>
+					{user && (
+						<>
+							{user.userPicture ? (
+								<Avatar
+									className="userUpAvatar"
+									sx={{ backgroundColor: "#00d4ff" }}
+									alt={user.userName}
+									src={user.userPicture}
+								></Avatar>
+							) : (
+								<Avatar
+									className="userUpAvatar"
+									sx={{
+										backgroundColor: "#00d4ff",
+									}}
+									alt={user.userName}
+								>
+									{user.userName}
+								</Avatar>
+							)}
+						</>
 					)}
 				</IconButton>
 			</Tooltip>

@@ -55,7 +55,7 @@ export interface IUserSignedIn {
 }
 
 export interface IUser {
-	user: IUserSignedIn;
+	user: IUserSignedIn | null;
 	loadingUser: boolean;
 	error: string;
 }

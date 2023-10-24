@@ -39,3 +39,9 @@ export const findUser = async (email: string) => {
 
 	return result.rows;
 };
+
+export const findUserBasicInfoById = async (id: string) => {
+	const result = await executeQuery(userQueries.findBasicOneById, [id]);
+
+	return result.rows;
+};

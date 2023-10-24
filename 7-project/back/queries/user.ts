@@ -11,6 +11,7 @@ export const userQueries = {
 	findAll: `SELECT * FROM "users"`,
 	insertUser: `INSERT INTO "users" ("id", "email", "password", "userName", "userFirstName", "userLastName") VALUES ($1, $2, $3, $4, $5, $6)`,
 	findOne: `SELECT * FROM "users" where email = $1`,
+	findBasicOneById: `SELECT "userName", "userFirstName", "userLastName" FROM "users" where id = $1`,
 	deleteOne: `DELETE FROM "users" where "id" = $1`,
 	updatePassword: `UPDATE "users" SET "password" = $2, WHERE "id" = $1`,
 };

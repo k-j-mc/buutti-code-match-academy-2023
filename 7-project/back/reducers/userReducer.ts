@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 
-import { insertUser, findUser } from "../actions/user";
+import { insertUser, findUser, findUserBasicInfoById } from "../actions/user";
 
 const router = Router();
 
@@ -36,13 +36,16 @@ router.get("/", (request: Request, response: Response) => {
 	response.send("USER ENDPOINT");
 });
 
-router.get("/:id", (request: Request, response: Response) => {
+router.get("/:id", async (request: Request, response: Response) => {
 	const { id } = request.params;
 
-	response.status(200).json({
-		user: "example",
-		id: id,
-	});
+	const result = await findUserBasicInfoById(id);
+
+	if (result.length > 0) {
+		response.status(200).json(result);
+	} else {
+		response.status(400).json({ error: "Error processing request" });
+	}
 });
 
 router.post("/sign-in", async (request: Request, response: Response) => {

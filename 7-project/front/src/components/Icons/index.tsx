@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 
+import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CloseIcon from "@mui/icons-material/Close";
@@ -27,6 +28,9 @@ interface IconProps {
 }
 
 const Icons = {
+	Add: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<AddIcon {...props} ref={ref} />
+	)),
 	ArrowBack: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<ArrowBackIosIcon {...props} ref={ref} style={{ color: "#FFFFFF" }} />
 	)),

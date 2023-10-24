@@ -8,16 +8,7 @@ import { setNotification } from "./notificationReducer";
 import userService from "../services/user";
 
 const initialUserState: IUser = {
-	user: {
-		id: "",
-		userName: "",
-		email: "",
-		password: "",
-		userFirstName: "",
-		userLastName: "",
-		userPicture: "",
-		token: "",
-	},
+	user: null,
 	loadingUser: true,
 	error: "",
 };
@@ -104,7 +95,7 @@ export const signOutUser = () => {
 					})
 				)
 			);
-		dispatch(setUserInfo(initialUserState.user));
+		dispatch(setUserInfo(null));
 	};
 };
 
