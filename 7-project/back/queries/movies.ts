@@ -47,40 +47,19 @@ export const movieQueries = {
         "name" VARCHAR(100) NOT NULL,
         "character" VARCHAR(100) NOT NULL,
         "profile" VARCHAR(100) NOT NULL
-    )`,
+        )`,
 	insertCast: `INSERT INTO "cast" ("id", "tmdb_id", "name", "character", "profile") VALUES ($1, $2, $3, $4, $5)`,
 
 	findFirst10: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" WHERE "video_count" > 0 ORDER BY random() LIMIT 10`,
 	findAll: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" LIMIT 100`,
 
-	findTop20: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" ORDER BY "vote_average" DESC LIMIT 20`,
-	findTopAction: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" WHERE 28=ANY("genres") ORDER BY "vote_count" DESC LIMIT 20`,
+	findTop20: `SELECT "id", "backdrop", "popularity", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" ORDER BY "popularity" DESC LIMIT 20`,
+	findTopAction: `SELECT "id", "backdrop", "popularity", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" WHERE 28=ANY("genres") ORDER BY "vote_count" DESC LIMIT 20`,
 
-	findTopHorror: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" WHERE 27=ANY("genres") ORDER BY "vote_count" DESC LIMIT 20`,
+	findTopHorror: `SELECT "id", "backdrop", "popularity", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" WHERE 27=ANY("genres") ORDER BY "vote_average" DESC LIMIT 20`,
 
 	findMovieByTMDBId: `SELECT * FROM "movies" WHERE "tmdb_id" = $1`,
 	findMovieById: `SELECT * FROM "movies" WHERE "id" = $1`,
 	findVideosById: `SELECT * FROM "videos" WHERE "id" = $1`,
 	findCastById: `SELECT * FROM "cast" WHERE "tmdb_id" = $1`,
 };
-
-// GENRE LIST
-// Action          28
-// Adventure       12
-// Animation       16
-// Comedy          35
-// Crime           80
-// Documentary     99
-// Drama           18
-// Family          10751
-// Fantasy         14
-// History         36
-// Horror          27
-// Music           10402
-// Mystery         9648
-// Romance         10749
-// Science Fiction 878
-// TV Movie        10770
-// Thriller        53
-// War             10752
-// Western         37

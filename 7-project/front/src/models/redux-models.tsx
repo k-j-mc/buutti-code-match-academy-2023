@@ -1,4 +1,5 @@
 import { IMovieMinimal, MovieInterface } from "./movie-models";
+import { IReview } from "./review-models";
 
 export interface IVideo {
 	id: string;
@@ -63,4 +64,9 @@ export interface INotification {
 	timeOut: number;
 	message: string;
 	variant: "success" | "info" | "warning" | "error" | undefined;
+}
+
+export interface ReviewArrayModel {
+	movieReviews: IReview[];
+	loadingMovieReviews: boolean;
 }

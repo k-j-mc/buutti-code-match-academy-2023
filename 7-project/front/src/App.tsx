@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import { useAppDispatch } from "./hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks";
 
 import movieService from "./services/movies";
 
@@ -25,6 +25,8 @@ import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
 
 import ErrorPage from "./pages/ErrorPage";
 
+import LoaderLargeCircle from "./components/Loaders/LoaderLargeCircle";
+
 const App = () => {
 	const dispatch = useAppDispatch();
 
@@ -47,22 +49,39 @@ const App = () => {
 		}
 	}, []);
 
+	const { loadingAllMovies, loadingTopRatedMovies, topRatedMovies } =
+		useAppSelector((state) => state.movies);
+
 	return (
 		<div className="main">
 			<NavigationBar />
-
-			<Routes>
-				<Route path="/" element={<HomePage />} />
-				<Route path="/sign-in" element={<SignInPage />} />
-				<Route path="/sign-up" element={<SignUpPage />} />
-				<Route
-					path="/password-reset"
-					element={<ForgotPasswordPage />}
+			{!loadingAllMovies && !loadingTopRatedMovies ? (
+				<Routes>
+					<Route path="/" element={<HomePage />} />
+					<Route path="/sign-in" element={<SignInPage />} />
+					<Route path="/sign-up" element={<SignUpPage />} />
+					<Route
+						path="/password-reset"
+						element={<ForgotPasswordPage />}
+					/>
+					<Route
+						path="/movie/:id"
+						element={
+							<MovieDetailPage
+								popularityCeil={topRatedMovies[0].popularity}
+							/>
+						}
+					/>
+					<Route path="/video/:id" element={<MovieVideoPage />} />
+					<Route path="*" element={<ErrorPage />} />
+				</Routes>
+			) : (
+				<LoaderLargeCircle
+					loading={loadingAllMovies}
+					styleName="loaderMain"
+					size={200}
 				/>
-				<Route path="/movie/:id" element={<MovieDetailPage />} />
-				<Route path="/video/:id" element={<MovieVideoPage />} />
-				<Route path="*" element={<ErrorPage />} />
-			</Routes>
+			)}
 		</div>
 	);
 };

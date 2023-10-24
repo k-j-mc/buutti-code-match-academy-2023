@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 
 import { getMovieById, getMovieVideos } from "../../reducers/movieReducer";
+import { getMovieReviews } from "../../reducers/reviewReducer";
 
 import {
 	Card,
@@ -24,6 +25,7 @@ const LargeHorizontalMovieCards = ({ data }: MovieType) => {
 	const handleNavigationClick = (movie: IMovieMinimal) => {
 		dispatch(getMovieById(movie.id));
 		dispatch(getMovieVideos(movie.id));
+		dispatch(getMovieReviews(movie.id));
 
 		navigate(`/movie/${movie.id}`);
 	};
@@ -42,6 +44,7 @@ const LargeHorizontalMovieCards = ({ data }: MovieType) => {
 				<ImageListItem key={movie.id}>
 					<Card
 						sx={{
+							height: "225px",
 							width: "150px",
 							marginRight: "auto",
 							mt: 4,

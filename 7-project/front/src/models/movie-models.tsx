@@ -48,6 +48,7 @@ export interface IMovieMinimal {
 	id: string;
 	backdrop: string;
 	genreNames: string[];
+	popularity: number;
 	poster: string;
 	tagline: string;
 	title: string;

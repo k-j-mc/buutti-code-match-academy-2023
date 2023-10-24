@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 
 import { getMovieById, getMovieVideos } from "../../reducers/movieReducer";
+import { getMovieReviews } from "../../reducers/reviewReducer";
 
 import {
 	Button,
@@ -32,6 +33,7 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 	const handleNavigation = (data: IMovieMinimal, destination: string) => {
 		dispatch(getMovieById(data.id));
 		dispatch(getMovieVideos(data.id));
+		dispatch(getMovieReviews(data.id));
 
 		if (destination === "details") {
 			navigate(`/movie/${data.id}`);
