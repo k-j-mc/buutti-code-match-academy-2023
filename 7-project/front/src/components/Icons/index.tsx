@@ -19,6 +19,8 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Search from "@mui/icons-material/Search";
 import ShareIcon from "@mui/icons-material/Share";
 import StarIcon from "@mui/icons-material/Star";
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
@@ -47,6 +49,9 @@ const Icons = {
 	DarkMode: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<DarkModeIcon {...props} ref={ref} />
 	)),
+	Dislike: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<ThumbDownOffAltIcon {...props} ref={ref} />
+	)),
 	Down: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<KeyboardArrowDownIcon {...props} ref={ref} />
 	)),
@@ -65,6 +70,9 @@ const Icons = {
 	)),
 	LightMode: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<LightModeIcon {...props} ref={ref} />
+	)),
+	Like: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<ThumbUpOffAltIcon {...props} ref={ref} />
 	)),
 	Menu: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<MenuIcon {...props} ref={ref} />

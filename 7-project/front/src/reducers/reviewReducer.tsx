@@ -1,4 +1,5 @@
 import { ReviewArrayModel } from "../models/redux-models";
+import { IEditReviewLikes } from "../models/review-models";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { AppDispatch } from "./store";
@@ -16,19 +17,28 @@ const reviewSlice = createSlice({
 	initialState: initialReviewState,
 	reducers: {
 		setReviews(state, action) {
-			state.loadingMovieReviews = false;
 			state.movieReviews = action.payload;
+			state.loadingMovieReviews = false;
+		},
+		addLikes(state, action) {
+			state.movieReviews = state.movieReviews
+				.map((obj) =>
+					obj.id === action.payload.id
+						? { ...action.payload }
+						: { ...obj }
+				)
+				.sort((a, b) => b.likes - a.likes);
+			state.loadingMovieReviews = false;
 		},
 	},
 });
 
-export const { setReviews } = reviewSlice.actions;
+export const { setReviews, addLikes } = reviewSlice.actions;
 
 export const getMovieReviews = (movieId: string) => {
 	return async (dispatch: AppDispatch) => {
 		let reviews = await reviewService.getReviews(movieId);
 
-		console.log("getting reviewss");
 		for (let i = 0; i < reviews.length; i++) {
 			let info = await userService.findUserBasicInfo(reviews[i].user_id);
 			reviews[i].userName = info[0].userName;
@@ -37,6 +47,20 @@ export const getMovieReviews = (movieId: string) => {
 		}
 
 		dispatch(setReviews(reviews));
+	};
+};
+
+export const likeReview = (review: IEditReviewLikes) => {
+	return async (dispatch: AppDispatch) => {
+		const newObj = {
+			id: review.id,
+			likes: review.likes,
+			dislikes: review.dislikes,
+		};
+
+		await reviewService.editReviewLikes(newObj);
+
+		dispatch(addLikes(review));
 	};
 };
 

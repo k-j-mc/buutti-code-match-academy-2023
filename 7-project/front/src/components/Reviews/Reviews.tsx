@@ -1,18 +1,9 @@
 import { useState } from "react";
-import { useAppSelector } from "../../hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 
-import {
-	Button,
-	Card,
-	CardActions,
-	CardMedia,
-	CardContent,
-	Grid,
-	IconButton,
-	InputAdornment,
-	Typography,
-	Rating,
-} from "@mui/material";
+import { likeReview } from "../../reducers/reviewReducer";
+
+import { Button, Grid } from "@mui/material";
 
 import { IReview } from "../../models/review-models";
 
@@ -28,14 +19,24 @@ type TReview = {
 	loadingMovieReviews: boolean;
 };
 
-const Reviews = ({ movieReviews, loadingMovieReviews }: TReview) => {
+const Reviews = () => {
+	const dispatch = useAppDispatch();
+
 	const { user } = useAppSelector((state) => state.user);
+
+	const { movieReviews, loadingMovieReviews } = useAppSelector(
+		(state) => state.reviews
+	);
 
 	const [reviewActive, setReviewActive] = useState<boolean>(false);
 
-	console.log(user);
-	console.log(movieReviews);
-	console.log(loadingMovieReviews);
+	const handleLikes = (review: IReview, type: string) => {
+		if (type === "like") {
+			dispatch(likeReview({ ...review, likes: review.likes + 1 }));
+		} else {
+			dispatch(likeReview({ ...review, dislikes: review.dislikes + 1 }));
+		}
+	};
 
 	return (
 		<div className="reviews">
@@ -93,7 +94,14 @@ const Reviews = ({ movieReviews, loadingMovieReviews }: TReview) => {
 							) : (
 								reviewActive && !user && <NoUser />
 							)}
-							<ReviewList movieReviews={movieReviews} />
+							{movieReviews.length > 0 ? (
+								<ReviewList
+									movieReviews={movieReviews}
+									handleLikes={handleLikes}
+								/>
+							) : (
+								<NoReviews />
+							)}
 						</div>
 					) : (
 						<p>loading Reviews...</p>

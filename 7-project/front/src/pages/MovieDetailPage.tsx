@@ -54,7 +54,7 @@ const MovieDetailPage = ({ popularityCeil }: TPopularity) => {
 	}, []);
 
 	return (
-		<div className="detailsPage">
+		<div>
 			{!loadingVideo && movie.length > 0 && movie.length > 0 ? (
 				<>
 					<div className="detailsPage">
@@ -64,10 +64,7 @@ const MovieDetailPage = ({ popularityCeil }: TPopularity) => {
 						/>
 					</div>
 					<div className="reviews">
-						<Reviews
-							movieReviews={movieReviews}
-							loadingMovieReviews={loadingMovieReviews}
-						/>
+						<Reviews />
 					</div>
 				</>
 			) : (
