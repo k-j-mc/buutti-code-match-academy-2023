@@ -1,8 +1,10 @@
 import { ReviewArrayModel } from "../models/redux-models";
-import { IEditReviewLikes } from "../models/review-models";
+import { IEditReviewLikes, INewReview } from "../models/review-models";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { AppDispatch } from "./store";
+
+import { setNotification } from "./notificationReducer";
 
 import reviewService from "../services/reviews";
 import userService from "../services/user";
@@ -30,10 +32,14 @@ const reviewSlice = createSlice({
 				.sort((a, b) => b.likes - a.likes);
 			state.loadingMovieReviews = false;
 		},
+		addReview(state, action) {
+			state.movieReviews.push(action.payload);
+			state.loadingMovieReviews = false;
+		},
 	},
 });
 
-export const { setReviews, addLikes } = reviewSlice.actions;
+export const { setReviews, addLikes, addReview } = reviewSlice.actions;
 
 export const getMovieReviews = (movieId: string) => {
 	return async (dispatch: AppDispatch) => {
@@ -47,6 +53,32 @@ export const getMovieReviews = (movieId: string) => {
 		}
 
 		dispatch(setReviews(reviews));
+	};
+};
+
+export const createReview = (review: INewReview) => {
+	return async (dispatch: AppDispatch) => {
+		await reviewService
+			.insertReview(review)
+			.then((response) => {
+				dispatch(addReview(response));
+				dispatch(
+					setNotification({
+						message: `Thank you for your feedback!`,
+						variant: "success",
+						timeOut: 5000,
+					})
+				);
+			})
+			.catch((error) =>
+				dispatch(
+					setNotification({
+						message: error.response.data.error,
+						variant: "error",
+						timeOut: 0,
+					})
+				)
+			);
 	};
 };
 

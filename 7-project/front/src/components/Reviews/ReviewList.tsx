@@ -21,13 +21,18 @@ import Icons from "../Icons";
 type TReview = {
 	movieReviews: IReview[];
 	handleLikes: Function;
+	showNumberResults: number;
 };
 
 type TSpoilers = {
 	[key: string]: boolean;
 };
 
-const ReviewList = ({ movieReviews, handleLikes }: TReview) => {
+const ReviewList = ({
+	movieReviews,
+	handleLikes,
+	showNumberResults,
+}: TReview) => {
 	const { user } = useAppSelector((state) => state.user);
 
 	const [spoilers, setSpoilers] = useState<TSpoilers>({});
@@ -41,7 +46,7 @@ const ReviewList = ({ movieReviews, handleLikes }: TReview) => {
 
 	return (
 		<List style={{ width: "100%" }}>
-			{movieReviews.map((review: IReview) => (
+			{movieReviews.slice(0, showNumberResults).map((review: IReview) => (
 				<Card
 					style={{
 						width: "100%",

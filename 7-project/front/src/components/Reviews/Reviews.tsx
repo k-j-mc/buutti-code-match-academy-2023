@@ -12,6 +12,8 @@ import ReviewList from "./ReviewList";
 import NoReviews from "./NoReviews";
 import NoUser from "./NoUser";
 
+import Notification from "../Notifications/NotificationBox";
+
 import Icons from "../Icons";
 
 type TReview = {
@@ -28,7 +30,8 @@ const Reviews = () => {
 		(state) => state.reviews
 	);
 
-	const [reviewActive, setReviewActive] = useState<boolean>(false);
+	const [reviewFormActive, setReviewFormActive] = useState<boolean>(false);
+	const [showNumberResults, setShowNumberResults] = useState<number>(1);
 
 	const handleLikes = (review: IReview, type: string) => {
 		if (type === "like") {
@@ -36,6 +39,10 @@ const Reviews = () => {
 		} else {
 			dispatch(likeReview({ ...review, dislikes: review.dislikes + 1 }));
 		}
+	};
+
+	const handleResultsLength = () => {
+		setShowNumberResults(showNumberResults + 5);
 	};
 
 	return (
@@ -46,6 +53,8 @@ const Reviews = () => {
 				<Grid item lg={8} md={10} xs={11}>
 					{!loadingMovieReviews ? (
 						<div>
+							<Notification />
+
 							<h2
 								className="headerPageInfo"
 								style={{ display: "inline-block" }}
@@ -60,7 +69,7 @@ const Reviews = () => {
 								{movieReviews.length}
 							</h3>
 
-							{!reviewActive ? (
+							{!reviewFormActive ? (
 								<Button
 									style={{
 										float: "right",
@@ -69,7 +78,7 @@ const Reviews = () => {
 									color="primary"
 									startIcon={<Icons.Add />}
 									onClick={() =>
-										setReviewActive(!reviewActive)
+										setReviewFormActive(!reviewFormActive)
 									}
 								>
 									Leave a review
@@ -83,29 +92,48 @@ const Reviews = () => {
 									color="error"
 									startIcon={<Icons.Close />}
 									onClick={() =>
-										setReviewActive(!reviewActive)
+										setReviewFormActive(!reviewFormActive)
 									}
 								>
 									Cancel
 								</Button>
 							)}
-							{reviewActive && user ? (
-								<ReviewForm />
+							{reviewFormActive && user ? (
+								<ReviewForm
+									setReviewFormActive={setReviewFormActive}
+								/>
 							) : (
-								reviewActive && !user && <NoUser />
+								reviewFormActive && !user && <NoUser />
 							)}
-							{movieReviews.length > 0 ? (
+							{movieReviews.length > 0 && !reviewFormActive ? (
 								<ReviewList
 									movieReviews={movieReviews}
 									handleLikes={handleLikes}
+									showNumberResults={showNumberResults}
 								/>
 							) : (
-								<NoReviews />
+								!reviewFormActive && <NoReviews />
 							)}
 						</div>
 					) : (
 						<p>loading Reviews...</p>
 					)}
+					<div
+						style={{
+							margin: "-20px 0 10px 0",
+							textAlign: "center",
+						}}
+					>
+						{movieReviews.length > showNumberResults &&
+							!reviewFormActive && (
+								<Button
+									onClick={handleResultsLength}
+									startIcon={<Icons.Add />}
+								>
+									Show more results
+								</Button>
+							)}
+					</div>
 				</Grid>
 				<Grid item lg={2} md={1} xs={0.5} />
 			</Grid>

@@ -20,7 +20,7 @@ export interface INewReview {
 	spoilers: boolean;
 	title: string;
 	review: string;
-	rating: number;
+	rating: number | null;
 	likes: number;
 	dislikes: number;
 }

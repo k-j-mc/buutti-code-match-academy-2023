@@ -40,7 +40,7 @@ router.post("/:id", async (request: Request, response: Response) => {
 	const result = await insertNewReview(reviewObject);
 
 	if (result) {
-		response.status(201).json(result);
+		response.status(201).json(reviewObject);
 	} else {
 		response.status(400).json({
 			error: "Unable to process review at this time, please try again",
