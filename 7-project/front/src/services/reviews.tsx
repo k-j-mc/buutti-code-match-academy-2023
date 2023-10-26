@@ -65,7 +65,7 @@ const deleteReview = async (review: IDeleteReview) => {
 	};
 
 	const response = await axios
-		.put(`${baseUrl}/reviews/${review.id}`, review, config)
+		.delete(`${baseUrl}/reviews/${review.id}/${review.user_id}`, config)
 		.then((response) => response);
 
 	return response.data;

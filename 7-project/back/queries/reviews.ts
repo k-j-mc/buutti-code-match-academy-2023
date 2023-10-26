@@ -20,5 +20,5 @@ export const reviewQueries = {
 	editReviewLikesById: `UPDATE "reviews" SET "likes" = $2, "dislikes" = $3 WHERE "id" = $1`,
 	deleteReviewById: `DELETE FROM "reviews" WHERE "id" = $1`,
 	findReviewsByMovieId: `SELECT reviews.*, "userName", "userFirstName", "userLastName", "userPicture"
-    FROM reviews INNER JOIN users ON reviews.user_id = users.id WHERE reviews.movie_id = $1`,
+    FROM reviews INNER JOIN users ON reviews.user_id = users.id WHERE reviews.movie_id = $1 ORDER BY "likes" DESC`,
 };

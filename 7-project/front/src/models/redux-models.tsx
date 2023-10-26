@@ -43,6 +43,35 @@ export interface IUserSignIn {
 	password: string;
 }
 
+export interface INewWatchListPayload {
+	user_id: string;
+	movie_id: string;
+}
+
+export interface IMovieListMinimal {
+	id: string;
+	backdrop: string;
+	popularity: number;
+	poster: string;
+	tagline: string;
+	title: string;
+	video_count: number;
+	vote_average: number;
+	vote_count: number;
+}
+
+export interface INewWatchListItem {
+	user_id: string;
+	movie: IMovieListMinimal;
+}
+
+export interface IWatchList {
+	id: string;
+	user_id: string;
+	movie_id: string;
+	date_added: string;
+}
+
 export interface IUserSignedIn {
 	id: string;
 	userName: string;
@@ -52,6 +81,7 @@ export interface IUserSignedIn {
 	userLastName: string;
 	userPicture: string | null;
 	token: string;
+	watchList: IWatchList[];
 }
 
 export interface IUser {

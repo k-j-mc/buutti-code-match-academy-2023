@@ -5,6 +5,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CloseIcon from "@mui/icons-material/Close";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";
@@ -34,6 +35,9 @@ const Icons = {
 	Add: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<AddIcon {...props} ref={ref} />
 	)),
+	AddBlue: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<AddIcon {...props} ref={ref} style={{ color: "#00d4ff" }} />
+	)),
 	ArrowBack: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<ArrowBackIosIcon {...props} ref={ref} style={{ color: "#FFFFFF" }} />
 	)),
@@ -49,6 +53,9 @@ const Icons = {
 	)),
 	DarkMode: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<DarkModeIcon {...props} ref={ref} />
+	)),
+	Delete: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<DeleteIcon {...props} ref={ref} />
 	)),
 	Dislike: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<ThumbDownOffAltIcon {...props} ref={ref} />

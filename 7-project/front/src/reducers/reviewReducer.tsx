@@ -1,5 +1,10 @@
 import { ReviewArrayModel } from "../models/redux-models";
-import { IEditReviewLikes, INewReview } from "../models/review-models";
+import {
+	IEditReviewLikes,
+	INewReview,
+	IEditReview,
+	IDeleteReview,
+} from "../models/review-models";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { AppDispatch } from "./store";
@@ -36,10 +41,31 @@ const reviewSlice = createSlice({
 			state.movieReviews.push(action.payload);
 			state.loadingMovieReviews = false;
 		},
+		editedReview(state, action) {
+			state.movieReviews = state.movieReviews.map((obj) =>
+				obj.id === action.payload.id
+					? {
+							...obj,
+							title: action.payload.title,
+							review: action.payload.review,
+							rating: action.payload.rating,
+							spoilers: action.payload.spoilers,
+					  }
+					: obj
+			);
+			state.loadingMovieReviews = false;
+		},
+		removeReview(state, action) {
+			state.movieReviews = state.movieReviews.filter(
+				(obj) => obj.id !== action.payload.id
+			);
+			state.loadingMovieReviews = false;
+		},
 	},
 });
 
-export const { setReviews, addLikes, addReview } = reviewSlice.actions;
+export const { setReviews, addLikes, addReview, editedReview, removeReview } =
+	reviewSlice.actions;
 
 export const getMovieReviews = (movieId: string) => {
 	return async (dispatch: AppDispatch) => {
@@ -83,10 +109,78 @@ export const likeReview = (review: IEditReviewLikes) => {
 			dislikes: review.dislikes,
 		};
 
-		await reviewService.editReviewLikes(newObj);
-
-		dispatch(addLikes(review));
+		await reviewService
+			.editReviewLikes(newObj)
+			.then((response) => {
+				dispatch(addLikes(review));
+				dispatch(
+					setNotification({
+						message: `Feedback submitted successfully!`,
+						variant: "success",
+						timeOut: 5000,
+					})
+				);
+			})
+			.catch((error) =>
+				dispatch(
+					setNotification({
+						message: error.response.data.error,
+						variant: "error",
+						timeOut: 0,
+					})
+				)
+			);
 	};
 };
 
+export const editReview = (review: IEditReview) => {
+	return async (dispatch: AppDispatch) => {
+		await reviewService
+			.editReview(review)
+			.then((response) => {
+				dispatch(editedReview(review));
+				dispatch(
+					setNotification({
+						message: `Review edited successfully!`,
+						variant: "success",
+						timeOut: 5000,
+					})
+				);
+			})
+			.catch((error) =>
+				dispatch(
+					setNotification({
+						message: error.response.data.error,
+						variant: "error",
+						timeOut: 0,
+					})
+				)
+			);
+	};
+};
+export const deleteReview = (review: IDeleteReview) => {
+	return async (dispatch: AppDispatch) => {
+		await reviewService
+			.deleteReview(review)
+			.then((response) => {
+				dispatch(removeReview(review));
+				dispatch(
+					setNotification({
+						message: `Review successfully removed!`,
+						variant: "success",
+						timeOut: 5000,
+					})
+				);
+			})
+			.catch((error) =>
+				dispatch(
+					setNotification({
+						message: error.response.data.error,
+						variant: "error",
+						timeOut: 0,
+					})
+				)
+			);
+	};
+};
 export default reviewSlice.reducer;

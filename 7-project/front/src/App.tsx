@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks";
 
 import movieService from "./services/movies";
 import reviewService from "./services/reviews";
+import watchListService from "./services/watchList";
 
 import { userInfo, signOutUser } from "./reducers/userReducer";
 import {
@@ -48,6 +49,7 @@ const App = () => {
 
 			movieService.setToken(user.token);
 			reviewService.setToken(user.token);
+			watchListService.setToken(user.token);
 		} else {
 			dispatch(signOutUser());
 		}

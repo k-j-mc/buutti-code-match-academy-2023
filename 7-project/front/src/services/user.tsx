@@ -3,9 +3,19 @@ import axios from "axios";
 import movieService from "./movies";
 import reviewService from "./reviews";
 
-import { IUserSignUp, IUserSignIn } from "../models/redux-models";
+import {
+	IUserSignedIn,
+	IUserSignUp,
+	IUserSignIn,
+} from "../models/redux-models";
 
 const baseUrl = "http://localhost:5000";
+
+const setLocalStorage = (user: IUserSignedIn) => {
+	window.localStorage.setItem("signedInMLiBUser", JSON.stringify(user));
+
+	return;
+};
 
 const registerUser = async (userPayload: IUserSignUp) => {
 	const response = await axios.post(`${baseUrl}/user/sign-up/`, userPayload);
@@ -23,10 +33,7 @@ const signUserIn = async (userPayload: IUserSignIn) => {
 	const response = await axios.post(`${baseUrl}/user/sign-in/`, userPayload);
 
 	if (response.data.token) {
-		window.localStorage.setItem(
-			"signedInMLiBUser",
-			JSON.stringify(response.data)
-		);
+		setLocalStorage(response.data);
 
 		movieService.setToken(response.data.token);
 		reviewService.setToken(response.data.token);
@@ -53,6 +60,7 @@ const signUserOut = async () => {
 };
 
 const userService = {
+	setLocalStorage,
 	registerUser,
 	signUserIn,
 	findUserBasicInfo,

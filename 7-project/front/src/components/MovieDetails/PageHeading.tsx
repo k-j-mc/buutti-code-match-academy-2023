@@ -1,18 +1,26 @@
-import { useEffect, Fragment } from "react";
+import { useEffect, useState, Fragment } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+import {
+	addWatchListItem,
+	removeWatchListItem,
+} from "../../reducers/userReducer";
 
 import {
 	Box,
 	Card,
+	CardActions,
 	CardMedia,
 	Chip,
 	CircularProgress,
 	Grid,
+	IconButton,
 	Paper,
 	Rating,
 	Typography,
 } from "@mui/material";
 
 import { MovieInterface } from "../../models/movie-models";
+import { INewWatchListItem } from "../../models/redux-models";
 
 import countryData from "../../tools/countryData";
 
@@ -25,6 +33,24 @@ type TMovieDetails = {
 };
 
 const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
+	const dispatch = useAppDispatch();
+
+	const { user } = useAppSelector((state) => state.user);
+
+	const [isInWatchList, setIsInWatchList] = useState<boolean | null>(null);
+
+	useEffect(() => {
+		const exists = user?.watchList.filter(
+			(obj) => obj.movie_id === movie.id
+		);
+
+		if (exists && exists.length > 0) {
+			setIsInWatchList(true);
+		} else {
+			setIsInWatchList(false);
+		}
+	}, [user]);
+
 	const voteCount = (count: number) => {
 		if (count < 1000) {
 			return " " + count;
@@ -40,6 +66,38 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 			return parseInt(((100 * popularity) / popularityCeil).toFixed());
 		} else {
 			return 0;
+		}
+	};
+
+	const handleWatchListAdd = (movie: MovieInterface) => {
+		let userId = "";
+		if (user) {
+			userId = user.id;
+		}
+
+		const movieObject = {
+			id: movie.id,
+			backdrop: movie.backdrop,
+			popularity: movie.popularity,
+			poster: movie.poster,
+			tagline: movie.tagline,
+			title: movie.title,
+			video_count: movie.video_count,
+			vote_average: movie.vote_average,
+			vote_count: movie.vote_count,
+		};
+
+		const payload: INewWatchListItem = {
+			movie: movieObject,
+			user_id: userId,
+		};
+
+		dispatch(addWatchListItem(payload));
+	};
+
+	const handleWatchListRemove = () => {
+		if (user && user.id) {
+			dispatch(removeWatchListItem(movie.id, user.id, movie.title));
 		}
 	};
 
@@ -199,6 +257,31 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 					</Grid>
 
 					<p>{movie.overview}</p>
+					<CardActions>
+						{!isInWatchList ? (
+							<>
+								<IconButton
+									onClick={() => handleWatchListAdd(movie)}
+									size="large"
+								>
+									<Icons.AddBlue />
+								</IconButton>
+								<h4 style={{ color: "#00d4ff" }}>
+									Add to Watch List
+								</h4>
+							</>
+						) : (
+							<>
+								<IconButton
+									onClick={handleWatchListRemove}
+									size="large"
+								>
+									<Icons.Add />
+								</IconButton>
+								<h4>Remove from Watch List</h4>
+							</>
+						)}
+					</CardActions>
 				</Grid>
 				<Grid item lg={2} md={1} sm={0.5} xs={0.5} />
 

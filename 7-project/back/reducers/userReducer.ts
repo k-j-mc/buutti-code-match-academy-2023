@@ -4,6 +4,7 @@ import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 
 import { insertUser, findUser, findUserBasicInfoById } from "../actions/user";
+import { getAllListItems } from "../actions/watchList";
 
 const router = Router();
 
@@ -38,10 +39,12 @@ router.get("/", (request: Request, response: Response) => {
 router.get("/:id", async (request: Request, response: Response) => {
 	const { id } = request.params;
 
-	const result = await findUserBasicInfoById(id);
+	const user = await findUserBasicInfoById(id);
 
-	if (result.length > 0) {
-		response.status(200).json(result);
+	const watchList = await getAllListItems(id);
+
+	if (user.length > 0) {
+		response.status(200).json({ user, watchList });
 	} else {
 		response.status(400).json({ error: "Error processing request" });
 	}
@@ -60,11 +63,13 @@ router.post("/sign-in", async (request: Request, response: Response) => {
 	if (result.length > 0) {
 		const token = await getToken(email, result[0].id);
 
+		const watchList = await getAllListItems(result[0].id);
+
 		const passwordMatch = await argon2
 			.verify(result[0].password, request.body.password)
 			.then((result) => result);
 		if (passwordMatch && token) {
-			response.status(200).json({ ...payload, token: token });
+			response.status(200).json({ ...payload, watchList, token: token });
 		} else {
 			response.status(401).json({ error: `Incorrect password!` });
 		}

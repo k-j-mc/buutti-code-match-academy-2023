@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useAppSelector } from "../../hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+import { deleteReview } from "../../reducers/reviewReducer";
 
 import {
 	Avatar,
@@ -15,6 +16,8 @@ import {
 } from "@mui/material";
 
 import { IReview } from "../../models/review-models";
+
+import ReviewEditForm from "./ReviewEditForm";
 
 import Icons from "../Icons";
 
@@ -33,9 +36,11 @@ const ReviewList = ({
 	handleLikes,
 	showNumberResults,
 }: TReview) => {
+	const dispatch = useAppDispatch();
+
 	const { user } = useAppSelector((state) => state.user);
 
-	const [expanded, setExpanded] = useState(false);
+	const [editFormActive, setEditFormActive] = useState(false);
 
 	const [spoilers, setSpoilers] = useState<TSpoilers>({});
 
@@ -138,14 +143,56 @@ const ReviewList = ({
 					<CardActions>
 						{user && user.id === review.user_id ? (
 							<>
-								<IconButton
-									// onClick={() => handleLikes(review, "dislike")}
-
-									size="large"
-								>
-									<Icons.Edit />
-								</IconButton>
-								<h4>Edit</h4>
+								{!editFormActive ? (
+									<>
+										<IconButton
+											onClick={() =>
+												setEditFormActive(
+													!editFormActive
+												)
+											}
+											size="large"
+										>
+											<Icons.Edit />
+										</IconButton>
+										<h4>Edit</h4>
+										<IconButton
+											onClick={() =>
+												dispatch(
+													deleteReview({
+														id: review.id,
+														user_id: review.user_id,
+													})
+												)
+											}
+											size="large"
+										>
+											<Icons.Delete />
+										</IconButton>
+										<h4>Delete</h4>
+									</>
+								) : (
+									<>
+										<IconButton
+											onClick={() =>
+												setEditFormActive(
+													!editFormActive
+												)
+											}
+											size="large"
+											style={{ verticalAlign: "top" }}
+										>
+											<Icons.Close />
+										</IconButton>
+										<h4>Cancel</h4>
+										<ReviewEditForm
+											review={review}
+											setEditFormActive={
+												setEditFormActive
+											}
+										/>
+									</>
+								)}
 							</>
 						) : (
 							<>

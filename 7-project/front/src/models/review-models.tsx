@@ -28,13 +28,11 @@ export interface INewReview {
 
 export interface IEditReview {
 	id: string;
-	movie_id: string;
-	user_id: string;
 	published_at: string;
 	spoilers: boolean;
 	title: string;
 	review: string;
-	rating: number;
+	rating: number | null;
 	likes: number;
 	dislikes: number;
 }

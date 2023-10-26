@@ -81,37 +81,66 @@ router.post(
 	}
 );
 
-router.put("/:id", async (request: Request, response: Response) => {
-	const id = request.params.id;
-	const found = await findReviewByReviewId(id);
+router.put(
+	"/:id",
+	userExtractor,
+	async (request: Request, response: Response) => {
+		const user = request.user;
 
-	if (found.length > 0) {
-		if (!request.body.review) {
-			const result = await editReviewLikes({ id: id, ...request.body });
+		const id = request.params.id;
+		const found = await findReviewByReviewId(id);
 
-			response.status(204).json(result);
+		console.log(request.body);
+
+		if (!user) {
+			return response.status(401).json({
+				error: "Operation not permitted, you must be logged in.",
+			});
 		} else {
-			const result = await editReview(request.body);
+			if (found.length > 0) {
+				if (!request.body.review) {
+					const result = await editReviewLikes({
+						id: id,
+						...request.body,
+					});
 
-			response.status(204).json(result);
+					response.status(204).json(result);
+				} else {
+					const result = await editReview(request.body);
+
+					response.status(204).json(result);
+				}
+			} else {
+				response.status(404).json({ error: "Review not found" });
+			}
 		}
-	} else {
-		response.status(404).json({ error: "Review not found" });
 	}
-});
+);
 
-router.delete("/:id", async (request: Request, response: Response) => {
-	const id = request.params.id;
+router.delete(
+	"/:id/:user_id",
+	userExtractor,
+	async (request: Request, response: Response) => {
+		const user = request.user;
 
-	const found = await findReviewByReviewId(id);
+		const { id, user_id } = request.params;
 
-	if (found.length > 0) {
-		const result = await deleteMovieReview(id);
+		const found = await findReviewByReviewId(id);
 
-		response.status(204).json(result);
-	} else {
-		response.status(404).json({ error: "Review not found" });
+		if (!user) {
+			return response.status(401).json({
+				error: "Operation not permitted, you must be logged in.",
+			});
+		} else {
+			if (found.length > 0 && found[0].user_id === user_id) {
+				const result = await deleteMovieReview(id);
+
+				response.status(204).json(result);
+			} else {
+				response.status(404).json({ error: "Review not found" });
+			}
+		}
 	}
-});
+);
 
 export default router;

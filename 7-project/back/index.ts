@@ -7,10 +7,12 @@ import { unknownEndpoint, errorHandler } from "./utils/middleware";
 
 import movieReducer from "./reducers/movieReducer";
 import reviewReducer from "./reducers/reviewReducer";
+import watchListReducer from "./reducers/watchListReducer";
 import adminReducer from "./reducers/adminReducer";
 import userReducer from "./reducers/userReducer";
 
 import { createUsersTable } from "./actions/user";
+import { createWatchListTable } from "./actions/watchList";
 import {
 	createMoviesTable,
 	createMoviesVideosTable,
@@ -20,6 +22,7 @@ import {
 import { createReviewsTable } from "./actions/reviews";
 
 createUsersTable();
+createWatchListTable();
 createMoviesTable();
 createMoviesVideosTable();
 createActorsTable();
@@ -36,6 +39,7 @@ const port = process.env.PORT || 5000;
 
 app.use("/", movieReducer);
 app.use("/reviews", reviewReducer);
+app.use("/watch-list", watchListReducer);
 app.use("/admin", adminReducer);
 app.use("/user", userReducer);
 
