@@ -1,5 +1,5 @@
-import { useState, MouseEvent } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState, MouseEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 
@@ -21,6 +21,9 @@ import Icons from "../../components/Icons";
 
 const SignInPage = () => {
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	const { user } = useAppSelector((state) => state.user);
 
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -42,10 +45,15 @@ const SignInPage = () => {
 		};
 
 		dispatch(signInUser(payload));
-
-		setEmail("");
-		setPassword("");
 	};
+
+	useEffect(() => {
+		if (user) {
+			navigate("/");
+			setEmail("");
+			setPassword("");
+		}
+	}, [user]);
 
 	return (
 		<div>

@@ -7,6 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import DoneIcon from "@mui/icons-material/Done";
 import DownloadIcon from "@mui/icons-material/Download";
+import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LightModeIcon from "@mui/icons-material/LightMode";
@@ -57,6 +58,9 @@ const Icons = {
 	)),
 	Download: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<DownloadIcon {...props} ref={ref} />
+	)),
+	Edit: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<EditIcon {...props} ref={ref} />
 	)),
 	ExpandMore: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<ExpandMoreIcon {...props} ref={ref} />

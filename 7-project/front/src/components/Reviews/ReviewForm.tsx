@@ -29,27 +29,33 @@ const ReviewForm = ({ setReviewFormActive }: TReviewForm) => {
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		if (user) {
-			const reviewObject = {
-				movie_id: movie[0].id,
-				title: title,
-				review: review,
-				rating: rating,
-				spoilers: spoilers,
-				user_id: user.id,
-				likes: 0,
-				dislikes: 0,
-			};
+		let userId;
 
-			dispatch(createReview(reviewObject));
-
-			setTitle("");
-			setReview("");
-			setRating(0);
-			setSpoilers(false);
-
-			setReviewFormActive(false);
+		if (!user) {
+			userId = "";
+		} else {
+			userId = user.id;
 		}
+
+		const reviewObject = {
+			movie_id: movie[0].id,
+			title: title,
+			review: review,
+			rating: rating,
+			spoilers: spoilers,
+			user_id: userId,
+			likes: 0,
+			dislikes: 0,
+		};
+
+		dispatch(createReview(reviewObject));
+
+		setTitle("");
+		setReview("");
+		setRating(0);
+		setSpoilers(false);
+
+		setReviewFormActive(false);
 	};
 
 	return (

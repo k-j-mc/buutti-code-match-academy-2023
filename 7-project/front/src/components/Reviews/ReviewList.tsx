@@ -35,6 +35,8 @@ const ReviewList = ({
 }: TReview) => {
 	const { user } = useAppSelector((state) => state.user);
 
+	const [expanded, setExpanded] = useState(false);
+
 	const [spoilers, setSpoilers] = useState<TSpoilers>({});
 
 	const showSpoilers = (id: string) => {
@@ -61,15 +63,26 @@ const ReviewList = ({
 									<Tooltip
 										title={`${review.userFirstName} ${review.userLastName}`}
 									>
-										<Avatar
-											alt={review.userName}
-											className="userUpAvatar"
-											sx={{
-												backgroundColor: "#00d4ff",
-											}}
-										>
-											{review.userName}
-										</Avatar>
+										{review.userPicture ? (
+											<Avatar
+												alt={review.userName}
+												className="userUpAvatar"
+												src={review.userPicture}
+												sx={{
+													backgroundColor: "#00d4ff",
+												}}
+											/>
+										) : (
+											<Avatar
+												alt={review.userName}
+												className="userUpAvatar"
+												sx={{
+													backgroundColor: "#00d4ff",
+												}}
+											>
+												{review.userName}
+											</Avatar>
+										)}
 									</Tooltip>
 								)}
 							</>
@@ -122,24 +135,41 @@ const ReviewList = ({
 						)}
 					</CardContent>
 
-					<CardActions disableSpacing>
-						<IconButton
-							disabled={!user ? true : false}
-							size="large"
-							onClick={() => handleLikes(review, "like")}
-						>
-							<Icons.Like />
-						</IconButton>
-						<h4>Helpful • {review.likes}</h4>
+					<CardActions>
+						{user && user.id === review.user_id ? (
+							<>
+								<IconButton
+									// onClick={() => handleLikes(review, "dislike")}
 
-						<IconButton
-							onClick={() => handleLikes(review, "dislike")}
-							disabled={!user ? true : false}
-							size="large"
-						>
-							<Icons.Dislike />
-						</IconButton>
-						<h4>{review.dislikes}</h4>
+									size="large"
+								>
+									<Icons.Edit />
+								</IconButton>
+								<h4>Edit</h4>
+							</>
+						) : (
+							<>
+								<IconButton
+									disabled={!user ? true : false}
+									size="large"
+									onClick={() => handleLikes(review, "like")}
+								>
+									<Icons.Like />
+								</IconButton>
+								<h4>Helpful • {review.likes}</h4>
+
+								<IconButton
+									onClick={() =>
+										handleLikes(review, "dislike")
+									}
+									disabled={!user ? true : false}
+									size="large"
+								>
+									<Icons.Dislike />
+								</IconButton>
+								<h4>{review.dislikes}</h4>
+							</>
+						)}
 					</CardActions>
 				</Card>
 			))}

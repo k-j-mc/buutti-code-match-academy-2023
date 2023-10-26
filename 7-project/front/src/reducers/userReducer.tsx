@@ -9,6 +9,7 @@ import userService from "../services/user";
 
 const initialUserState: IUser = {
 	user: null,
+	newUser: false,
 	loadingUser: true,
 	error: "",
 };
@@ -22,10 +23,14 @@ const userSlice = createSlice({
 
 			state.user = action.payload;
 		},
+		setNewUser(state, action) {
+			state.newUser = action.payload;
+			state.loadingUser = false;
+		},
 	},
 });
 
-export const { setUserInfo } = userSlice.actions;
+export const { setUserInfo, setNewUser } = userSlice.actions;
 
 export const userInfo = () => {
 	return async (dispatch: AppDispatch) => {
@@ -37,8 +42,28 @@ export const userInfo = () => {
 
 export const signUpUser = (userPayload: IUserSignUp) => {
 	return async (dispatch: AppDispatch) => {
-		const user = await userService.registerUser(userPayload);
-		dispatch(setUserInfo(user));
+		await userService
+			.registerUser(userPayload)
+			.then((response) => {
+				dispatch(
+					setNotification({
+						message: `Account successfully created!`,
+						variant: "success",
+						timeOut: 5000,
+					})
+				);
+				dispatch(setNewUser(true));
+			})
+			.catch((error) =>
+				dispatch(
+					setNotification({
+						message: error.response.data.error,
+						variant: "error",
+						timeOut: 0,
+					})
+				)
+			);
+		dispatch(setNewUser(false));
 	};
 };
 
@@ -70,16 +95,12 @@ export const signInUser = (userPayload: IUserSignIn) => {
 
 export const signOutUser = () => {
 	return async (dispatch: AppDispatch) => {
-		const user = await userService.userDetails();
-
-		let name = user.userFirstName;
-
 		await userService
 			.signUserOut()
 			.then((response) =>
 				dispatch(
 					setNotification({
-						message: `${name} successfully signed out!`,
+						message: `Successfully signed out!`,
 						variant: "success",
 						timeOut: 5000,
 					})

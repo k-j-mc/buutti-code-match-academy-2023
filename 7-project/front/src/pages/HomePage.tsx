@@ -6,6 +6,7 @@ import { Grid } from "@mui/material";
 import { IMovieMinimal } from "../models/movie-models";
 
 import LoaderLargeCircle from "../components/Loaders/LoaderLargeCircle";
+import Notification from "../components/Notifications/NotificationBox";
 
 import LargeMovieCard from "../components/MediaContainers/LargeMovieCard";
 
@@ -71,8 +72,8 @@ const HomePage = () => {
 				<>
 					<Grid container spacing={1}>
 						<Grid item xl={2} xs={0.5} />
-
 						<Grid item xl={5} lg={8} md={11} xs={11}>
+							<Notification />
 							<LargeMovieCard
 								data={isTopPick}
 								handleClick={handleClick}

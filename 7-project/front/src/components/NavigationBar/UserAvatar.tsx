@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 
 import { signOutUser } from "../../reducers/userReducer";
@@ -14,6 +15,7 @@ import {
 
 const UserAvatar = () => {
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const { user } = useAppSelector((state) => state.user);
 
@@ -39,6 +41,7 @@ const UserAvatar = () => {
 
 	const handleSignOut = () => {
 		dispatch(signOutUser());
+		navigate("/");
 	};
 
 	return (

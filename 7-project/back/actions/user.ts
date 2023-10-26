@@ -18,16 +18,7 @@ export const createUsersTable = async () => {
 export const insertUser = async (user: IUser) => {
 	console.log("Creating new user");
 
-	const params = [
-		...Object.values({
-			id: user.id,
-			email: user.email,
-			password: user.password,
-			userName: user.userName,
-			userFirstName: user.userFirstName,
-			userLastName: user.userLastName,
-		}),
-	];
+	const params = [...Object.values(user)];
 
 	const result = await executeQuery(userQueries.insertUser, params);
 

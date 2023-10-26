@@ -12,6 +12,7 @@ export interface IReview {
 	userName: string | null;
 	userFirstName: string | null;
 	userLastName: string | null;
+	userPicture: string | null;
 }
 
 export interface INewReview {

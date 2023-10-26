@@ -43,14 +43,7 @@ export const { setReviews, addLikes, addReview } = reviewSlice.actions;
 
 export const getMovieReviews = (movieId: string) => {
 	return async (dispatch: AppDispatch) => {
-		let reviews = await reviewService.getReviews(movieId);
-
-		for (let i = 0; i < reviews.length; i++) {
-			let info = await userService.findUserBasicInfo(reviews[i].user_id);
-			reviews[i].userName = info[0].userName;
-			reviews[i].userFirstName = info[0].userFirstName;
-			reviews[i].userLastName = info[0].userLastName;
-		}
+		const reviews = await reviewService.getReviews(movieId);
 
 		dispatch(setReviews(reviews));
 	};

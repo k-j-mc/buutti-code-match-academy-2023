@@ -1,6 +1,8 @@
 import { Request, Response, Router } from "express";
 import { v4 as uuid } from "uuid";
 
+import { userExtractor } from "../utils/middleware";
+
 import {
 	findReviewsByMovieId,
 	findReviewByReviewId,
@@ -12,41 +14,72 @@ import {
 
 const router = Router();
 
+import { IUser } from "./userReducer";
+
+declare module "express-serve-static-core" {
+	interface Request {
+		user?: IUser[];
+		token?: string | null;
+	}
+	interface Response {
+		user?: IUser[];
+		token?: string | null;
+	}
+}
+
 router.get("/:id", async (request: Request, response: Response) => {
 	const result = await findReviewsByMovieId(request.params.id);
 
 	response.status(200).json(result);
 });
 
-router.post("/:id", async (request: Request, response: Response) => {
-	const newReviewId = uuid();
-	const reviewDate = new Date();
+router.post(
+	"/:id",
+	userExtractor,
+	async (request: Request, response: Response) => {
+		const user = request.user;
 
-	const { movie_id, user_id, spoilers, title, review, rating } = request.body;
+		const newReviewId = uuid();
+		const reviewDate = new Date();
 
-	const reviewObject = {
-		id: newReviewId,
-		movie_id: movie_id,
-		user_id: user_id,
-		published_at: reviewDate.toString(),
-		spoilers: spoilers,
-		title: title,
-		review: review,
-		rating: rating,
-		likes: 0,
-		dislikes: 0,
-	};
+		const { movie_id, user_id, spoilers, title, review, rating } =
+			request.body;
 
-	const result = await insertNewReview(reviewObject);
+		const reviewObject = {
+			id: newReviewId,
+			movie_id: movie_id,
+			user_id: user_id,
+			published_at: reviewDate.toString(),
+			spoilers: spoilers,
+			title: title,
+			review: review,
+			rating: rating,
+			likes: 0,
+			dislikes: 0,
+		};
 
-	if (result) {
-		response.status(201).json(reviewObject);
-	} else {
-		response.status(400).json({
-			error: "Unable to process review at this time, please try again",
-		});
+		if (!user) {
+			return response.status(401).json({
+				error: "Operation not permitted, you must be logged in.",
+			});
+		} else {
+			const result = await insertNewReview(reviewObject);
+			if (result) {
+				const userObj = {
+					userName: user[0].userName,
+					userFirstName: user[0].userFirstName,
+					userLastName: user[0].userLastName,
+					userPicture: user[0].userPicture,
+				};
+				response.status(200).json({ ...reviewObject, ...userObj });
+			} else {
+				response.status(400).json({
+					error: "Unable to process review at this time, please try again",
+				});
+			}
+		}
 	}
-});
+);
 
 router.put("/:id", async (request: Request, response: Response) => {
 	const id = request.params.id;
@@ -71,8 +104,6 @@ router.delete("/:id", async (request: Request, response: Response) => {
 	const id = request.params.id;
 
 	const found = await findReviewByReviewId(id);
-
-	console.log(found);
 
 	if (found.length > 0) {
 		const result = await deleteMovieReview(id);

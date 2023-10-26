@@ -1,3 +1,5 @@
+import { findReviewsByMovieId } from "../actions/reviews";
+
 export const reviewQueries = {
 	createReviewsTable: `
     CREATE TABLE IF NOT EXISTS "reviews" (
@@ -13,9 +15,10 @@ export const reviewQueries = {
         "dislikes" INTEGER NOT NULL
     )`,
 	insertReview: `INSERT INTO "reviews" ("id", "movie_id", "user_id", "published_at", "spoilers", "title", "review", "rating", "likes", "dislikes") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-	findReviewsByMovieId: `SELECT * FROM "reviews" WHERE "movie_id" = $1 ORDER BY "likes" DESC`,
 	findReviewByReviewId: `SELECT * FROM "reviews" WHERE "id" = $1`,
 	editReviewById: `UPDATE "reviews" SET "published_at" = $2, "spoilers" = $3, "title" = $4, "review" = $5, "rating" = $6, "likes" = $7, "dislikes" = $8 WHERE "id" = $1`,
 	editReviewLikesById: `UPDATE "reviews" SET "likes" = $2, "dislikes" = $3 WHERE "id" = $1`,
 	deleteReviewById: `DELETE FROM "reviews" WHERE "id" = $1`,
+	findReviewsByMovieId: `SELECT reviews.*, "userName", "userFirstName", "userLastName", "userPicture"
+    FROM reviews INNER JOIN users ON reviews.user_id = users.id WHERE reviews.movie_id = $1`,
 };

@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 
 import cors from "cors";
 
+import { unknownEndpoint, errorHandler } from "./utils/middleware";
+
 import movieReducer from "./reducers/movieReducer";
 import reviewReducer from "./reducers/reviewReducer";
 import adminReducer from "./reducers/adminReducer";
@@ -40,3 +42,6 @@ app.use("/user", userReducer);
 app.listen(port, () => {
 	console.log(`Back-End serving at: http://localhost:${port}`);
 });
+
+app.use(unknownEndpoint);
+app.use(errorHandler);

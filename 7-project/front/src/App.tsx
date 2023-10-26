@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks";
 
 import movieService from "./services/movies";
+import reviewService from "./services/reviews";
 
-import { userInfo } from "./reducers/userReducer";
+import { userInfo, signOutUser } from "./reducers/userReducer";
 import {
 	getFeaturedMovies,
 	getTopRatedMovies,
@@ -46,11 +47,16 @@ const App = () => {
 			const user = JSON.parse(loggedUserJSON);
 
 			movieService.setToken(user.token);
+			reviewService.setToken(user.token);
+		} else {
+			dispatch(signOutUser());
 		}
 	}, []);
 
 	const { loadingAllMovies, loadingTopRatedMovies, topRatedMovies } =
 		useAppSelector((state) => state.movies);
+
+	const { user } = useAppSelector((state) => state.user);
 
 	return (
 		<div className="main">
@@ -58,12 +64,22 @@ const App = () => {
 			{!loadingAllMovies && !loadingTopRatedMovies ? (
 				<Routes>
 					<Route path="/" element={<HomePage />} />
-					<Route path="/sign-in" element={<SignInPage />} />
-					<Route path="/sign-up" element={<SignUpPage />} />
+
+					<Route
+						path="/sign-in"
+						element={!user ? <SignInPage /> : <Navigate to="/" />}
+					/>
+					<Route
+						path="/sign-up"
+						element={!user ? <SignUpPage /> : <Navigate to="/" />}
+					/>
 					<Route
 						path="/password-reset"
-						element={<ForgotPasswordPage />}
+						element={
+							!user ? <ForgotPasswordPage /> : <Navigate to="/" />
+						}
 					/>
+
 					<Route
 						path="/movie/:id"
 						element={

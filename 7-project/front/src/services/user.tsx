@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import movieService from "./movies";
+import reviewService from "./reviews";
 
 import { IUserSignUp, IUserSignIn } from "../models/redux-models";
 
@@ -28,6 +29,7 @@ const signUserIn = async (userPayload: IUserSignIn) => {
 		);
 
 		movieService.setToken(response.data.token);
+		reviewService.setToken(response.data.token);
 	}
 
 	return response;

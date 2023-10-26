@@ -1,6 +1,6 @@
 import { useEffect, useState, ChangeEvent, FormEvent, MouseEvent } from "react";
-import { useAppDispatch } from "../../hooks/redux-hooks";
-import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
 	Avatar,
@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 
 import { signUpUser } from "../../reducers/userReducer";
+
+import Notification from "../../components/Notifications/NotificationBox";
 
 import Icons from "../../components/Icons";
 
@@ -31,6 +33,9 @@ type TPassCheck = {
 
 const SignUpPage = () => {
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	const { newUser } = useAppSelector((state) => state.user);
 
 	const [userPicture, setUserPicture] = useState<string | ArrayBuffer | null>(
 		null
@@ -116,16 +121,21 @@ const SignUpPage = () => {
 				};
 
 				dispatch(signUpUser(payload));
-
-				setUserPicture(null);
-				setUserFirstName("");
-				setUserLastName("");
-				setEmail("");
-				setPassword("");
-				setPasswordConfirm("");
 			}
 		}
 	};
+
+	useEffect(() => {
+		if (newUser === true) {
+			navigate("/sign-in");
+			setUserPicture(null);
+			setUserFirstName("");
+			setUserLastName("");
+			setEmail("");
+			setPassword("");
+			setPasswordConfirm("");
+		}
+	}, [newUser]);
 
 	return (
 		<div>
@@ -133,6 +143,7 @@ const SignUpPage = () => {
 				<Grid item xs={2} />
 				<Grid item xs={8}>
 					<h2 className="headerPageInfo">New Account:</h2>
+					<Notification />
 
 					<form onSubmit={submitForm}>
 						<div className="userSignUpAvatarContainer">

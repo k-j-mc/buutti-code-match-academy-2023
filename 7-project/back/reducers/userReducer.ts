@@ -7,7 +7,7 @@ import { insertUser, findUser, findUserBasicInfoById } from "../actions/user";
 
 const router = Router();
 
-interface IUser {
+export interface IUser {
 	id: string;
 	email: string;
 	password: string;
@@ -15,11 +15,10 @@ interface IUser {
 	userFirstName: string;
 	userLastName: string;
 	userPicture: string | ArrayBuffer | null;
-	token: string;
 }
 
-export const getToken = async (email: string) => {
-	const payload = { email: email };
+export const getToken = async (email: string, id: string) => {
+	const payload = { email: email, id: id };
 
 	const secret = process.env.SECRET;
 	const options = { expiresIn: 60 * 15 };
@@ -51,16 +50,16 @@ router.get("/:id", async (request: Request, response: Response) => {
 router.post("/sign-in", async (request: Request, response: Response) => {
 	const { email, password } = request.body;
 
-	const token = await getToken(email);
+	const result = await findUser(email);
 
 	let hash = await argon2.hash(password).then((result) => result);
-
-	const result = await findUser(email);
 
 	const payload = { ...result[0] };
 	delete payload["password"];
 
 	if (result.length > 0) {
+		const token = await getToken(email, result[0].id);
+
 		const passwordMatch = await argon2
 			.verify(result[0].password, request.body.password)
 			.then((result) => result);
@@ -85,31 +84,39 @@ router.post("/sign-up", async (request: Request, response: Response) => {
 		userPicture,
 	} = request.body;
 
-	const token = await getToken(email);
+	const existingUser = await findUser(email);
 
-	const passwordHash = await argon2.hash(password).then((result) => result);
-
-	const newUser: IUser = {
-		id: uuid(),
-		userName: userName,
-		email: email,
-		password: passwordHash,
-		userFirstName: userFirstName,
-		userLastName: userLastName,
-		userPicture: userPicture,
-		token: "",
-	};
-
-	if (token) {
-		insertUser(newUser);
-
-		response.status(201).json({
-			...newUser,
-			success: `${userFirstName}'s account successfully created!`,
-			token,
-		});
+	if (existingUser.length > 0) {
+		response
+			.status(400)
+			.json({ error: "Account existing with this Email Address" });
 	} else {
-		response.status(400).json({ error: "No Token" });
+		const passwordHash = await argon2
+			.hash(password)
+			.then((result) => result);
+
+		const newUser: IUser = {
+			id: uuid(),
+			email: email,
+			password: passwordHash,
+			userName: userName,
+			userFirstName: userFirstName,
+			userLastName: userLastName,
+			userPicture: userPicture,
+		};
+		const token = await getToken(email, newUser.id);
+
+		if (token) {
+			insertUser(newUser);
+
+			response.status(201).json({
+				...newUser,
+				success: `${userFirstName}'s account successfully created!`,
+				token,
+			});
+		} else {
+			response.status(400).json({ error: "No Token" });
+		}
 	}
 });
 
