@@ -23,6 +23,7 @@ import MovieVideoPage from "./pages/MovieVideoPage";
 
 import SignInPage from "./pages/Auth/SignInPage";
 import SignUpPage from "./pages/Auth/SignUpPage";
+import ProfilePage from "./pages/ProfilePage";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
 
 import ErrorPage from "./pages/ErrorPage";
@@ -60,6 +61,8 @@ const App = () => {
 
 	const { user } = useAppSelector((state) => state.user);
 
+	console.log(user);
+
 	return (
 		<div className="main">
 			<NavigationBar />
@@ -80,6 +83,10 @@ const App = () => {
 						element={
 							!user ? <ForgotPasswordPage /> : <Navigate to="/" />
 						}
+					/>
+					<Route
+						path="/profile/:id"
+						element={user ? <ProfilePage /> : <Navigate to="/" />}
 					/>
 
 					<Route

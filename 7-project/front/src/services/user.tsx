@@ -11,6 +11,8 @@ import {
 
 const baseUrl = "http://localhost:5000";
 
+axios.defaults.withCredentials = true;
+
 const setLocalStorage = (user: IUserSignedIn) => {
 	window.localStorage.setItem("signedInMLiBUser", JSON.stringify(user));
 
@@ -31,6 +33,8 @@ const findUserBasicInfo = async (userId: string) => {
 
 const signUserIn = async (userPayload: IUserSignIn) => {
 	const response = await axios.post(`${baseUrl}/user/sign-in/`, userPayload);
+
+	console.log(response);
 
 	if (response.data.token) {
 		setLocalStorage(response.data);

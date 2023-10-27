@@ -43,10 +43,14 @@ export const errorHandler = (
 };
 
 export const getTokenFrom = (request: Request) => {
-	const authorization = request.get("authorization");
-	if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-		return authorization.substring(7);
+	const authorizationAccess = request.get("authorization");
+	if (
+		authorizationAccess &&
+		authorizationAccess.toLowerCase().startsWith("bearer ")
+	) {
+		return authorizationAccess.substring(7);
 	}
+
 	return null;
 };
 
@@ -68,13 +72,33 @@ export const userExtractor = async (
 
 	const token = getTokenFrom(request);
 
-	if (token) {
-		const decodedToken = jwt.verify(token, secret) as JwtPayload;
+	const tokenRefresh = request.cookies["refreshToken"];
 
-		if (!decodedToken) {
-			return response.status(401).json({ error: "token invalid" });
-		}
-		request.user = await findUser(decodedToken.email);
+	if (!token && !tokenRefresh) {
+		return response.status(401).send("Access Denied. No token provided.");
 	}
+
+	if (token) {
+		try {
+			console.log("token used");
+			const decodedToken = jwt.verify(token, secret) as JwtPayload;
+
+			if (!decodedToken) {
+				return response.status(401).json({ error: "token invalid" });
+			}
+			request.user = await findUser(decodedToken.email);
+		} catch (error) {
+			console.log("no token, cookie used");
+
+			const decodedToken = jwt.verify(tokenRefresh, secret) as JwtPayload;
+
+			if (!decodedToken) {
+				return response.status(401).json({ error: "token invalid" });
+			}
+			request.user = await findUser(decodedToken.email);
+		}
+	}
+	// if (!token) {
+
 	next();
 };

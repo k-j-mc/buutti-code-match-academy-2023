@@ -14,40 +14,43 @@ import {
 } from "@mui/material";
 
 const UserAvatar = () => {
-	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	const { user } = useAppSelector((state) => state.user);
 
-	const pages = ["Products", "Pricing", "Blog"];
-	const settings = ["Profile", "Account", "Dashboard", "Logout"];
-	const [anchorElNav, setAnchorElNav] = useState(null);
-	const [anchorElUser, setAnchorElUser] = useState(null);
+	// const pages = ["Products", "Pricing", "Blog"];
+	// const settings = ["Profile", "Account", "Dashboard", "Logout"];
+	// const [anchorElNav, setAnchorElNav] = useState(null);
+	// const [anchorElUser, setAnchorElUser] = useState(null);
 
-	const handleOpenNavMenu = (event: any) => {
-		setAnchorElNav(event.currentTarget);
-	};
-	const handleOpenUserMenu = (event: any) => {
-		setAnchorElUser(event.currentTarget);
-	};
+	// const handleOpenNavMenu = (event: any) => {
+	// 	setAnchorElNav(event.currentTarget);
+	// };
+	// const handleOpenUserMenu = (event: any) => {
+	// 	setAnchorElUser(event.currentTarget);
+	// };
 
-	const handleCloseNavMenu = () => {
-		setAnchorElNav(null);
-	};
+	// const handleCloseNavMenu = () => {
+	// 	setAnchorElNav(null);
+	// };
 
-	const handleCloseUserMenu = () => {
-		setAnchorElUser(null);
-	};
+	// const handleCloseUserMenu = () => {
+	// 	setAnchorElUser(null);
+	// };
 
-	const handleSignOut = () => {
-		dispatch(signOutUser());
-		navigate("/");
+	// const handleSignOut = () => {
+	// 	dispatch(signOutUser());
+	// 	navigate("/");
+	// };
+
+	const handleProfileNavigation = () => {
+		navigate(`/profile/${user?.id}`);
 	};
 
 	return (
 		<div style={{ marginLeft: "auto" }}>
 			<Tooltip
-				title="Open settings"
+				title="Profile"
 				sx={{
 					display: "flex",
 					flexDirection: "row",
@@ -56,7 +59,7 @@ const UserAvatar = () => {
 				}}
 			>
 				<IconButton
-					onClick={handleOpenUserMenu}
+					onClick={handleProfileNavigation}
 					sx={{
 						justifyContent: "flex-end",
 						ml: 3,
@@ -88,7 +91,7 @@ const UserAvatar = () => {
 				</IconButton>
 			</Tooltip>
 
-			<Menu
+			{/* <Menu
 				sx={{
 					justifyContent: "flex-end",
 					mr: 2,
@@ -111,7 +114,7 @@ const UserAvatar = () => {
 				<MenuItem onClick={handleSignOut}>
 					<Typography textAlign="center">Log out</Typography>
 				</MenuItem>
-			</Menu>
+			</Menu> */}
 		</div>
 	);
 };

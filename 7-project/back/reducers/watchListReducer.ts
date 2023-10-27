@@ -44,7 +44,6 @@ router.post(
 				payload.movie_id,
 				payload.user_id
 			);
-			console.log(found);
 
 			if (found.length <= 0) {
 				const result = await insertToWatchList(payload);
@@ -80,7 +79,7 @@ router.delete(
 					movie_id,
 					user_id
 				);
-				console.log(found);
+
 				if (result) {
 					response.status(200).json(result);
 				} else {

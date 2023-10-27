@@ -1,6 +1,8 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 
+import cookieParser from "cookie-parser";
+
 import cors from "cors";
 
 import { unknownEndpoint, errorHandler } from "./utils/middleware";
@@ -30,9 +32,15 @@ createReviewsTable();
 
 dotenv.config();
 
+const corsOptions = {
+	origin: process.env.FRONTEND_URL,
+	credentials: true,
+};
+
 const app: Application = express();
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(cors(corsOptions));
 app.use(express.static("public"));
 
 const port = process.env.PORT || 5000;

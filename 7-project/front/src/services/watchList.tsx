@@ -4,6 +4,8 @@ import { INewWatchListPayload } from "../models/redux-models";
 
 const baseUrl = "http://localhost:5000";
 
+axios.defaults.withCredentials = true;
+
 let token: string | null = null;
 
 const setToken = (newToken: string | null) => {

@@ -11,9 +11,12 @@ import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import InfoIcon from "@mui/icons-material/Info";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import ListIcon from "@mui/icons-material/List";
+import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -34,9 +37,6 @@ interface IconProps {
 const Icons = {
 	Add: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<AddIcon {...props} ref={ref} />
-	)),
-	AddBlue: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
-		<AddIcon {...props} ref={ref} style={{ color: "#00d4ff" }} />
 	)),
 	ArrowBack: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<ArrowBackIosIcon {...props} ref={ref} style={{ color: "#FFFFFF" }} />
@@ -79,11 +79,17 @@ const Icons = {
 	Favorite: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<FavoriteIcon {...props} ref={ref} />
 	)),
+	Info: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<InfoIcon {...props} ref={ref} />
+	)),
 	LightMode: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<LightModeIcon {...props} ref={ref} />
 	)),
 	Like: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<ThumbUpOffAltIcon {...props} ref={ref} />
+	)),
+	List: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<ListIcon {...props} ref={ref} />
 	)),
 	Menu: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<MenuIcon {...props} ref={ref} />
@@ -104,8 +110,11 @@ const Icons = {
 	Share: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<ShareIcon {...props} ref={ref} style={{ color: "#FFFFFF" }} />
 	)),
+	SignOut: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<LogoutIcon {...props} ref={ref} />
+	)),
 	True: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
-		<DoneIcon {...props} ref={ref} style={{ color: "#4caf50" }} />
+		<DoneIcon {...props} ref={ref} style={{ color: "#00d4ff" }} />
 	)),
 	Seen: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<VisibilityIcon {...props} ref={ref} />

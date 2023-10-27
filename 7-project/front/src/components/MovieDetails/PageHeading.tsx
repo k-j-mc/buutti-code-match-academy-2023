@@ -264,11 +264,9 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 									onClick={() => handleWatchListAdd(movie)}
 									size="large"
 								>
-									<Icons.AddBlue />
+									<Icons.Add />
 								</IconButton>
-								<h4 style={{ color: "#00d4ff" }}>
-									Add to Watch List
-								</h4>
+								<h4>Watch List</h4>
 							</>
 						) : (
 							<>
@@ -276,9 +274,9 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 									onClick={handleWatchListRemove}
 									size="large"
 								>
-									<Icons.Add />
+									<Icons.True />
 								</IconButton>
-								<h4>Remove from Watch List</h4>
+								<h4 style={{ color: "#00d4ff" }}>Watch List</h4>
 							</>
 						)}
 					</CardActions>

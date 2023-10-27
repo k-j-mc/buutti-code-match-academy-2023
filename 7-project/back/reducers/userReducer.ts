@@ -22,14 +22,17 @@ export const getToken = async (email: string, id: string) => {
 	const payload = { email: email, id: id };
 
 	const secret = process.env.SECRET;
-	const options = { expiresIn: 60 * 15 };
+	const optionsAccess = { expiresIn: 60 * 15 };
+	const optionsRefresh = { expiresIn: "1d" };
 
-	let token;
+	let tokenAccess;
+	let tokenRefresh;
 
 	if (secret) {
-		token = jwt.sign(payload, secret, options);
+		tokenAccess = jwt.sign(payload, secret, optionsAccess);
+		tokenRefresh = jwt.sign(payload, secret, optionsRefresh);
 	}
-	return token;
+	return { accessToken: tokenAccess, refreshToken: tokenRefresh };
 };
 
 router.get("/", (request: Request, response: Response) => {
@@ -68,8 +71,14 @@ router.post("/sign-in", async (request: Request, response: Response) => {
 		const passwordMatch = await argon2
 			.verify(result[0].password, request.body.password)
 			.then((result) => result);
-		if (passwordMatch && token) {
-			response.status(200).json({ ...payload, watchList, token: token });
+		if (passwordMatch && token.accessToken && token.refreshToken) {
+			response
+				.status(200)
+				.cookie("refreshToken", token.refreshToken, {
+					httpOnly: true,
+					sameSite: "strict",
+				})
+				.json({ ...payload, watchList, token: token.accessToken });
 		} else {
 			response.status(401).json({ error: `Incorrect password!` });
 		}
