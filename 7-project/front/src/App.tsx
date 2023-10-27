@@ -61,8 +61,6 @@ const App = () => {
 
 	const { user } = useAppSelector((state) => state.user);
 
-	console.log(user);
-
 	return (
 		<div className="main">
 			<NavigationBar />

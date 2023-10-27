@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Button } from "@mui/material";
 
-import Icons from "../Icons";
+import Icons from "../../Icons";
 
 const NoUser = () => {
 	return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
-import { deleteReview } from "../../reducers/reviewReducer";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks";
+import { deleteReview } from "../../../reducers/reviewReducer";
 
 import {
 	Avatar,
@@ -15,11 +15,11 @@ import {
 	Tooltip,
 } from "@mui/material";
 
-import { IReview } from "../../models/review-models";
+import { IReview } from "../../../models/review-models";
 
 import ReviewEditForm from "./ReviewEditForm";
 
-import Icons from "../Icons";
+import Icons from "../../Icons";
 
 type TReview = {
 	movieReviews: IReview[];
@@ -50,6 +50,8 @@ const ReviewList = ({
 			[id]: !previousState[id],
 		}));
 	};
+
+	console.log(movieReviews);
 
 	return (
 		<List style={{ width: "100%" }}>
@@ -93,9 +95,16 @@ const ReviewList = ({
 							</>
 						}
 						title={
-							<h3 style={{ marginTop: "-5px" }}>
-								{review.title}
-							</h3>
+							<>
+								<h2 style={{ marginTop: "-5px" }}>
+									{review.title}
+								</h2>
+								<h5 style={{ margin: "-10px 0 15px 0" }}>
+									{new Date(
+										review.published_at
+									).toLocaleDateString()}
+								</h5>
+							</>
 						}
 						subheader={
 							<Rating
@@ -120,7 +129,12 @@ const ReviewList = ({
 										>
 											Hide spoilers
 										</Button>
-										<div style={{ display: "block" }}>
+										<div
+											style={{
+												display: "block",
+												whiteSpace: "pre-line",
+											}}
+										>
 											<p>{review.review}</p>
 										</div>
 									</>
@@ -134,8 +148,21 @@ const ReviewList = ({
 								)}
 							</>
 						) : (
-							<div style={{ display: "block" }}>
-								<p>{review.review}</p>
+							<div
+								style={{
+									display: "block",
+									whiteSpace: "pre-line",
+
+									margin: "0 10px 0 10px",
+								}}
+							>
+								{review.review.length > 0 ? (
+									<p>{review.review}</p>
+								) : (
+									<p style={{ fontStyle: "italic" }}>
+										This user only left a rating...
+									</p>
+								)}
 							</div>
 						)}
 					</CardContent>

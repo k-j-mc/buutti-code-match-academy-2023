@@ -113,28 +113,31 @@ export const signInUser = (userPayload: IUserSignIn) => {
 
 export const signOutUser = () => {
 	return async (dispatch: AppDispatch) => {
-		await userService
-			.signUserOut()
-			.then((response) =>
-				dispatch(
-					setNotification({
-						message: `Successfully signed out!`,
-						variant: "success",
-						timeOut: 5000,
-					})
-				)
-			)
-			.then((response) => userService.userDetails())
-			.catch((error) =>
-				dispatch(
-					setNotification({
-						message: "Log out unsuccessful, please try again",
-						variant: "error",
-						timeOut: 0,
-					})
-				)
-			);
-		dispatch(setUserInfo(null));
+		const user = localStorage.getItem("signedInMLiBUser");
+
+		if (user && user.length > 0) {
+			await userService
+				.signUserOut()
+				.then((response) => {
+					dispatch(setUserInfo(null));
+					dispatch(
+						setNotification({
+							message: `Successfully signed out!`,
+							variant: "success",
+							timeOut: 5000,
+						})
+					);
+				})
+				.catch((error) =>
+					dispatch(
+						setNotification({
+							message: "Log out unsuccessful, please try again",
+							variant: "error",
+							timeOut: 0,
+						})
+					)
+				);
+		}
 	};
 };
 

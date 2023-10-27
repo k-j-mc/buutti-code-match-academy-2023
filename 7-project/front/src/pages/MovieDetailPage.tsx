@@ -15,7 +15,8 @@ import {
 } from "@mui/material";
 
 import MovieDetails from "../components/MovieDetails/PageHeading";
-import Reviews from "../components/Reviews/Reviews";
+import MovieCast from "../components/MovieDetails/MovieCast";
+import Reviews from "../components/MovieDetails/Reviews/Reviews";
 
 import LoaderLargeCircle from "../components/Loaders/LoaderLargeCircle";
 
@@ -53,6 +54,8 @@ const MovieDetailPage = ({ popularityCeil }: TPopularity) => {
 		}
 	}, []);
 
+	console.log(movie);
+
 	return (
 		<div>
 			{!loadingVideo && movie.length > 0 && movie.length > 0 ? (
@@ -62,6 +65,9 @@ const MovieDetailPage = ({ popularityCeil }: TPopularity) => {
 							movie={movie[0]}
 							popularityCeil={popularityCeil}
 						/>
+					</div>
+					<div className="cast">
+						<MovieCast />
 					</div>
 					<div className="reviews">
 						<Reviews />

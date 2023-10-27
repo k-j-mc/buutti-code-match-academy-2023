@@ -1,6 +1,7 @@
 import { useState, FormEvent } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
-import { editReview } from "../../reducers/reviewReducer";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks";
+import { createReview } from "../../../reducers/reviewReducer";
+
 import {
 	Button,
 	Checkbox,
@@ -10,70 +11,77 @@ import {
 	TextField,
 } from "@mui/material";
 
-import { IReview, IEditReview } from "../../models/review-models";
-
-type TReviewEdit = {
-	review: IReview;
-	setEditFormActive: Function;
+type TReviewForm = {
+	setReviewFormActive: Function;
 };
 
-const ReviewEditForm = ({ review, setEditFormActive }: TReviewEdit) => {
+const ReviewForm = ({ setReviewFormActive }: TReviewForm) => {
 	const dispatch = useAppDispatch();
 
 	const { movie } = useAppSelector((state) => state.movies);
 	const { user } = useAppSelector((state) => state.user);
 
-	const [title, setTitle] = useState<string>(review.title);
-	const [reviewText, setReviewText] = useState<string>(review.review);
-	const [rating, setRating] = useState<number | null>(review.rating);
-	const [spoilers, setSpoilers] = useState<boolean>(review.spoilers);
+	const [title, setTitle] = useState<string>("");
+	const [review, setReview] = useState<string>("");
+	const [rating, setRating] = useState<number | null>(0);
+	const [spoilers, setSpoilers] = useState<boolean>(false);
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		const date = new Date();
+		let userId;
 
-		const reviewObject: IEditReview = {
-			id: review.id,
-			published_at: date.toString(),
-			spoilers: spoilers,
+		if (!user) {
+			userId = "";
+		} else {
+			userId = user.id;
+		}
+
+		const reviewObject = {
+			movie_id: movie[0].id,
 			title: title,
-			review: reviewText,
+			review: review,
 			rating: rating,
+			spoilers: spoilers,
+			user_id: userId,
 			likes: 0,
 			dislikes: 0,
 		};
 
-		dispatch(editReview(reviewObject));
+		dispatch(createReview(reviewObject));
 
 		setTitle("");
-		setReviewText("");
+		setReview("");
 		setRating(0);
 		setSpoilers(false);
 
-		setEditFormActive(false);
+		setReviewFormActive(false);
 	};
+
 	return (
 		<div>
-			<Grid container spacing={1} style={{ minHeight: "300px" }}>
+			<Grid container spacing={1} style={{ minHeight: "800px" }}>
 				<Grid item xs={2} />
 				<Grid item xs={8}>
+					<h2 className="headerPageInfo">What did you think?</h2>
+					<h4
+						className="headerPageInfo"
+						style={{ fontStyle: "italic" }}
+					>
+						Leave a full review or just give a rating!
+					</h4>
+
+					<h4 style={{ marginTop: "35px" }}>
+						How many stars out of 10 for {movie[0].title}?
+					</h4>
 					<form onSubmit={handleSubmit}>
-						<p
-							style={{
-								fontStyle: "italic",
-								marginBottom: "30px",
-							}}
-						>
-							Please note: When editing your review, your helpful
-							and unhelpful stats will be 0...
-						</p>
 						<Rating
 							name="simple-controlled"
+							value={rating}
 							onChange={(event, newValue) => {
 								setRating(newValue);
 							}}
-							value={rating}
+							defaultValue={0}
 							max={10}
 						/>
 
@@ -92,11 +100,9 @@ const ReviewEditForm = ({ review, setEditFormActive }: TReviewEdit) => {
 							minRows={5}
 							id="outlined-required-Review"
 							label={`How was your experience of: ${movie[0].title}?`}
-							value={reviewText}
-							onChange={({ target }) =>
-								setReviewText(target.value)
-							}
-							sx={{ mt: 4, mb: 4 }}
+							value={review}
+							onChange={({ target }) => setReview(target.value)}
+							sx={{ mt: 4, mb: 4, whiteSpace: "pre-line" }}
 						/>
 
 						<FormControlLabel
@@ -110,7 +116,7 @@ const ReviewEditForm = ({ review, setEditFormActive }: TReviewEdit) => {
 							fullWidth
 							variant="contained"
 							color="secondary"
-							sx={{ mt: 4, mb: 2 }}
+							sx={{ mt: 4 }}
 						>
 							Submit
 						</Button>
@@ -122,4 +128,4 @@ const ReviewEditForm = ({ review, setEditFormActive }: TReviewEdit) => {
 	);
 };
 
-export default ReviewEditForm;
+export default ReviewForm;

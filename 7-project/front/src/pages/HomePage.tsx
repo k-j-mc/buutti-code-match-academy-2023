@@ -70,10 +70,12 @@ const HomePage = () => {
 		<>
 			{!loadingFeaturedMovies && topPicks.length > 0 ? (
 				<>
+					<div className="absoluteNotification">
+						<Notification />
+					</div>
 					<Grid container spacing={1}>
 						<Grid item xl={2} xs={0.5} />
 						<Grid item xl={5} lg={8} md={11} xs={11}>
-							<Notification />
 							<LargeMovieCard
 								data={isTopPick}
 								handleClick={handleClick}

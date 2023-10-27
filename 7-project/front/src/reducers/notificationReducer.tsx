@@ -29,7 +29,7 @@ export const setNotification = (content: INotification) => {
 	return async (dispatch: AppDispatch) => {
 		dispatch(addNotification(content));
 
-		let timeOut = 5000;
+		let timeOut = 2000;
 
 		if (content.timeOut && content.timeOut > 0) {
 			timeOut = content.timeOut;

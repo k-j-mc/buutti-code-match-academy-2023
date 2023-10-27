@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+import { useAppDispatch } from "../../hooks/redux-hooks";
 
 import { getMovieById, getMovieVideos } from "../../reducers/movieReducer";
 import { getMovieReviews } from "../../reducers/reviewReducer";

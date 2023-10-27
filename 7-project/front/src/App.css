@@ -55,7 +55,7 @@ html, body {
 
 .backdropDetailsPage {
     width: 100vw;
-    min-height: 100vh;
+    min-height: 95vh;
     background-repeat: no-repeat;
     background-repeat: no-repeat;
     position: absolute;
@@ -86,8 +86,14 @@ html, body {
     text-align: center;
 }
 
-.reviews {
+.cast {
     min-height: 300px;
+    background-color: #131313;
+    position: relative;
+}
+
+.reviews {
+    min-height: 400px;
     background-color: #1d1d1d;
     position: relative;
 }
@@ -119,4 +125,11 @@ html, body {
 
 .userUpAvatar {
     border: 0.1px solid rgba(192, 222, 224, 0.257);
+}
+
+.absoluteNotification {
+    z-index: 999;
+    margin: 10px;
+    position: absolute;
+    width: calc(100% - 20px);
 }

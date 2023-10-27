@@ -9,7 +9,7 @@ const NotificationBox = () => {
 
 	return (
 		<div>
-			{notification.message && (
+			{notification.message.length > 0 && (
 				<Alert severity={notification.variant}>
 					{notification.message}
 				</Alert>

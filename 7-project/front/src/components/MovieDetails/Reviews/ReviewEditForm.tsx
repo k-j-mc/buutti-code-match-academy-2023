@@ -1,7 +1,6 @@
 import { useState, FormEvent } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
-import { createReview } from "../../reducers/reviewReducer";
-
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks";
+import { editReview } from "../../../reducers/reviewReducer";
 import {
 	Button,
 	Checkbox,
@@ -11,77 +10,70 @@ import {
 	TextField,
 } from "@mui/material";
 
-type TReviewForm = {
-	setReviewFormActive: Function;
+import { IReview, IEditReview } from "../../../models/review-models";
+
+type TReviewEdit = {
+	review: IReview;
+	setEditFormActive: Function;
 };
 
-const ReviewForm = ({ setReviewFormActive }: TReviewForm) => {
+const ReviewEditForm = ({ review, setEditFormActive }: TReviewEdit) => {
 	const dispatch = useAppDispatch();
 
 	const { movie } = useAppSelector((state) => state.movies);
 	const { user } = useAppSelector((state) => state.user);
 
-	const [title, setTitle] = useState<string>("");
-	const [review, setReview] = useState<string>("");
-	const [rating, setRating] = useState<number | null>(0);
-	const [spoilers, setSpoilers] = useState<boolean>(false);
+	const [title, setTitle] = useState<string>(review.title);
+	const [reviewText, setReviewText] = useState<string>(review.review);
+	const [rating, setRating] = useState<number | null>(review.rating);
+	const [spoilers, setSpoilers] = useState<boolean>(review.spoilers);
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		let userId;
+		const date = new Date();
 
-		if (!user) {
-			userId = "";
-		} else {
-			userId = user.id;
-		}
-
-		const reviewObject = {
-			movie_id: movie[0].id,
-			title: title,
-			review: review,
-			rating: rating,
+		const reviewObject: IEditReview = {
+			id: review.id,
+			published_at: date.toString(),
 			spoilers: spoilers,
-			user_id: userId,
+			title: title,
+			review: reviewText,
+			rating: rating,
 			likes: 0,
 			dislikes: 0,
 		};
 
-		dispatch(createReview(reviewObject));
+		dispatch(editReview(reviewObject));
 
 		setTitle("");
-		setReview("");
+		setReviewText("");
 		setRating(0);
 		setSpoilers(false);
 
-		setReviewFormActive(false);
+		setEditFormActive(false);
 	};
-
 	return (
 		<div>
-			<Grid container spacing={1} style={{ minHeight: "700px" }}>
+			<Grid container spacing={1} style={{ minHeight: "300px" }}>
 				<Grid item xs={2} />
 				<Grid item xs={8}>
-					<h2 className="headerPageInfo">What did you think?</h2>
-					<h4
-						className="headerPageInfo"
-						style={{ fontStyle: "italic" }}
-					>
-						Leave a full review or just give a rating!
-					</h4>
-
-					<h4 style={{ marginTop: "35px" }}>
-						How many stars out of 10 for {movie[0].title}?
-					</h4>
 					<form onSubmit={handleSubmit}>
+						<p
+							style={{
+								fontStyle: "italic",
+								marginBottom: "30px",
+							}}
+						>
+							Please note: When editing your review, your helpful
+							and unhelpful stats will be 0...
+						</p>
 						<Rating
 							name="simple-controlled"
-							value={rating}
 							onChange={(event, newValue) => {
 								setRating(newValue);
 							}}
-							defaultValue={0}
+							value={rating}
 							max={10}
 						/>
 
@@ -100,8 +92,10 @@ const ReviewForm = ({ setReviewFormActive }: TReviewForm) => {
 							minRows={5}
 							id="outlined-required-Review"
 							label={`How was your experience of: ${movie[0].title}?`}
-							value={review}
-							onChange={({ target }) => setReview(target.value)}
+							value={reviewText}
+							onChange={({ target }) =>
+								setReviewText(target.value)
+							}
 							sx={{ mt: 4, mb: 4 }}
 						/>
 
@@ -116,7 +110,7 @@ const ReviewForm = ({ setReviewFormActive }: TReviewForm) => {
 							fullWidth
 							variant="contained"
 							color="secondary"
-							sx={{ mt: 4 }}
+							sx={{ mt: 4, mb: 2 }}
 						>
 							Submit
 						</Button>
@@ -128,4 +122,4 @@ const ReviewForm = ({ setReviewFormActive }: TReviewForm) => {
 	);
 };
 
-export default ReviewForm;
+export default ReviewEditForm;

@@ -67,8 +67,16 @@ export interface INewWatchListItem {
 
 export interface IWatchList {
 	id: string;
-	user_id: string;
+	backdrop: string;
+	popularity: number;
+	poster: string;
+	tagline: string;
+	title: string;
+	video_count: number;
+	vote_average: number;
+	vote_count: number;
 	movie_id: string;
+	user_id: string;
 	date_added: string;
 }
 

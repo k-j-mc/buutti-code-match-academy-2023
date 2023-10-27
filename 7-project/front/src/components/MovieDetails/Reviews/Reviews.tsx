@@ -1,20 +1,20 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks";
 
-import { likeReview } from "../../reducers/reviewReducer";
+import { likeReview } from "../../../reducers/reviewReducer";
 
 import { Button, Grid } from "@mui/material";
 
-import { IReview } from "../../models/review-models";
+import { IReview } from "../../../models/review-models";
 
 import ReviewForm from "./ReviewForm";
 import ReviewList from "./ReviewList";
 import NoReviews from "./NoReviews";
 import NoUser from "./NoUser";
 
-import Notification from "../Notifications/NotificationBox";
+import Notification from "../../Notifications/NotificationBox";
 
-import Icons from "../Icons";
+import Icons from "../../Icons";
 
 type TReview = {
 	movieReviews: IReview[];

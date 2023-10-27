@@ -37,19 +37,18 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 
 	const { user } = useAppSelector((state) => state.user);
 
-	const [isInWatchList, setIsInWatchList] = useState<boolean | null>(null);
+	const exists = user?.watchList.find((obj) => obj.movie_id === movie.id);
+	// console.log(exists);
+	// useEffect(() => {
 
-	useEffect(() => {
-		const exists = user?.watchList.filter(
-			(obj) => obj.movie_id === movie.id
-		);
+	// 	// console.log(user);
 
-		if (exists && exists.length > 0) {
-			setIsInWatchList(true);
-		} else {
-			setIsInWatchList(false);
-		}
-	}, [user]);
+	// 	// if (exists && exists.length > 0) {
+	// 	// 	setIsInWatchList(true);
+	// 	// } else {
+	// 	// 	setIsInWatchList(false);
+	// 	// }
+	// }, [movie, user]);
 
 	const voteCount = (count: number) => {
 		if (count < 1000) {
@@ -258,17 +257,7 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 
 					<p>{movie.overview}</p>
 					<CardActions>
-						{!isInWatchList ? (
-							<>
-								<IconButton
-									onClick={() => handleWatchListAdd(movie)}
-									size="large"
-								>
-									<Icons.Add />
-								</IconButton>
-								<h4>Watch List</h4>
-							</>
-						) : (
+						{exists !== undefined ? (
 							<>
 								<IconButton
 									onClick={handleWatchListRemove}
@@ -277,6 +266,16 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 									<Icons.True />
 								</IconButton>
 								<h4 style={{ color: "#00d4ff" }}>Watch List</h4>
+							</>
+						) : (
+							<>
+								<IconButton
+									onClick={() => handleWatchListAdd(movie)}
+									size="large"
+								>
+									<Icons.Add />
+								</IconButton>
+								<h4>Watch List</h4>
 							</>
 						)}
 					</CardActions>
