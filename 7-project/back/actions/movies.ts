@@ -54,6 +54,14 @@ export const findOneMovieById = async (id: string) => {
 	return result.rows;
 };
 
+export const findOneMovieByName = async (searchQuery: string) => {
+	const result = await executeQuery(movieQueries.searchMovies, [searchQuery]);
+
+	console.log(result.rows);
+
+	return result.rows;
+};
+
 export const findOneMovieByTMDBId = async (id: string) => {
 	const result = await executeQuery(movieQueries.findMovieByTMDBId, [id]);
 

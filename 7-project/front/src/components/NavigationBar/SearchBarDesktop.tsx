@@ -1,5 +1,11 @@
+import { useAppDispatch } from "../../hooks/redux-hooks";
+
+import { getMovieByName } from "../../reducers/movieReducer";
+
 import { styled, alpha } from "@mui/material/styles";
 import { InputBase } from "@mui/material";
+
+import SearchBarResultsList from "./SearchBarResultsList";
 
 import Icons from "../Icons";
 
@@ -38,16 +44,39 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchBar = () => {
+	const dispatch = useAppDispatch();
+
+	const handleSearch = (event: string) => {
+		if (event && event.length > 0) {
+			dispatch(getMovieByName(event));
+		}
+	};
+
 	return (
-		<Search>
-			<SearchIconWrapper>
-				<Icons.Search />
-			</SearchIconWrapper>
-			<StyledInputBase
-				placeholder="Search…"
-				inputProps={{ "aria-label": "search" }}
-			/>
-		</Search>
+		<>
+			<Search
+				style={{
+					position: "relative",
+				}}
+			>
+				<SearchIconWrapper>
+					<Icons.Search />
+				</SearchIconWrapper>
+				<StyledInputBase
+					placeholder="Search…"
+					inputProps={{ "aria-label": "search" }}
+					onChange={({ target }) => handleSearch(target.value)}
+				/>
+				<div
+					style={{
+						position: "relative",
+						width: "100%",
+					}}
+				>
+					<SearchBarResultsList />
+				</div>
+			</Search>
+		</>
 	);
 };
 

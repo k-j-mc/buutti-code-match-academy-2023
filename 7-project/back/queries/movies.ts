@@ -66,4 +66,7 @@ export const movieQueries = {
 
 	findCastById: `SELECT * FROM "cast" WHERE "tmdb_id" = $1`,
 	findVideosById: `SELECT * FROM "videos" WHERE "id" = $1`,
+
+	searchMovies: `SELECT "id", "poster", "tagline", "title" FROM "movies"
+    WHERE "title" ILIKE '%'  || $1 || '%'`,
 };

@@ -56,6 +56,12 @@ const getById = async (movieId: string) => {
 	return response.data;
 };
 
+const getByName = async (movieName: string) => {
+	const response = await axios.get(`${baseUrl}/movies/${movieName}/`);
+
+	return response.data;
+};
+
 const getVideosById = async (movieId: string) => {
 	const response = await axios.get(`${baseUrl}/movie/videos/${movieId}/`);
 
@@ -115,6 +121,7 @@ const movieService = {
 	getHorror,
 	getAll,
 	getById,
+	getByName,
 	getVideosById,
 	setToken,
 };

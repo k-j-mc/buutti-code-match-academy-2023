@@ -19,12 +19,14 @@ export interface MovieArrayModel {
 	horrorMovies: IMovieMinimal[];
 	allMovies: IMovieMinimal[];
 	movie: MovieInterface[];
+	searchResults: MovieInterface[];
 	video: IVideo[];
 	loadingFeaturedMovies: boolean;
 	loadingTopRatedMovies: boolean;
 	loadingActionMovies: boolean;
 	loadingHorrorMovies: boolean;
 	loadingAllMovies: boolean;
+	loadingSearchResults: boolean;
 	loadingMovie: boolean;
 	loadingVideo: boolean;
 }

@@ -12,6 +12,7 @@ const initialMovieState: MovieArrayModel = {
 	horrorMovies: [],
 	allMovies: [],
 	movie: [],
+	searchResults: [],
 	video: [],
 	loadingFeaturedMovies: true,
 	loadingTopRatedMovies: true,
@@ -19,6 +20,7 @@ const initialMovieState: MovieArrayModel = {
 	loadingHorrorMovies: true,
 	loadingAllMovies: true,
 	loadingMovie: true,
+	loadingSearchResults: true,
 	loadingVideo: true,
 };
 
@@ -54,6 +56,10 @@ const movieSlice = createSlice({
 			state.loadingVideo = false;
 			state.video = action.payload;
 		},
+		setSearchResults(state, action) {
+			state.searchResults = action.payload;
+			state.loadingSearchResults = false;
+		},
 	},
 });
 
@@ -65,6 +71,7 @@ export const {
 	setMovie,
 	setVideos,
 	setTopRatedMovies,
+	setSearchResults,
 } = movieSlice.actions;
 
 export const getFeaturedMovies = () => {
@@ -106,6 +113,13 @@ export const getMovieById = (movieId: string) => {
 	return async (dispatch: AppDispatch) => {
 		const movie = await movieService.getById(movieId);
 		dispatch(setMovie(movie));
+	};
+};
+
+export const getMovieByName = (searchQuery: string) => {
+	return async (dispatch: AppDispatch) => {
+		const movie = await movieService.getByName(searchQuery);
+		dispatch(setSearchResults(movie));
 	};
 };
 

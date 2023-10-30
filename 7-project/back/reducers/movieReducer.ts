@@ -12,6 +12,7 @@ import {
 	findOneMovieById,
 	findOneMovieByTMDBId,
 	findOneMovieVideosById,
+	findOneMovieByName,
 	findActorById,
 	findActorByMovieUid,
 } from "../actions/movies";
@@ -75,6 +76,12 @@ router.get("/movie/:id", async (request: Request, response: Response) => {
 	const cast = await findActorByMovieUid(request.params.id);
 
 	const result = [{ ...movies[0], cast }];
+
+	response.status(200).json(result);
+});
+
+router.get("/movies/:name", async (request: Request, response: Response) => {
+	const result = await findOneMovieByName(request.params.name);
 
 	response.status(200).json(result);
 });
