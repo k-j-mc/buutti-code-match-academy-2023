@@ -74,11 +74,7 @@ export const userExtractor = async (
 
 	const tokenRefresh = request.cookies["refreshToken"];
 
-	if (!token && !tokenRefresh) {
-		return response.status(401).send("Access Denied. No token provided.");
-	}
-
-	if (token) {
+	if (token && tokenRefresh) {
 		try {
 			console.log("token used");
 			const decodedToken = jwt.verify(token, secret) as JwtPayload;
@@ -88,17 +84,17 @@ export const userExtractor = async (
 			}
 			request.user = await findUser(decodedToken.email);
 		} catch (error) {
-			console.log("no token, cookie used");
+			const decodedTokenCookie = jwt.verify(
+				tokenRefresh,
+				secret
+			) as JwtPayload;
 
-			const decodedToken = jwt.verify(tokenRefresh, secret) as JwtPayload;
-
-			if (!decodedToken) {
+			if (!decodedTokenCookie) {
 				return response.status(401).json({ error: "token invalid" });
 			}
-			request.user = await findUser(decodedToken.email);
+			request.user = await findUser(decodedTokenCookie.email);
 		}
 	}
-	// if (!token) {
 
 	next();
 };

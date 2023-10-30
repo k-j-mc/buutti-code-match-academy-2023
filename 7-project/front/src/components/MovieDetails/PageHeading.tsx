@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from "react";
+import { useState, MouseEventHandler } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 import {
 	addWatchListItem,
@@ -22,33 +22,26 @@ import {
 import { MovieInterface } from "../../models/movie-models";
 import { INewWatchListItem } from "../../models/redux-models";
 
-import countryData from "../../tools/countryData";
-
-import "semantic-ui-flag/flag.min.css";
 import Icons from "../../components/Icons";
 
 type TMovieDetails = {
 	movie: MovieInterface;
 	popularityCeil: number;
+	handleReviewScroll: MouseEventHandler;
+	handleVideoScroll: MouseEventHandler;
 };
 
-const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
+const PageHeading = ({
+	movie,
+	popularityCeil,
+	handleReviewScroll,
+	handleVideoScroll,
+}: TMovieDetails) => {
 	const dispatch = useAppDispatch();
 
 	const { user } = useAppSelector((state) => state.user);
 
 	const exists = user?.watchList.find((obj) => obj.movie_id === movie.id);
-	// console.log(exists);
-	// useEffect(() => {
-
-	// 	// console.log(user);
-
-	// 	// if (exists && exists.length > 0) {
-	// 	// 	setIsInWatchList(true);
-	// 	// } else {
-	// 	// 	setIsInWatchList(false);
-	// 	// }
-	// }, [movie, user]);
 
 	const voteCount = (count: number) => {
 		if (count < 1000) {
@@ -62,7 +55,11 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 
 	const popularityPercentage = (popularity: number) => {
 		if (popularity) {
-			return parseInt(((100 * popularity) / popularityCeil).toFixed());
+			let percentage = parseInt(
+				((100 * popularity) / popularityCeil).toFixed()
+			);
+
+			return percentage;
 		} else {
 			return 0;
 		}
@@ -97,22 +94,6 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 	const handleWatchListRemove = () => {
 		if (user && user.id) {
 			dispatch(removeWatchListItem(movie.id, user.id, movie.title));
-		}
-	};
-
-	const getFlag = (language: string) => {
-		if (language === "en") {
-			return "gb";
-		} else {
-			const filter = countryData.filter((flag: any) => {
-				return flag.language === language.toLowerCase() ? flag : "";
-			});
-
-			if (filter.length <= 0) {
-				return "";
-			} else {
-				return filter[0].code;
-			}
 		}
 	};
 
@@ -256,9 +237,14 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 					</Grid>
 
 					<p>{movie.overview}</p>
-					<CardActions>
+					<CardActions
+						style={{
+							display: "flex",
+							flexWrap: "wrap",
+						}}
+					>
 						{exists !== undefined ? (
-							<>
+							<div style={{ display: "flex" }}>
 								<IconButton
 									onClick={handleWatchListRemove}
 									size="large"
@@ -266,9 +252,9 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 									<Icons.True />
 								</IconButton>
 								<h4 style={{ color: "#00d4ff" }}>Watch List</h4>
-							</>
+							</div>
 						) : (
-							<>
+							<div style={{ display: "flex" }}>
 								<IconButton
 									onClick={() => handleWatchListAdd(movie)}
 									size="large"
@@ -276,49 +262,31 @@ const PageHeading = ({ movie, popularityCeil }: TMovieDetails) => {
 									<Icons.Add />
 								</IconButton>
 								<h4>Watch List</h4>
-							</>
+							</div>
+						)}
+						<div style={{ display: "flex", marginLeft: 0 }}>
+							<IconButton
+								onClick={handleReviewScroll}
+								size="large"
+							>
+								<Icons.Edit />
+							</IconButton>
+							<h4>Leave a review</h4>
+						</div>
+						{movie.video_count > 0 && (
+							<div style={{ display: "flex", marginLeft: 0 }}>
+								<IconButton
+									onClick={handleVideoScroll}
+									size="large"
+								>
+									<Icons.Play />
+								</IconButton>
+								<h4>Watch Trailer</h4>
+							</div>
 						)}
 					</CardActions>
 				</Grid>
 				<Grid item lg={2} md={1} sm={0.5} xs={0.5} />
-
-				{/* <Grid container spacing={2}>
-							<Grid item lg={2} md={1} sm={0.5} xs={0.5} />
-
-							<Grid item lg={8} sm={11} xs={11}>
-								<p>Release date: {movie.release_date}</p>
-								<p>
-									Original language:{" "}
-									<i
-										className={
-											getFlag(
-												movie[0].original_language
-											) + " flag"
-										}
-									/>
-								</p>
-								<p>
-									Spoken languages:{" "}
-									{movie.spoken_languages.map(
-										(language, index) => (
-											<Fragment
-												key={language + Math.random()}
-											>
-												{language !== "" && (
-													<i
-														className={
-															getFlag(language) +
-															" flag"
-														}
-													/>
-												)}
-											</Fragment>
-										)
-									)}
-								</p>
-							</Grid>
-							<Grid item lg={2} md={1} sm={0.5} xs={0.5} />
-						</Grid> */}
 			</Grid>
 		</div>
 	);

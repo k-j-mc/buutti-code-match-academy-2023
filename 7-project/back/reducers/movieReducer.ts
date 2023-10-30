@@ -13,6 +13,7 @@ import {
 	findOneMovieByTMDBId,
 	findOneMovieVideosById,
 	findActorById,
+	findActorByMovieUid,
 } from "../actions/movies";
 
 import {
@@ -70,7 +71,10 @@ router.get("/movies/horror", async (request: Request, response: Response) => {
 });
 
 router.get("/movie/:id", async (request: Request, response: Response) => {
-	const result = await findOneMovieById(request.params.id);
+	const movies = await findOneMovieById(request.params.id);
+	const cast = await findActorByMovieUid(request.params.id);
+
+	const result = [{ ...movies[0], cast }];
 
 	response.status(200).json(result);
 });
@@ -98,7 +102,7 @@ router.get("/get-popular", async (request: Request, response: Response) => {
 
 			const id = uuid();
 
-			processCast(movieObject);
+			processCast({ ...movieObject, uid: id });
 
 			let backdrop;
 

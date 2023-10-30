@@ -23,6 +23,7 @@ export interface MovieInterface {
 	adult: boolean;
 	backdrop: string;
 	budget: number;
+	cast: string[];
 	genres: IGenre[];
 	homepage: string;
 	imdb_id: string;

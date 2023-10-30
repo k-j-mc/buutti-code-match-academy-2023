@@ -31,7 +31,7 @@ const Video = ({ video }: TVideo) => {
 
 	const options: TPlayer = {
 		playerVars: {
-			autoplay: 1,
+			autoplay: 0,
 			controls: 1,
 			rel: 0,
 			showinfo: 0,
@@ -46,7 +46,7 @@ const Video = ({ video }: TVideo) => {
 				{!videoLoading ? (
 					<YouTube
 						videoId={video}
-						id="video"
+						id={`video ${video}`}
 						opts={options}
 						onReady={onPlayerReady}
 					/>

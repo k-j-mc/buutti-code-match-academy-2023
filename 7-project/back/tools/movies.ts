@@ -79,6 +79,7 @@ export const processCast = async (movieObject: any) => {
 	let cast = movieObject.credits.cast.slice(0, 4).map((obj: any) => {
 		return {
 			id: uuid(),
+			movie_id: movieObject.uid,
 			tmdb_id: obj.id,
 			name: obj.name,
 			character: obj.character,

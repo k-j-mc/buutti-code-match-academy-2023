@@ -60,7 +60,11 @@ const ReviewForm = ({ setReviewFormActive }: TReviewForm) => {
 
 	return (
 		<div>
-			<Grid container spacing={1} style={{ minHeight: "800px" }}>
+			<Grid
+				container
+				spacing={1}
+				style={{ minHeight: "800px", paddingBottom: "30px" }}
+			>
 				<Grid item xs={2} />
 				<Grid item xs={8}>
 					<h2 className="headerPageInfo">What did you think?</h2>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 import { getMovieById, getMovieVideos } from "../reducers/movieReducer";
 import { Grid } from "@mui/material";

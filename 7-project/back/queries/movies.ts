@@ -43,12 +43,13 @@ export const movieQueries = {
 	createCastTable: `
     CREATE TABLE IF NOT EXISTS "cast" (
         "id" VARCHAR(100) NOT NULL,
+        "movie_id" VARCHAR(100) NOT NULL,
         "tmdb_id" VARCHAR(100) NOT NULL,
         "name" VARCHAR(100) NOT NULL,
         "character" VARCHAR(100) NOT NULL,
         "profile" VARCHAR(100) NOT NULL
         )`,
-	insertCast: `INSERT INTO "cast" ("id", "tmdb_id", "name", "character", "profile") VALUES ($1, $2, $3, $4, $5)`,
+	insertCast: `INSERT INTO "cast" ("id", "movie_id", "tmdb_id", "name", "character", "profile") VALUES ($1, $2, $3, $4, $5, $6)`,
 
 	findFirst10: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" WHERE "video_count" > 0 ORDER BY random() LIMIT 10`,
 	findAll: `SELECT "id", "backdrop", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" LIMIT 100`,
@@ -59,7 +60,10 @@ export const movieQueries = {
 	findTopHorror: `SELECT "id", "backdrop", "popularity", "poster", "tagline", "title", "video_count", "vote_average", "vote_count" FROM "movies" WHERE 27=ANY("genres") ORDER BY "vote_average" DESC LIMIT 20`,
 
 	findMovieByTMDBId: `SELECT * FROM "movies" WHERE "tmdb_id" = $1`,
+
 	findMovieById: `SELECT * FROM "movies" WHERE "id" = $1`,
-	findVideosById: `SELECT * FROM "videos" WHERE "id" = $1`,
+	findCastByMovieId: `SELECT * FROM "cast" WHERE "movie_id" = $1`,
+
 	findCastById: `SELECT * FROM "cast" WHERE "tmdb_id" = $1`,
+	findVideosById: `SELECT * FROM "videos" WHERE "id" = $1`,
 };

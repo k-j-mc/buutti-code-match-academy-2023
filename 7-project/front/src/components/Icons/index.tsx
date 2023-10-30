@@ -97,6 +97,9 @@ const Icons = {
 	MoreVert: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<MoreVertIcon {...props} ref={ref} />
 	)),
+	Play: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<PlayCircleIcon {...props} ref={ref} />
+	)),
 	PlayLarge: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<PlayCircleIcon
 			{...props}
