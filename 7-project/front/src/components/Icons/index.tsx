@@ -32,6 +32,8 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 interface IconProps {
 	title?: string;
 	titleId?: string;
+	size?: string;
+	iconColor?: string;
 }
 
 const Icons = {
@@ -45,7 +47,7 @@ const Icons = {
 		<ArrowForwardIosIcon
 			{...props}
 			ref={ref}
-			style={{ color: "#FFFFFF" }}
+			style={{ color: "#FFFFFF", fontSize: props.size }}
 		/>
 	)),
 	Close: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
@@ -98,13 +100,10 @@ const Icons = {
 		<MoreVertIcon {...props} ref={ref} />
 	)),
 	Play: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
-		<PlayCircleIcon {...props} ref={ref} />
-	)),
-	PlayLarge: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<PlayCircleIcon
 			{...props}
 			ref={ref}
-			style={{ color: "#FFFFFF", fontSize: "44px" }}
+			style={{ color: "#FFFFFF", fontSize: props.size }}
 		/>
 	)),
 	Search: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
@@ -118,9 +117,6 @@ const Icons = {
 	)),
 	True: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<DoneIcon {...props} ref={ref} style={{ color: "#00d4ff" }} />
-	)),
-	Seen: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
-		<VisibilityIcon {...props} ref={ref} />
 	)),
 	Star: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<StarIcon {...props} ref={ref} />

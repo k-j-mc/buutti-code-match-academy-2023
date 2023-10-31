@@ -1,4 +1,4 @@
-import { useState, MouseEventHandler } from "react";
+import { MouseEventHandler } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 import {
 	addWatchListItem,
@@ -142,7 +142,7 @@ const PageHeading = ({
 							<Chip
 								key={genre.id}
 								color="info"
-								style={{ margin: "0 5px 0 5px" }}
+								style={{ margin: "5px" }}
 								label={genre.name}
 								variant="outlined"
 							/>

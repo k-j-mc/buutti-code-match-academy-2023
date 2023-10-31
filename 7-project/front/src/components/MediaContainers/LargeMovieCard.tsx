@@ -63,39 +63,44 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 					src={`http://localhost:5000/images/backdrops${data.backdrop}`}
 					alt={data.title}
 				/>
-				<div
+
+				<IconButton
+					onClick={() => handleNavigation(data, "video")}
 					style={{
-						top: "46%",
-						left: "46%",
+						height: "50px",
+						width: "50px",
 						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
 					}}
 				>
-					<IconButton onClick={() => handleNavigation(data, "video")}>
-						<Icons.PlayLarge />
-					</IconButton>
-				</div>
-				<div
+					<Icons.Play size="44px" />
+				</IconButton>
+
+				<IconButton
+					onClick={() => handleClick(data, -1)}
 					style={{
-						top: "48%",
+						position: "absolute",
+						top: "50%",
 						left: "0%",
-						position: "absolute",
+						transform: "translateY(-50%)",
 					}}
 				>
-					<IconButton onClick={() => handleClick(data, -1)}>
-						<Icons.ArrowBack />
-					</IconButton>
-				</div>
-				<div
+					<Icons.ArrowBack />
+				</IconButton>
+
+				<IconButton
+					onClick={() => handleClick(data, 1)}
 					style={{
-						top: "48%",
-						right: "0%",
 						position: "absolute",
+						top: "50%",
+						right: "0%",
+						transform: "translateY(-50%)",
 					}}
 				>
-					<IconButton onClick={() => handleClick(data, 1)}>
-						<Icons.ArrowForward />
-					</IconButton>
-				</div>
+					<Icons.ArrowForward />
+				</IconButton>
 			</div>
 			<CardContent sx={{ color: "#ffffff", width: "100%" }}>
 				<Typography variant="h6">{data.title}</Typography>

@@ -1,3 +1,12 @@
+import {
+	useEffect,
+	useRef,
+	useState,
+	ChangeEvent,
+	KeyboardEvent,
+	forwardRef,
+	ReactNode,
+} from "react";
 import { useAppDispatch } from "../../hooks/redux-hooks";
 
 import { getMovieByName } from "../../reducers/movieReducer";
@@ -43,14 +52,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	},
 }));
 
-const SearchBar = () => {
+type TSearch = {
+	searchRef?: any;
+	listRef?: any;
+	handleSearch: Function;
+	searchQuery: string;
+	active: boolean;
+};
+
+const SearchBar = forwardRef<HTMLDivElement, TSearch>((props, ref) => {
 	const dispatch = useAppDispatch();
 
-	const handleSearch = (event: string) => {
-		if (event && event.length > 0) {
-			dispatch(getMovieByName(event));
-		}
-	};
+	const { searchRef, listRef, active, searchQuery, handleSearch } = props;
 
 	return (
 		<>
@@ -63,21 +76,26 @@ const SearchBar = () => {
 					<Icons.Search />
 				</SearchIconWrapper>
 				<StyledInputBase
+					ref={searchRef}
 					placeholder="Search…"
 					inputProps={{ "aria-label": "search" }}
 					onChange={({ target }) => handleSearch(target.value)}
+					value={searchQuery}
 				/>
 				<div
 					style={{
 						position: "relative",
 						width: "100%",
 					}}
+					ref={listRef}
 				>
-					<SearchBarResultsList />
+					{active && (
+						<SearchBarResultsList searchQuery={searchQuery} />
+					)}
 				</div>
 			</Search>
 		</>
 	);
-};
+});
 
 export default SearchBar;

@@ -22,11 +22,6 @@ html, body {
 
 .loaderCenterSmall {
     position: absolute;
-    height: 30vh;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .headerMenuLogo {

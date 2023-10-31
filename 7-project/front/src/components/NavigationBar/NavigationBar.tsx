@@ -1,5 +1,8 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../hooks/redux-hooks";
+import { useAppSelector, useAppDispatch } from "../../hooks/redux-hooks";
+
+import { getMovieByName } from "../../reducers/movieReducer";
 
 import NavigationMenu from "./NavigationMenu";
 import SearchBarDesktop from "./SearchBarDesktop";
@@ -11,7 +14,47 @@ import { AppBar, Box, Button, Grid, Toolbar } from "@mui/material";
 import Icons from "../Icons";
 
 const NavigationBar = () => {
+	const dispatch = useAppDispatch();
+
 	const { user } = useAppSelector((state) => state.user);
+
+	const listRef = useRef<HTMLInputElement | null>(null);
+	const searchRef = useRef<HTMLInputElement | null>(null);
+
+	const [searchQuery, setSearchQuery] = useState<string>("");
+	const [active, setActive] = useState<boolean>(false);
+
+	const handleClickOutside = (event: any) => {
+		if (listRef.current && !listRef.current.contains(event.target)) {
+			setActive(false);
+		}
+	};
+
+	useEffect(() => {
+		const handleEsc = (event: any) => {
+			if (event.key === "Escape") {
+				setActive(false);
+				setSearchQuery("");
+			}
+		};
+		window.addEventListener("keydown", handleEsc);
+		document.addEventListener("click", handleClickOutside, true);
+		return () => {
+			document.removeEventListener("click", handleClickOutside, true);
+			window.removeEventListener("keydown", handleEsc);
+		};
+	}, []);
+
+	const handleSearch = (event: string) => {
+		setSearchQuery(event);
+		if (event.length > 0) {
+			setActive(true);
+		}
+	};
+
+	useEffect(() => {
+		dispatch(getMovieByName(searchQuery));
+	}, [searchQuery]);
 
 	return (
 		<>
@@ -39,14 +82,28 @@ const NavigationBar = () => {
 								display={{ xs: "none", sm: "initial" }}
 								style={{ width: "90%" }}
 							>
-								<SearchBarDesktop />
+								<SearchBarDesktop
+									searchRef={searchRef}
+									listRef={listRef}
+									handleSearch={handleSearch}
+									searchQuery={searchQuery}
+									active={active}
+								/>
 							</Grid>
 							<Grid
 								item
 								display={{ xs: "initial", sm: "none" }}
 								style={{ width: "100%" }}
 							>
-								<SearchBarMobile />
+								<SearchBarMobile
+									searchRef={searchRef}
+									listRef={listRef}
+									handleSearch={handleSearch}
+									searchQuery={searchQuery}
+									setSearchQuery={setSearchQuery}
+									active={active}
+									setActive={setActive}
+								/>
 							</Grid>
 						</Grid>
 

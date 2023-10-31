@@ -66,7 +66,7 @@ const WatchListMovieCards = ({ data }: TWatchList) => {
 						onClick={handleNavigationClick}
 						style={{ marginRight: "auto" }}
 					>
-						<Icons.Seen />
+						<Icons.Visibility />
 					</IconButton>
 				</Tooltip>
 				<Tooltip title="Remove">

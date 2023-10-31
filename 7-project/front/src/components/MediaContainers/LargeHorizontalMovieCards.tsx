@@ -13,12 +13,14 @@ import {
 } from "@mui/material";
 
 import { IMovieMinimal } from "../../models/movie-models";
+import MovieCardSkeleton from "../Loaders/MovieCardSkeleton";
 
 type MovieType = {
 	data: IMovieMinimal[];
+	loading: boolean;
 };
 
-const LargeHorizontalMovieCards = ({ data }: MovieType) => {
+const LargeHorizontalMovieCards = ({ data, loading }: MovieType) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -42,26 +44,36 @@ const LargeHorizontalMovieCards = ({ data }: MovieType) => {
 		>
 			{data.map((movie: IMovieMinimal) => (
 				<ImageListItem key={movie.id}>
-					<Card
-						sx={{
-							height: "225px",
-							width: "150px",
-							marginRight: "auto",
-							mt: 4,
-							mr: 4,
-						}}
-					>
-						<CardActionArea
-							onClick={() => handleNavigationClick(movie)}
+					{loading ? (
+						<MovieCardSkeleton
+							height="225px"
+							width="150px"
+							borderRadius="0px"
+							marginTop={4}
+							marginRight={4}
+						/>
+					) : (
+						<Card
+							sx={{
+								height: "225px",
+								width: "150px",
+								marginRight: "auto",
+								mt: 4,
+								mr: 4,
+							}}
 						>
-							<CardMedia
-								component="img"
-								loading="lazy"
-								src={`http://localhost:5000/images/posters${movie.poster}`}
-								alt={movie.title}
-							/>
-						</CardActionArea>
-					</Card>
+							<CardActionArea
+								onClick={() => handleNavigationClick(movie)}
+							>
+								<CardMedia
+									component="img"
+									loading="lazy"
+									src={`http://localhost:5000/images/posters${movie.poster}`}
+									alt={movie.title}
+								/>
+							</CardActionArea>
+						</Card>
+					)}
 				</ImageListItem>
 			))}
 		</ImageList>

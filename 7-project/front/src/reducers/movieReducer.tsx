@@ -1,4 +1,5 @@
 import { MovieArrayModel } from "../models/redux-models";
+import { IMovieMinimal } from "../models/movie-models";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { AppDispatch } from "./store";
@@ -32,6 +33,10 @@ const movieSlice = createSlice({
 			state.loadingFeaturedMovies = false;
 			state.featuredMovies = action.payload;
 		},
+		setReorderedFeaturedMovies(state, action) {
+			state.featuredMovies = action.payload;
+			state.loadingFeaturedMovies = false;
+		},
 		setTopRatedMovies(state, action) {
 			state.loadingTopRatedMovies = false;
 			state.topRatedMovies = action.payload;
@@ -57,14 +62,21 @@ const movieSlice = createSlice({
 			state.video = action.payload;
 		},
 		setSearchResults(state, action) {
-			state.searchResults = action.payload;
-			state.loadingSearchResults = false;
+			if (action.payload.length > 0) {
+				state.searchResults = action.payload;
+			} else {
+				state.searchResults = [];
+			}
+		},
+		setLoadingSearchResults(state, action) {
+			state.loadingSearchResults = action.payload;
 		},
 	},
 });
 
 export const {
 	setFeaturedMovies,
+	setReorderedFeaturedMovies,
 	setActionMovies,
 	setHorrorMovies,
 	setAllMovies,
@@ -72,12 +84,19 @@ export const {
 	setVideos,
 	setTopRatedMovies,
 	setSearchResults,
+	setLoadingSearchResults,
 } = movieSlice.actions;
 
 export const getFeaturedMovies = () => {
 	return async (dispatch: AppDispatch) => {
 		const movies = await movieService.getFeatured();
 		dispatch(setFeaturedMovies(movies));
+	};
+};
+
+export const reorderFeatured = (movies: IMovieMinimal[]) => {
+	return async (dispatch: AppDispatch) => {
+		dispatch(setReorderedFeaturedMovies(movies));
 	};
 };
 
@@ -118,8 +137,21 @@ export const getMovieById = (movieId: string) => {
 
 export const getMovieByName = (searchQuery: string) => {
 	return async (dispatch: AppDispatch) => {
-		const movie = await movieService.getByName(searchQuery);
-		dispatch(setSearchResults(movie));
+		if (searchQuery.length > 0) {
+			setLoadingSearchResults(true);
+
+			const movie = await movieService.getByName(searchQuery);
+
+			if (movie.length > 0) {
+				dispatch(setSearchResults(movie));
+				dispatch(setLoadingSearchResults(false));
+			} else {
+				dispatch(setSearchResults([]));
+				dispatch(setLoadingSearchResults(false));
+			}
+		} else {
+			dispatch(setSearchResults([]));
+		}
 	};
 };
 

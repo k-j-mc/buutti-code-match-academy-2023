@@ -65,12 +65,10 @@ const App = () => {
 
 	const { user } = useAppSelector((state) => state.user);
 
-	console.log(allMovies);
-
 	return (
 		<div className="main">
 			<NavigationBar />
-			{!loadingAllMovies && !loadingTopRatedMovies ? (
+			{!loadingTopRatedMovies ? (
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 
@@ -101,6 +99,7 @@ const App = () => {
 							/>
 						}
 					/>
+
 					<Route path="/video/:id" element={<MovieVideoPage />} />
 					<Route path="*" element={<ErrorPage />} />
 				</Routes>
