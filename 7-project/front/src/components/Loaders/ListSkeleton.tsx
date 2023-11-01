@@ -1,5 +1,4 @@
-import React from "react";
-import { Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import { PulseBubbleLoader } from "react-loaders-kit";
 
 interface ILoader {
@@ -15,15 +14,18 @@ const ListSkeleton = ({ loading }: ILoader) => {
 
 	return (
 		<div>
+			<Divider />
 			<Stack
 				style={{
 					backgroundColor: "#121212",
-					margin: "10px 0 10px 30px",
+					margin: "15px 0 0 30px",
+					paddingBottom: "15px",
 					height: "50px",
 				}}
 			>
 				<PulseBubbleLoader {...loaderProps} />
 			</Stack>
+			<Divider />
 		</div>
 	);
 };

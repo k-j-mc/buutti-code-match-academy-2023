@@ -1,6 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux-hooks";
+
+import { getMovieById, getMovieVideos } from "../../reducers/movieReducer";
+import { getMovieReviews } from "../../reducers/reviewReducer";
 
 import { getMovieByName } from "../../reducers/movieReducer";
 
@@ -14,36 +17,20 @@ import { AppBar, Box, Button, Grid, Toolbar } from "@mui/material";
 import Icons from "../Icons";
 
 const NavigationBar = () => {
+	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 
 	const { user } = useAppSelector((state) => state.user);
 
-	const listRef = useRef<HTMLInputElement | null>(null);
-	const searchRef = useRef<HTMLInputElement | null>(null);
-
 	const [searchQuery, setSearchQuery] = useState<string>("");
+
 	const [active, setActive] = useState<boolean>(false);
+	const [activeMobile, setActiveMobile] = useState<boolean>(false);
 
-	const handleClickOutside = (event: any) => {
-		if (listRef.current && !listRef.current.contains(event.target)) {
-			setActive(false);
-		}
+	const handleClose = () => {
+		setActive(false);
+		setSearchQuery("");
 	};
-
-	useEffect(() => {
-		const handleEsc = (event: any) => {
-			if (event.key === "Escape") {
-				setActive(false);
-				setSearchQuery("");
-			}
-		};
-		window.addEventListener("keydown", handleEsc);
-		document.addEventListener("click", handleClickOutside, true);
-		return () => {
-			document.removeEventListener("click", handleClickOutside, true);
-			window.removeEventListener("keydown", handleEsc);
-		};
-	}, []);
 
 	const handleSearch = (event: string) => {
 		setSearchQuery(event);
@@ -55,6 +42,18 @@ const NavigationBar = () => {
 	useEffect(() => {
 		dispatch(getMovieByName(searchQuery));
 	}, [searchQuery]);
+
+	const handleNavigationClick = (movieId: string) => {
+		dispatch(getMovieById(movieId));
+		dispatch(getMovieVideos(movieId));
+		dispatch(getMovieReviews(movieId));
+
+		setActive(false);
+		setActiveMobile(false);
+		setSearchQuery("");
+
+		navigate(`/movie/${movieId}`);
+	};
 
 	return (
 		<>
@@ -83,11 +82,14 @@ const NavigationBar = () => {
 								style={{ width: "90%" }}
 							>
 								<SearchBarDesktop
-									searchRef={searchRef}
-									listRef={listRef}
 									handleSearch={handleSearch}
 									searchQuery={searchQuery}
 									active={active}
+									setActive={setActive}
+									handleClose={handleClose}
+									handleNavigationClick={
+										handleNavigationClick
+									}
 								/>
 							</Grid>
 							<Grid
@@ -96,13 +98,14 @@ const NavigationBar = () => {
 								style={{ width: "100%" }}
 							>
 								<SearchBarMobile
-									searchRef={searchRef}
-									listRef={listRef}
 									handleSearch={handleSearch}
 									searchQuery={searchQuery}
 									setSearchQuery={setSearchQuery}
-									active={active}
-									setActive={setActive}
+									activeMobile={activeMobile}
+									setActiveMobile={setActiveMobile}
+									handleNavigationClick={
+										handleNavigationClick
+									}
 								/>
 							</Grid>
 						</Grid>

@@ -1,16 +1,17 @@
-import { useEffect, useRef, Fragment } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+import { useState, Fragment } from "react";
+import { useAppSelector } from "../../hooks/redux-hooks";
 
 import {
+	Box,
+	Button,
+	ButtonGroup,
 	CardMedia,
 	Divider,
 	IconButton,
 	List,
 	ListItem,
-	ListItemAvatar,
-	ListItemButton,
 	ListItemText,
+	Typography,
 } from "@mui/material";
 
 import ListSkeleton from "../Loaders/ListSkeleton";
@@ -19,18 +20,18 @@ import Icons from "../Icons";
 
 type TSearch = {
 	searchQuery: string;
+	handleNavigationClick: Function;
 };
 
-const SearchBarResultsList = ({ searchQuery }: TSearch) => {
-	const navigate = useNavigate();
-
+const SearchBarResultsList = ({
+	searchQuery,
+	handleNavigationClick,
+}: TSearch) => {
 	const { searchResults, loadingSearchResults } = useAppSelector(
 		(state) => state.movies
 	);
 
-	const handleNavigation = (movieId: string) => {};
-
-	console.log(loadingSearchResults);
+	const [topLimit, setTopLimit] = useState<number>(5);
 
 	return (
 		<List
@@ -44,32 +45,6 @@ const SearchBarResultsList = ({ searchQuery }: TSearch) => {
 				marginTop: "10px",
 			}}
 		>
-			{searchResults.map((obj, index) => (
-				<Fragment key={obj.id}>
-					<ListItem>
-						<>
-							<CardMedia
-								component="img"
-								loading="lazy"
-								src={`http://localhost:5000/images/posters${obj.poster}`}
-								alt={obj.title}
-								style={{ height: "75px", width: "50px" }}
-							/>
-							<ListItemText
-								style={{ marginLeft: "12px" }}
-								primary={obj.title}
-								secondary={obj.tagline}
-							/>
-							<IconButton
-								onClick={() => handleNavigation(obj.id)}
-							>
-								<Icons.ArrowForward size="12px" />
-							</IconButton>
-						</>
-					</ListItem>
-					{index < searchResults.length - 1 && <Divider />}
-				</Fragment>
-			))}
 			{loadingSearchResults && searchQuery.length > 0 ? (
 				<ListSkeleton loading={loadingSearchResults} />
 			) : (
@@ -91,6 +66,76 @@ const SearchBarResultsList = ({ searchQuery }: TSearch) => {
 					</>
 				)
 			)}
+
+			<>
+				{searchResults.slice(0, topLimit).map((obj, index) => (
+					<Fragment key={obj.id}>
+						<ListItem onClick={() => handleNavigationClick(obj.id)}>
+							<>
+								<CardMedia
+									component="img"
+									loading="lazy"
+									src={`http://localhost:5000/images/posters${obj.poster}`}
+									alt={obj.title}
+									style={{
+										height: "75px",
+										width: "50px",
+									}}
+								/>
+								<ListItemText
+									style={{ marginLeft: "12px" }}
+									primary={obj.title}
+									secondary={obj.tagline}
+								/>
+								<IconButton>
+									<Icons.ArrowForward size="12px" />
+								</IconButton>
+							</>
+						</ListItem>
+
+						{index < topLimit - 1 ? (
+							<Divider />
+						) : (
+							<Box textAlign="center">
+								<Typography
+									variant="body2"
+									display="block"
+									style={{ paddingBottom: "10px" }}
+								>
+									Showing {topLimit} of {searchResults.length}{" "}
+									results
+								</Typography>
+								<ButtonGroup
+									variant="text"
+									aria-label="text button group"
+								>
+									<Button
+										disabled={topLimit <= 5 ? true : false}
+										onClick={() =>
+											setTopLimit(topLimit - 5)
+										}
+									>
+										Show less
+									</Button>
+
+									<Button
+										disabled={
+											searchResults.length % topLimit
+												? false
+												: true
+										}
+										onClick={() =>
+											setTopLimit(topLimit + 5)
+										}
+									>
+										Show more
+									</Button>
+								</ButtonGroup>
+							</Box>
+						)}
+					</Fragment>
+				))}
+			</>
 		</List>
 	);
 };

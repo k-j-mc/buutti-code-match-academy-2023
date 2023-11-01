@@ -28,8 +28,6 @@ const HomePage = () => {
 
 	const dispatch = useAppDispatch();
 
-	console.log(featuredMovies);
-
 	const handleClick = (movie: IMovieMinimal, index: number) => {
 		if (index === 0) {
 			let tempArray = featuredMovies.filter(
@@ -42,9 +40,23 @@ const HomePage = () => {
 
 			dispatch(reorderFeatured(tempArray));
 		} else if (index === -1) {
-			console.log("shuffle");
+			let tempArray = featuredMovies;
+			let lastObj = featuredMovies[featuredMovies.length - 1];
+
+			tempArray = tempArray.filter(
+				(obj: IMovieMinimal) => obj.id !== lastObj.id
+			);
+
+			tempArray = [lastObj, ...tempArray];
+
+			dispatch(reorderFeatured(tempArray));
 		} else if (index === 1) {
-			console.log("reshuffle");
+			let tempArray = [...featuredMovies];
+
+			tempArray.push(movie);
+			tempArray.shift();
+
+			dispatch(reorderFeatured(tempArray));
 		}
 	};
 

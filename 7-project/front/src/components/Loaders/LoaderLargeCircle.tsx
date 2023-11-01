@@ -10,6 +10,7 @@ const LoaderLargeCircle = ({ loading, styleName, size }: ILoader) => {
 	const loaderProps = {
 		loading: loading,
 		size: size,
+		color: "#00d4ff",
 	};
 
 	return (

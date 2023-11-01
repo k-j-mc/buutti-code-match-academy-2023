@@ -30,43 +30,43 @@ const movieSlice = createSlice({
 	initialState: initialMovieState,
 	reducers: {
 		setFeaturedMovies(state, action) {
-			state.loadingFeaturedMovies = false;
 			state.featuredMovies = action.payload;
+			state.loadingFeaturedMovies = false;
 		},
 		setReorderedFeaturedMovies(state, action) {
 			state.featuredMovies = action.payload;
 			state.loadingFeaturedMovies = false;
 		},
 		setTopRatedMovies(state, action) {
-			state.loadingTopRatedMovies = false;
 			state.topRatedMovies = action.payload;
+			state.loadingTopRatedMovies = false;
 		},
 		setActionMovies(state, action) {
-			state.loadingActionMovies = false;
 			state.actionMovies = action.payload;
+			state.loadingActionMovies = false;
 		},
 		setHorrorMovies(state, action) {
-			state.loadingHorrorMovies = false;
 			state.horrorMovies = action.payload;
+			state.loadingHorrorMovies = false;
 		},
 		setAllMovies(state, action) {
-			state.loadingAllMovies = false;
 			state.allMovies = action.payload;
+			state.loadingAllMovies = false;
 		},
 		setMovie(state, action) {
-			state.loadingMovie = false;
 			state.movie = action.payload;
+			state.loadingMovie = false;
 		},
 		setVideos(state, action) {
-			state.loadingVideo = false;
 			state.video = action.payload;
+			state.loadingVideo = false;
 		},
 		setSearchResults(state, action) {
-			if (action.payload.length > 0) {
-				state.searchResults = action.payload;
-			} else {
-				state.searchResults = [];
-			}
+			state.searchResults = action.payload;
+			state.loadingSearchResults = false;
+		},
+		setMovieLoading(state, action) {
+			state.loadingMovie = action.payload;
 		},
 		setLoadingSearchResults(state, action) {
 			state.loadingSearchResults = action.payload;
@@ -84,6 +84,7 @@ export const {
 	setVideos,
 	setTopRatedMovies,
 	setSearchResults,
+	setMovieLoading,
 	setLoadingSearchResults,
 } = movieSlice.actions;
 
@@ -130,6 +131,8 @@ export const getMovies = () => {
 
 export const getMovieById = (movieId: string) => {
 	return async (dispatch: AppDispatch) => {
+		dispatch(setMovieLoading(true));
+
 		const movie = await movieService.getById(movieId);
 		dispatch(setMovie(movie));
 	};
@@ -137,17 +140,15 @@ export const getMovieById = (movieId: string) => {
 
 export const getMovieByName = (searchQuery: string) => {
 	return async (dispatch: AppDispatch) => {
-		if (searchQuery.length > 0) {
-			setLoadingSearchResults(true);
+		dispatch(setLoadingSearchResults(true));
 
+		if (searchQuery.length > 0) {
 			const movie = await movieService.getByName(searchQuery);
 
 			if (movie.length > 0) {
 				dispatch(setSearchResults(movie));
-				dispatch(setLoadingSearchResults(false));
 			} else {
 				dispatch(setSearchResults([]));
-				dispatch(setLoadingSearchResults(false));
 			}
 		} else {
 			dispatch(setSearchResults([]));

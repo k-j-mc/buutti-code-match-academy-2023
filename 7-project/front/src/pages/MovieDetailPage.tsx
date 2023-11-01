@@ -13,8 +13,6 @@ import MovieVideoPage from "./MovieVideoPage";
 
 import LoaderLargeCircle from "../components/Loaders/LoaderLargeCircle";
 
-import Icons from "../components/Icons";
-
 type TPopularity = {
 	popularityCeil: number;
 };
@@ -27,9 +25,8 @@ const MovieDetailPage = ({ popularityCeil }: TPopularity) => {
 
 	const dispatch = useAppDispatch();
 
-	const { video, movie, loadingVideo, topRatedMovies } = useAppSelector(
-		(state) => state.movies
-	);
+	const { video, movie, loadingVideo, loadingMovie, topRatedMovies } =
+		useAppSelector((state) => state.movies);
 
 	const { movieReviews, loadingMovieReviews } = useAppSelector(
 		(state) => state.reviews
@@ -69,7 +66,7 @@ const MovieDetailPage = ({ popularityCeil }: TPopularity) => {
 
 	return (
 		<div>
-			{!loadingVideo &&
+			{!loadingMovie &&
 			movie.length > 0 &&
 			movie.length > 0 &&
 			locationName === movie[0].id ? (
@@ -101,7 +98,7 @@ const MovieDetailPage = ({ popularityCeil }: TPopularity) => {
 				</>
 			) : (
 				<LoaderLargeCircle
-					loading={loadingVideo}
+					loading={loadingMovie}
 					styleName="loaderMain"
 					size={200}
 				/>

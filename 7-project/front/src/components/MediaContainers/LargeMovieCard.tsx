@@ -116,7 +116,7 @@ const LargeMovieCard = ({ data, handleClick }: MovieType) => {
 					{data.vote_count.toLocaleString()} votes
 				</Typography>
 				<Typography sx={{ pt: 2 }} variant="subtitle1">
-					{data.tagline}
+					{data.tagline.length > 0 ? data.tagline : "-"}
 				</Typography>
 				<CardActions style={{ margin: "0 0 -10px -15px" }}>
 					<Button

@@ -1,18 +1,5 @@
-import {
-	useEffect,
-	useRef,
-	useState,
-	ChangeEvent,
-	KeyboardEvent,
-	forwardRef,
-	ReactNode,
-} from "react";
-import { useAppDispatch } from "../../hooks/redux-hooks";
-
-import { getMovieByName } from "../../reducers/movieReducer";
-
 import { styled, alpha } from "@mui/material/styles";
-import { InputBase } from "@mui/material";
+import { ClickAwayListener, InputBase } from "@mui/material";
 
 import SearchBarResultsList from "./SearchBarResultsList";
 
@@ -53,20 +40,28 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 type TSearch = {
-	searchRef?: any;
-	listRef?: any;
 	handleSearch: Function;
 	searchQuery: string;
 	active: boolean;
+	setActive: Function;
+	handleClose: Function;
+	handleNavigationClick: Function;
 };
 
-const SearchBar = forwardRef<HTMLDivElement, TSearch>((props, ref) => {
-	const dispatch = useAppDispatch();
-
-	const { searchRef, listRef, active, searchQuery, handleSearch } = props;
+const SearchBar = ({
+	active,
+	setActive,
+	searchQuery,
+	handleSearch,
+	handleClose,
+	handleNavigationClick,
+}: TSearch) => {
+	const handleClickAway = () => {
+		setActive(false);
+	};
 
 	return (
-		<>
+		<ClickAwayListener onClickAway={handleClickAway}>
 			<Search
 				style={{
 					position: "relative",
@@ -75,27 +70,31 @@ const SearchBar = forwardRef<HTMLDivElement, TSearch>((props, ref) => {
 				<SearchIconWrapper>
 					<Icons.Search />
 				</SearchIconWrapper>
+
 				<StyledInputBase
-					ref={searchRef}
 					placeholder="Search…"
 					inputProps={{ "aria-label": "search" }}
 					onChange={({ target }) => handleSearch(target.value)}
+					onClick={() => searchQuery.length > 0 && setActive(true)}
 					value={searchQuery}
-				/>
-				<div
-					style={{
-						position: "relative",
-						width: "100%",
+					onKeyUp={(event) => {
+						if (event.key === "Escape") {
+							handleClose();
+						}
 					}}
-					ref={listRef}
-				>
+				/>
+
+				<>
 					{active && (
-						<SearchBarResultsList searchQuery={searchQuery} />
+						<SearchBarResultsList
+							searchQuery={searchQuery}
+							handleNavigationClick={handleNavigationClick}
+						/>
 					)}
-				</div>
+				</>
 			</Search>
-		</>
+		</ClickAwayListener>
 	);
-});
+};
 
 export default SearchBar;

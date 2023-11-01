@@ -27,12 +27,12 @@ const VerticalMovieCards = ({ data, handleClick, loading }: MoviesType) => {
 				<>
 					{loadingLoop.map((obj) => (
 						<ImageListItem
+							key={obj}
 							sx={{
 								mb: 4,
 							}}
 						>
 							<MovieCardSkeleton
-								key={obj}
 								height="130px"
 								width="90%"
 								borderRadius="15px"
