@@ -1,4 +1,4 @@
-import { MovieArrayModel } from "../models/redux-models";
+import { MovieArrayModel, IVideo } from "../models/redux-models";
 import { IMovieMinimal } from "../models/movie-models";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -61,12 +61,19 @@ const movieSlice = createSlice({
 			state.video = action.payload;
 			state.loadingVideo = false;
 		},
+		setReorderedVideos(state, action) {
+			state.video = action.payload;
+			state.loadingVideo = false;
+		},
 		setSearchResults(state, action) {
 			state.searchResults = action.payload;
 			state.loadingSearchResults = false;
 		},
 		setMovieLoading(state, action) {
 			state.loadingMovie = action.payload;
+		},
+		setVideoLoading(state, action) {
+			state.loadingVideo = action.payload;
 		},
 		setLoadingSearchResults(state, action) {
 			state.loadingSearchResults = action.payload;
@@ -82,9 +89,11 @@ export const {
 	setAllMovies,
 	setMovie,
 	setVideos,
+	setReorderedVideos,
 	setTopRatedMovies,
 	setSearchResults,
 	setMovieLoading,
+	setVideoLoading,
 	setLoadingSearchResults,
 } = movieSlice.actions;
 
@@ -158,8 +167,16 @@ export const getMovieByName = (searchQuery: string) => {
 
 export const getMovieVideos = (movieId: string) => {
 	return async (dispatch: AppDispatch) => {
+		dispatch(setVideoLoading(true));
+
 		const movie = await movieService.getVideosById(movieId);
 		dispatch(setVideos(movie));
+	};
+};
+
+export const reorderVideos = (videos: IVideo[]) => {
+	return async (dispatch: AppDispatch) => {
+		dispatch(setReorderedVideos(videos));
 	};
 };
 

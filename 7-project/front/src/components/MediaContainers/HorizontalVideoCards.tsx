@@ -10,10 +10,10 @@ import { IVideo } from "../../models/movie-models";
 
 type MovieType = {
 	videos: IVideo[];
-	handleClick: Function;
+	handleChangeVideo: Function;
 };
 
-const HorizontalVideoCards = ({ videos, handleClick }: MovieType) => {
+const HorizontalVideoCards = ({ videos, handleChangeVideo }: MovieType) => {
 	return (
 		<ImageList
 			sx={{
@@ -32,7 +32,7 @@ const HorizontalVideoCards = ({ videos, handleClick }: MovieType) => {
 							mt: 4,
 							mr: 4,
 						}}
-						onClick={() => handleClick(video)}
+						onClick={() => handleChangeVideo(video)}
 					>
 						<CardActionArea>
 							<CardMedia

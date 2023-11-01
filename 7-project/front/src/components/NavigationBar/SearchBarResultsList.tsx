@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { useAppSelector } from "../../hooks/redux-hooks";
 
 import {
@@ -31,7 +31,15 @@ const SearchBarResultsList = ({
 		(state) => state.movies
 	);
 
-	const [topLimit, setTopLimit] = useState<number>(5);
+	const [topLimit, setTopLimit] = useState<number>(0);
+
+	useEffect(() => {
+		if (searchResults.length < 5) {
+			setTopLimit(searchResults.length);
+		} else {
+			setTopLimit(5);
+		}
+	}, [searchResults]);
 
 	return (
 		<List
@@ -93,49 +101,43 @@ const SearchBarResultsList = ({
 							</>
 						</ListItem>
 
-						{index < topLimit - 1 ? (
-							<Divider />
-						) : (
-							<Box textAlign="center">
-								<Typography
-									variant="body2"
-									display="block"
-									style={{ paddingBottom: "10px" }}
-								>
-									Showing {topLimit} of {searchResults.length}{" "}
-									results
-								</Typography>
-								<ButtonGroup
-									variant="text"
-									aria-label="text button group"
-								>
-									<Button
-										disabled={topLimit <= 5 ? true : false}
-										onClick={() =>
-											setTopLimit(topLimit - 5)
-										}
-									>
-										Show less
-									</Button>
-
-									<Button
-										disabled={
-											searchResults.length % topLimit
-												? false
-												: true
-										}
-										onClick={() =>
-											setTopLimit(topLimit + 5)
-										}
-									>
-										Show more
-									</Button>
-								</ButtonGroup>
-							</Box>
-						)}
+						{index < topLimit - 1 && <Divider />}
 					</Fragment>
 				))}
 			</>
+			{searchResults.length > 0 && (
+				<Box textAlign="center">
+					<Typography
+						variant="body2"
+						display="block"
+						style={{ paddingBottom: "10px" }}
+					>
+						Showing {topLimit} of {searchResults.length} results
+					</Typography>
+					<ButtonGroup variant="text" aria-label="text button group">
+						<Button
+							disabled={topLimit <= 5 ? true : false}
+							onClick={() => setTopLimit(topLimit - 5)}
+						>
+							Show less
+						</Button>
+
+						<Button
+							disabled={
+								searchResults.length <= topLimit ? true : false
+							}
+							onClick={() => {
+								searchResults.length % topLimit &&
+								topLimit + 5 <= searchResults.length
+									? setTopLimit(topLimit + 5)
+									: setTopLimit(searchResults.length);
+							}}
+						>
+							Show more
+						</Button>
+					</ButtonGroup>
+				</Box>
+			)}
 		</List>
 	);
 };

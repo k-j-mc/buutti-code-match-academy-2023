@@ -18,6 +18,8 @@ type TPlayerOptions = {
 	showinfo: 0 | 1 | undefined;
 	mute: 0 | 1 | undefined;
 	loop: 0 | 1 | undefined;
+	enablejsapi: 0 | 1 | undefined;
+	origin: string;
 };
 
 const Video = ({ video }: TVideo) => {
@@ -37,27 +39,28 @@ const Video = ({ video }: TVideo) => {
 			showinfo: 0,
 			mute: 1,
 			loop: 1,
+			enablejsapi: 1,
+			origin: "http://localhost:3000",
 		},
 	};
 
 	return (
-		<div>
-			<div className="videoContainer">
-				{!videoLoading ? (
-					<YouTube
-						videoId={video}
-						id={`video ${video}`}
-						opts={options}
-						onReady={onPlayerReady}
-					/>
-				) : (
-					<LoaderLargeCircle
-						loading={videoLoading}
-						styleName="loaderMain"
-						size={200}
-					/>
-				)}
-			</div>
+		<div className="videoContainer">
+			{!videoLoading ? (
+				<YouTube
+					videoId={video}
+					id={`video ${video}`}
+					opts={options}
+					onReady={onPlayerReady}
+					style={{ maxWidth: "100%" }}
+				/>
+			) : (
+				<LoaderLargeCircle
+					loading={videoLoading}
+					styleName="loaderMain"
+					size={200}
+				/>
+			)}
 		</div>
 	);
 };

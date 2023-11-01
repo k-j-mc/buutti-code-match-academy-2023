@@ -249,7 +249,7 @@ const PageHeading = ({
 									onClick={handleWatchListRemove}
 									size="large"
 								>
-									<Icons.True />
+									<Icons.TrueFill />
 								</IconButton>
 								<h4 style={{ color: "#00d4ff" }}>Watch List</h4>
 							</div>

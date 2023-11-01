@@ -3,6 +3,7 @@ import React, { forwardRef } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CloseIcon from "@mui/icons-material/Close";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -117,6 +118,9 @@ const Icons = {
 	)),
 	True: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<DoneIcon {...props} ref={ref} style={{ color: "#00d4ff" }} />
+	)),
+	TrueFill: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
+		<CheckCircleIcon {...props} ref={ref} style={{ color: "#00d4ff" }} />
 	)),
 	Star: forwardRef<SVGSVGElement, IconProps>((props, ref) => (
 		<StarIcon {...props} ref={ref} />
