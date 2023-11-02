@@ -24,6 +24,8 @@ const HomePage = () => {
 		loadingAllMovies,
 	} = useAppSelector((state) => state.movies);
 
+	const { placement } = useAppSelector((state) => state.notification);
+
 	const dispatch = useAppDispatch();
 
 	const handleClick = (movie: IMovieMinimal, index: number) => {
@@ -60,9 +62,11 @@ const HomePage = () => {
 
 	return (
 		<>
-			<div className="absoluteNotification">
-				<Notification />
-			</div>
+			{placement === "home" && (
+				<div className="absoluteNotification">
+					<Notification />
+				</div>
+			)}
 			<Grid container spacing={1}>
 				<Grid item xl={2} xs={0.5} />
 				<Grid item xl={5} lg={8} md={11} xs={11}>

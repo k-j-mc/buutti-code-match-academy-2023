@@ -68,6 +68,7 @@ export const signUpUser = (userPayload: IUserSignUp) => {
 						message: `Account successfully created!`,
 						variant: "success",
 						timeOut: 5000,
+						placement: "signup",
 					})
 				);
 				dispatch(setNewUser(true));
@@ -78,6 +79,7 @@ export const signUpUser = (userPayload: IUserSignUp) => {
 						message: error.response.data.error,
 						variant: "error",
 						timeOut: 0,
+						placement: "signup",
 					})
 				)
 			);
@@ -96,6 +98,7 @@ export const signInUser = (userPayload: IUserSignIn) => {
 						message: `Welcome ${response.data.userFirstName}!`,
 						variant: "success",
 						timeOut: 5000,
+						placement: "home",
 					})
 				);
 			})
@@ -105,6 +108,7 @@ export const signInUser = (userPayload: IUserSignIn) => {
 						message: error.response.data.error,
 						variant: "error",
 						timeOut: 0,
+						placement: "signin",
 					})
 				)
 			);
@@ -125,6 +129,7 @@ export const signOutUser = () => {
 							message: `Successfully signed out!`,
 							variant: "success",
 							timeOut: 5000,
+							placement: "home",
 						})
 					);
 				})
@@ -134,6 +139,7 @@ export const signOutUser = () => {
 							message: "Log out unsuccessful, please try again",
 							variant: "error",
 							timeOut: 0,
+							placement: "home",
 						})
 					)
 				);
@@ -164,6 +170,7 @@ export const addWatchListItem = (payload: any) => {
 						message: `${obj.title} successfully added to Watch List!`,
 						variant: "success",
 						timeOut: 5000,
+						placement: "movieDetails",
 					})
 				);
 			})
@@ -173,6 +180,7 @@ export const addWatchListItem = (payload: any) => {
 						message: error.response.data.error,
 						variant: "error",
 						timeOut: 0,
+						placement: "movieDetails",
 					})
 				)
 			);
@@ -207,6 +215,7 @@ export const removeWatchListItem = (
 							message: `${title} successfully removed from Watch List!`,
 							variant: "success",
 							timeOut: 5000,
+							placement: "movieDetails",
 						})
 					);
 				})
@@ -216,6 +225,7 @@ export const removeWatchListItem = (
 							message: error.response.data.error,
 							variant: "error",
 							timeOut: 0,
+							placement: "movieDetails",
 						})
 					);
 				});

@@ -105,6 +105,7 @@ export interface INotification {
 	timeOut: number;
 	message: string;
 	variant: "success" | "info" | "warning" | "error" | undefined;
+	placement: string;
 }
 
 export interface ReviewArrayModel {

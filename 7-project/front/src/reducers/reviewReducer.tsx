@@ -85,6 +85,7 @@ export const createReview = (review: INewReview) => {
 						message: `Thank you for your feedback!`,
 						variant: "success",
 						timeOut: 5000,
+						placement: "review",
 					})
 				);
 			})
@@ -94,6 +95,7 @@ export const createReview = (review: INewReview) => {
 						message: error.response.data.error,
 						variant: "error",
 						timeOut: 0,
+						placement: "review",
 					})
 				)
 			);
@@ -117,6 +119,7 @@ export const likeReview = (review: IEditReviewLikes) => {
 						message: `Feedback submitted successfully!`,
 						variant: "success",
 						timeOut: 5000,
+						placement: "review",
 					})
 				);
 			})
@@ -126,6 +129,7 @@ export const likeReview = (review: IEditReviewLikes) => {
 						message: error.response.data.error,
 						variant: "error",
 						timeOut: 0,
+						placement: "review",
 					})
 				)
 			);
@@ -143,6 +147,7 @@ export const editReview = (review: IEditReview) => {
 						message: `Review edited successfully!`,
 						variant: "success",
 						timeOut: 5000,
+						placement: "review",
 					})
 				);
 			})
@@ -152,6 +157,7 @@ export const editReview = (review: IEditReview) => {
 						message: error.response.data.error,
 						variant: "error",
 						timeOut: 0,
+						placement: "review",
 					})
 				)
 			);
@@ -168,6 +174,7 @@ export const deleteReview = (review: IDeleteReview) => {
 						message: `Review successfully removed!`,
 						variant: "success",
 						timeOut: 5000,
+						placement: "review",
 					})
 				);
 			})
@@ -177,6 +184,7 @@ export const deleteReview = (review: IDeleteReview) => {
 						message: error.response.data.error,
 						variant: "error",
 						timeOut: 0,
+						placement: "review",
 					})
 				)
 			);

@@ -7,6 +7,7 @@ const initialState: INotification = {
 	variant: undefined,
 	message: "",
 	timeOut: 0,
+	placement: "",
 };
 
 const notificationSlice = createSlice({

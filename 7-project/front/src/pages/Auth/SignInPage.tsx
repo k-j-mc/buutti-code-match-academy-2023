@@ -24,6 +24,7 @@ const SignInPage = () => {
 	const navigate = useNavigate();
 
 	const { user } = useAppSelector((state) => state.user);
+	const { placement } = useAppSelector((state) => state.notification);
 
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -61,7 +62,8 @@ const SignInPage = () => {
 				<Grid item xs={2} />
 				<Grid item xs={8}>
 					<h2 className="headerPageInfo">Sign In:</h2>
-					<NotificationBox />
+					{placement === "signin" ||
+						(placement === "signup" && <NotificationBox />)}
 					<form onSubmit={submitForm}>
 						<TextField
 							required

@@ -25,6 +25,8 @@ const Reviews = () => {
 		(state) => state.reviews
 	);
 
+	const { placement } = useAppSelector((state) => state.notification);
+
 	const [reviewFormActive, setReviewFormActive] = useState<boolean>(false);
 	const [showNumberResults, setShowNumberResults] = useState<number>(1);
 
@@ -48,7 +50,7 @@ const Reviews = () => {
 				<Grid item lg={8} md={10} xs={11}>
 					{!loadingMovieReviews ? (
 						<div>
-							<Notification />
+							{placement === "review" && <Notification />}
 
 							<h2
 								className="headerPageInfo"

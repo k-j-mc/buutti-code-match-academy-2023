@@ -42,6 +42,11 @@ const App = () => {
 		dispatch(userInfo());
 	}, [dispatch]);
 
+	const { loadingAllMovies, loadingTopRatedMovies, topRatedMovies } =
+		useAppSelector((state) => state.movies);
+
+	const { user } = useAppSelector((state) => state.user);
+
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem("signedInMLiBUser");
 
@@ -54,12 +59,7 @@ const App = () => {
 		} else {
 			dispatch(signOutUser());
 		}
-	}, []);
-
-	const { loadingAllMovies, loadingTopRatedMovies, topRatedMovies } =
-		useAppSelector((state) => state.movies);
-
-	const { user } = useAppSelector((state) => state.user);
+	}, [user]);
 
 	return (
 		<div className="main">

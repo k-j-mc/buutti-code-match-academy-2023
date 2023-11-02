@@ -36,6 +36,7 @@ const SignUpPage = () => {
 	const navigate = useNavigate();
 
 	const { newUser } = useAppSelector((state) => state.user);
+	const { placement } = useAppSelector((state) => state.notification);
 
 	const [userPicture, setUserPicture] = useState<string | ArrayBuffer | null>(
 		null
@@ -143,7 +144,7 @@ const SignUpPage = () => {
 				<Grid item xs={2} />
 				<Grid item xs={8}>
 					<h2 className="headerPageInfo">New Account:</h2>
-					<Notification />
+					{placement === "signup" && <Notification />}
 
 					<form onSubmit={submitForm}>
 						<div className="userSignUpAvatarContainer">

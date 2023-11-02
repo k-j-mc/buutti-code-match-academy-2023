@@ -8,6 +8,7 @@ import MovieDetails from "../components/MovieDetails/PageHeading";
 import AdditionalDetails from "../components/MovieDetails/AdditionalDetails";
 import MovieCast from "../components/MovieDetails/MovieCast";
 import Reviews from "../components/MovieDetails/Reviews/Reviews";
+import Notification from "../components/Notifications/NotificationBox";
 
 import MovieVideoPage from "./MovieVideoPage";
 
@@ -30,6 +31,8 @@ const MovieDetailPage = ({ popularityCeil }: TPopularity) => {
 	);
 
 	const { movieReviews } = useAppSelector((state) => state.reviews);
+
+	const { placement } = useAppSelector((state) => state.notification);
 
 	const locationName = window.location.pathname.substring(7);
 
@@ -70,6 +73,11 @@ const MovieDetailPage = ({ popularityCeil }: TPopularity) => {
 			movie.length > 0 &&
 			locationName === movie[0].id ? (
 				<>
+					{placement === "movieDetails" && (
+						<div className="absoluteNotification">
+							<Notification />
+						</div>
+					)}
 					<div className="detailsPage">
 						<MovieDetails
 							movie={movie[0]}
