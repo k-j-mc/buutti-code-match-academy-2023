@@ -16,11 +16,6 @@ import Notification from "../../Notifications/NotificationBox";
 
 import Icons from "../../Icons";
 
-type TReview = {
-	movieReviews: IReview[];
-	loadingMovieReviews: boolean;
-};
-
 const Reviews = () => {
 	const dispatch = useAppDispatch();
 

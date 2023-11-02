@@ -1,37 +1,22 @@
-import React from "react";
+import { SyntheticEvent } from "react";
 import { useAppSelector } from "../../hooks/redux-hooks";
 
 import {
 	Card,
-	CardActions,
 	CardContent,
-	CardHeader,
 	CardMedia,
 	Grid,
 	ImageList,
 	ImageListItem,
-	IconButton,
-	Tooltip,
 } from "@mui/material";
 
 import notFound from "../../images/notFound.png";
-
-import Icons from "../Icons";
-
-type TCast = {
-	character: string;
-	id: string;
-	movie_id: string;
-	name: string;
-	profile: string;
-	tmdb_id: string;
-};
 
 const MovieCast = () => {
 	const { movie } = useAppSelector((state) => state.movies);
 
 	const imageOnErrorHandler = (
-		event: React.SyntheticEvent<HTMLImageElement, Event>
+		event: SyntheticEvent<HTMLImageElement, Event>
 	) => {
 		event.currentTarget.src = notFound;
 	};
@@ -79,7 +64,9 @@ const MovieCast = () => {
 										style={{ padding: "0 5px 0 5px" }}
 									>
 										<h5>{obj.name}</h5>
-										<h6>{obj.character}</h6>
+										<h6 style={{ marginTop: "-10px" }}>
+											{obj.character}
+										</h6>
 									</CardContent>
 								</Card>
 							</ImageListItem>

@@ -25,12 +25,11 @@ const MovieDetailPage = ({ popularityCeil }: TPopularity) => {
 
 	const dispatch = useAppDispatch();
 
-	const { video, movie, loadingVideo, loadingMovie, topRatedMovies } =
-		useAppSelector((state) => state.movies);
-
-	const { movieReviews, loadingMovieReviews } = useAppSelector(
-		(state) => state.reviews
+	const { video, movie, loadingMovie } = useAppSelector(
+		(state) => state.movies
 	);
+
+	const { movieReviews } = useAppSelector((state) => state.reviews);
 
 	const locationName = window.location.pathname.substring(7);
 

@@ -51,8 +51,6 @@ const ReviewList = ({
 		}));
 	};
 
-	console.log(movieReviews);
-
 	return (
 		<List style={{ width: "100%" }}>
 			{movieReviews.slice(0, showNumberResults).map((review: IReview) => (

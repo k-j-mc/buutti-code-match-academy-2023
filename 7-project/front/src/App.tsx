@@ -56,12 +56,8 @@ const App = () => {
 		}
 	}, []);
 
-	const {
-		loadingAllMovies,
-		loadingTopRatedMovies,
-		topRatedMovies,
-		allMovies,
-	} = useAppSelector((state) => state.movies);
+	const { loadingAllMovies, loadingTopRatedMovies, topRatedMovies } =
+		useAppSelector((state) => state.movies);
 
 	const { user } = useAppSelector((state) => state.user);
 

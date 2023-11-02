@@ -5,7 +5,6 @@ import { Grid } from "@mui/material";
 
 import { IMovieMinimal } from "../models/movie-models";
 
-import LoaderLargeCircle from "../components/Loaders/LoaderLargeCircle";
 import Notification from "../components/Notifications/NotificationBox";
 
 import LargeMovieCard from "../components/MediaContainers/LargeMovieCard";
@@ -21,7 +20,6 @@ const HomePage = () => {
 		topRatedMovies,
 		actionMovies,
 		horrorMovies,
-		allMovies,
 		loadingFeaturedMovies,
 		loadingAllMovies,
 	} = useAppSelector((state) => state.movies);

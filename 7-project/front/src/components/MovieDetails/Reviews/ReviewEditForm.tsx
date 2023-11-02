@@ -21,7 +21,6 @@ const ReviewEditForm = ({ review, setEditFormActive }: TReviewEdit) => {
 	const dispatch = useAppDispatch();
 
 	const { movie } = useAppSelector((state) => state.movies);
-	const { user } = useAppSelector((state) => state.user);
 
 	const [title, setTitle] = useState<string>(review.title);
 	const [reviewText, setReviewText] = useState<string>(review.review);

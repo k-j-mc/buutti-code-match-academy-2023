@@ -1,6 +1,6 @@
 import { useEffect, useState, ChangeEvent, FormEvent, MouseEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
 	Avatar,

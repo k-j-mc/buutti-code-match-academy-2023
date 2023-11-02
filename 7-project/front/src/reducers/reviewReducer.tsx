@@ -12,7 +12,6 @@ import { AppDispatch } from "./store";
 import { setNotification } from "./notificationReducer";
 
 import reviewService from "../services/reviews";
-import userService from "../services/user";
 
 const initialReviewState: ReviewArrayModel = {
 	movieReviews: [],
