@@ -39,7 +39,9 @@ const movieSlice = createSlice({
 		},
 		setTopRatedMovies(state, action) {
 			state.topRatedMovies = action.payload;
-			state.loadingTopRatedMovies = false;
+			if (action.payload.length > 0) {
+				state.loadingTopRatedMovies = false;
+			}
 		},
 		setActionMovies(state, action) {
 			state.actionMovies = action.payload;
@@ -96,6 +98,17 @@ export const {
 	setVideoLoading,
 	setLoadingSearchResults,
 } = movieSlice.actions;
+
+export const fetchInitialData = () => {
+	return async (dispatch: AppDispatch) => {
+		const response = await movieService.getData();
+
+		if (response) {
+			const movies = await movieService.getAll();
+			dispatch(setAllMovies(movies));
+		}
+	};
+};
 
 export const getFeaturedMovies = () => {
 	return async (dispatch: AppDispatch) => {

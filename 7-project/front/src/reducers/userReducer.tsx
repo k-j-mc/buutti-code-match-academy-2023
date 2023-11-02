@@ -68,7 +68,7 @@ export const signUpUser = (userPayload: IUserSignUp) => {
 						message: `Account successfully created!`,
 						variant: "success",
 						timeOut: 5000,
-						placement: "signup",
+						placement: "signin",
 					})
 				);
 				dispatch(setNewUser(true));

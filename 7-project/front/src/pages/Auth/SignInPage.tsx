@@ -62,8 +62,7 @@ const SignInPage = () => {
 				<Grid item xs={2} />
 				<Grid item xs={8}>
 					<h2 className="headerPageInfo">Sign In:</h2>
-					{placement === "signin" ||
-						(placement === "signup" && <NotificationBox />)}
+					{placement === "signin" && <NotificationBox />}
 					<form onSubmit={submitForm}>
 						<TextField
 							required

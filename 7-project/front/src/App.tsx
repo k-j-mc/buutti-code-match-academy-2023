@@ -13,6 +13,7 @@ import {
 	getActionMovies,
 	getHorrorMovies,
 	getMovies,
+	fetchInitialData,
 } from "./reducers/movieReducer";
 
 import NavigationBar from "./components/NavigationBar/NavigationBar";
@@ -42,8 +43,18 @@ const App = () => {
 		dispatch(userInfo());
 	}, [dispatch]);
 
-	const { loadingAllMovies, loadingTopRatedMovies, topRatedMovies } =
-		useAppSelector((state) => state.movies);
+	const {
+		loadingAllMovies,
+		loadingTopRatedMovies,
+		topRatedMovies,
+		allMovies,
+	} = useAppSelector((state) => state.movies);
+
+	useEffect(() => {
+		if (!loadingAllMovies && allMovies.length === 0) {
+			dispatch(fetchInitialData());
+		}
+	}, [allMovies]);
 
 	const { user } = useAppSelector((state) => state.user);
 
@@ -61,10 +72,12 @@ const App = () => {
 		}
 	}, [user]);
 
+	console.log(allMovies);
+
 	return (
 		<div className="main">
 			<NavigationBar />
-			{!loadingTopRatedMovies ? (
+			{!loadingTopRatedMovies && allMovies.length > 0 ? (
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 
@@ -100,11 +113,16 @@ const App = () => {
 					<Route path="*" element={<ErrorPage />} />
 				</Routes>
 			) : (
-				<LoaderLargeCircle
-					loading={loadingAllMovies}
-					styleName="loaderMain"
-					size={200}
-				/>
+				<>
+					<LoaderLargeCircle
+						loading={loadingTopRatedMovies}
+						styleName="loaderMain"
+						size={200}
+					/>
+					<h3 className="headerPageInfoCenter">
+						Fetching initial data...
+					</h3>
+				</>
 			)}
 		</div>
 	);

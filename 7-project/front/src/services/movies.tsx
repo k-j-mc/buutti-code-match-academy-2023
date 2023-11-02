@@ -8,6 +8,19 @@ const setToken = (newToken: string | null) => {
 	token = `Bearer ${newToken}`;
 };
 
+const getData = async () => {
+	let i = 1;
+
+	for (i; i < 6; i++) {
+		const response = await axios
+			.get(`${baseUrl}/get-popular/${i}`)
+			.then((response) => response);
+	}
+	if (i === 6) {
+		return i;
+	}
+};
+
 const getFeatured = async () => {
 	const response = await axios
 		.get(`${baseUrl}/movies/featured`)
@@ -115,6 +128,7 @@ const processGenres = (movieGenres: number[]) => {
 };
 
 const movieService = {
+	getData,
 	getFeatured,
 	getTopRated,
 	getAction,

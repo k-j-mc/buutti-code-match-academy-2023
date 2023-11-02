@@ -11,15 +11,15 @@ const pool = new Pool({
 });
 
 export const executeQuery = async (query: string, parameters?: Array<any>) => {
-	const client = await pool.connect();
+	const clientPool = await pool.connect();
 	try {
-		const result = await client.query(query, parameters);
+		const result = await clientPool.query(query, parameters);
 		return result;
 	} catch (error: any) {
 		console.error(error.stack);
 		error.name = "dbError";
 		throw error;
 	} finally {
-		client.release();
+		clientPool.release();
 	}
 };

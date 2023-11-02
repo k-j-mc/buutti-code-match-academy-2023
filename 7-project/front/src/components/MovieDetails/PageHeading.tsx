@@ -66,10 +66,7 @@ const PageHeading = ({
 	};
 
 	const handleWatchListAdd = (movie: MovieInterface) => {
-		let userId = "";
-		if (user) {
-			userId = user.id;
-		}
+		let userId = user?.id;
 
 		const movieObject = {
 			id: movie.id,
@@ -83,12 +80,14 @@ const PageHeading = ({
 			vote_count: movie.vote_count,
 		};
 
-		const payload: INewWatchListItem = {
-			movie: movieObject,
-			user_id: userId,
-		};
+		if (userId) {
+			const payload: INewWatchListItem = {
+				movie: movieObject,
+				user_id: userId,
+			};
 
-		dispatch(addWatchListItem(payload));
+			dispatch(addWatchListItem(payload));
+		}
 	};
 
 	const handleWatchListRemove = () => {
@@ -256,6 +255,7 @@ const PageHeading = ({
 						) : (
 							<div style={{ display: "flex" }}>
 								<IconButton
+									disabled={user ? false : true}
 									onClick={() => handleWatchListAdd(movie)}
 									size="large"
 								>

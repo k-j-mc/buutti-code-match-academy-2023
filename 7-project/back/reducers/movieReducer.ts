@@ -95,124 +95,129 @@ router.get(
 	}
 );
 
-router.get("/get-popular", async (request: Request, response: Response) => {
-	const popularMovies = await makeRequest(10);
+router.get(
+	"/get-popular/:pageNumber",
+	async (request: Request, response: Response) => {
+		const pageNumber = parseInt(request.params.pageNumber);
 
-	let count = 0;
+		const popularMovies = await makeRequest(pageNumber);
 
-	for (let i = 0; i < popularMovies.length; i++) {
-		let exists = await findOneMovieByTMDBId(popularMovies[i].id);
+		let count = 0;
 
-		if (exists.length <= 0) {
-			count++;
-			let movieObject = await getDetails(popularMovies[i].id);
+		for (let i = 0; i < popularMovies.length; i++) {
+			let exists = await findOneMovieByTMDBId(popularMovies[i].id);
 
-			const id = uuid();
+			if (exists.length <= 0) {
+				count++;
+				let movieObject = await getDetails(popularMovies[i].id);
 
-			processCast({ ...movieObject, uid: id });
+				const id = uuid();
 
-			let backdrop;
+				processCast({ ...movieObject, uid: id });
 
-			if (popularMovies[i].backdrop_path !== null) {
-				backdrop = await saveImage(
-					"w1280",
-					popularMovies[i].backdrop_path,
+				let backdrop;
+
+				if (popularMovies[i].backdrop_path !== null) {
+					backdrop = await saveImage(
+						"w1280",
+						popularMovies[i].backdrop_path,
+						id,
+						"backdrops"
+					);
+				} else {
+					backdrop = "";
+				}
+
+				let poster = await saveImage(
+					"w500",
+					popularMovies[i].poster_path,
 					id,
-					"backdrops"
+					"posters"
 				);
-			} else {
-				backdrop = "";
-			}
 
-			let poster = await saveImage(
-				"w500",
-				popularMovies[i].poster_path,
-				id,
-				"posters"
-			);
-
-			let genres = movieObject.genres.map((obj: any) => {
-				return obj.id;
-			});
-
-			let productionCompanies = movieObject.production_companies.map(
-				(obj: any) => {
-					return obj.name;
-				}
-			);
-			let spokenLanguages = movieObject.spoken_languages.map(
-				(obj: any) => {
-					return obj.name;
-				}
-			);
-
-			let videos = movieObject.videos.results
-				.slice(0, 9)
-				.map((obj: any) => {
-					return {
-						id: id,
-						name: obj.name,
-						key: obj.key,
-						site: obj.site,
-						size: obj.size,
-						type: obj.type,
-						official: obj.official,
-						published_at: obj.published_at,
-					};
+				let genres = movieObject.genres.map((obj: any) => {
+					return obj.id;
 				});
 
-			if (movieObject.revenue !== typeof "number") {
-				movieObject.revenue = 0;
+				let productionCompanies = movieObject.production_companies.map(
+					(obj: any) => {
+						return obj.name;
+					}
+				);
+				let spokenLanguages = movieObject.spoken_languages.map(
+					(obj: any) => {
+						return obj.name;
+					}
+				);
+
+				let videos = movieObject.videos.results
+					.slice(0, 9)
+					.map((obj: any) => {
+						return {
+							id: id,
+							name: obj.name,
+							key: obj.key,
+							site: obj.site,
+							size: obj.size,
+							type: obj.type,
+							official: obj.official,
+							published_at: obj.published_at,
+						};
+					});
+
+				if (movieObject.revenue !== typeof "number") {
+					movieObject.revenue = 0;
+				}
+
+				if (movieObject.idmb_id === undefined) {
+					movieObject.imdb_id = "";
+				}
+
+				movieObject = {
+					id: id,
+					adult: movieObject.adult,
+					backdrop: backdrop,
+					budget: movieObject.budget,
+					genres: genres,
+					homepage: movieObject.homepage,
+					tmdb_id: movieObject.id,
+					imdb_id: movieObject.imdb_id,
+					original_language: movieObject.original_language,
+					original_title: movieObject.original_title,
+					overview: movieObject.overview,
+					popularity: movieObject.popularity,
+					poster: poster,
+					production_companies: productionCompanies,
+					release_date: movieObject.release_date,
+					revenue: movieObject.revenue,
+					runtime: movieObject.runtime,
+					spoken_languages: spokenLanguages,
+					tagline: movieObject.tagline,
+					title: movieObject.title,
+					video_count: videos.length,
+					vote_average: movieObject.vote_average,
+					vote_count: movieObject.vote_count,
+				};
+
+				insertNewMovie(movieObject);
+				videos.forEach((obj: IVideos) => {
+					insertMovieVideos(obj);
+				});
+			} else {
+				console.log("movie already in database");
 			}
+		}
 
-			if (movieObject.idmb_id === undefined) {
-				movieObject.imdb_id = "";
-			}
-
-			movieObject = {
-				id: id,
-				adult: movieObject.adult,
-				backdrop: backdrop,
-				budget: movieObject.budget,
-				genres: genres,
-				homepage: movieObject.homepage,
-				tmdb_id: movieObject.id,
-				imdb_id: movieObject.imdb_id,
-				original_language: movieObject.original_language,
-				original_title: movieObject.original_title,
-				overview: movieObject.overview,
-				popularity: movieObject.popularity,
-				poster: poster,
-				production_companies: productionCompanies,
-				release_date: movieObject.release_date,
-				revenue: movieObject.revenue,
-				runtime: movieObject.runtime,
-				spoken_languages: spokenLanguages,
-				tagline: movieObject.tagline,
-				title: movieObject.title,
-				video_count: videos.length,
-				vote_average: movieObject.vote_average,
-				vote_count: movieObject.vote_count,
-			};
-
-			insertNewMovie(movieObject);
-			videos.forEach((obj: IVideos) => {
-				insertMovieVideos(obj);
-			});
+		if (count > 0) {
+			response
+				.status(201)
+				.json({ message: `${count} movies added to database` });
 		} else {
-			console.log("movie already in database");
+			response
+				.status(200)
+				.json({ message: `${count} movies added to database` });
 		}
 	}
-
-	if (count > 0) {
-		response
-			.status(201)
-			.json({ message: `${count} movies added to database` });
-	} else {
-		response
-			.status(304)
-			.json({ message: `${count} movies added to database` });
-	}
-});
+);
 
 export default router;
